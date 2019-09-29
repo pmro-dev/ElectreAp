@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace TeamAp
 {
-    public partial class UserControl1: UserControl
+    public partial class UserControl: System.Windows.Forms.UserControl
     {
-        public UserControl1()
+        public UserControl()
         {
             InitializeComponent();
         }
@@ -38,6 +38,21 @@ namespace TeamAp
         }
 
         private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
         }
