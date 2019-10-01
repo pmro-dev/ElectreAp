@@ -104,7 +104,7 @@ namespace TeamAp
             this.button_CreateTab.TabIndex = 0;
             this.button_CreateTab.Text = "Utworz Tabele";
             this.button_CreateTab.UseVisualStyleBackColor = false;
-            this.button_CreateTab.Click += new System.EventHandler(this.Button1_Click);
+            this.button_CreateTab.Click += new System.EventHandler(this.Button_CreateTab_Click);
             // 
             // button_ReadTab
             // 
@@ -117,6 +117,7 @@ namespace TeamAp
             this.button_ReadTab.TabIndex = 1;
             this.button_ReadTab.Text = "Wczytaj Tabele";
             this.button_ReadTab.UseVisualStyleBackColor = false;
+            this.button_ReadTab.Click += new System.EventHandler(this.Button_ReadTab_Click);
             // 
             // button_Calculate
             // 
@@ -129,6 +130,7 @@ namespace TeamAp
             this.button_Calculate.TabIndex = 2;
             this.button_Calculate.Text = "Oblicz";
             this.button_Calculate.UseVisualStyleBackColor = false;
+            this.button_Calculate.Click += new System.EventHandler(this.Button_Calculate_Click);
             // 
             // button_SaveTab
             // 
@@ -141,6 +143,7 @@ namespace TeamAp
             this.button_SaveTab.TabIndex = 3;
             this.button_SaveTab.Text = "Zapisz Tabele";
             this.button_SaveTab.UseVisualStyleBackColor = false;
+            this.button_SaveTab.Click += new System.EventHandler(this.Button_SaveTab_Click);
             // 
             // button_SaveData
             // 
@@ -153,6 +156,7 @@ namespace TeamAp
             this.button_SaveData.TabIndex = 4;
             this.button_SaveData.Text = "Zapisz Dane";
             this.button_SaveData.UseVisualStyleBackColor = false;
+            this.button_SaveData.Click += new System.EventHandler(this.Button_SaveData_Click);
             // 
             // textBox_Alternatives
             // 
@@ -161,6 +165,7 @@ namespace TeamAp
             this.textBox_Alternatives.Name = "textBox_Alternatives";
             this.textBox_Alternatives.Size = new System.Drawing.Size(45, 25);
             this.textBox_Alternatives.TabIndex = 5;
+            this.textBox_Alternatives.Leave += new System.EventHandler(this.TextBox_Alternatives_FokusLeave);
             // 
             // textBox_Beta4
             // 
@@ -169,6 +174,7 @@ namespace TeamAp
             this.textBox_Beta4.Name = "textBox_Beta4";
             this.textBox_Beta4.Size = new System.Drawing.Size(45, 25);
             this.textBox_Beta4.TabIndex = 7;
+            this.textBox_Beta4.Leave += new System.EventHandler(this.TextBox_Beta4_FokusLeave);
             // 
             // textBox_Alfa4
             // 
@@ -177,6 +183,7 @@ namespace TeamAp
             this.textBox_Alfa4.Name = "textBox_Alfa4";
             this.textBox_Alfa4.Size = new System.Drawing.Size(45, 25);
             this.textBox_Alfa4.TabIndex = 8;
+            this.textBox_Alfa4.Leave += new System.EventHandler(this.TextBox_Alfa4_FokusLeave);
             // 
             // textBox_Beta3
             // 
@@ -185,6 +192,7 @@ namespace TeamAp
             this.textBox_Beta3.Name = "textBox_Beta3";
             this.textBox_Beta3.Size = new System.Drawing.Size(45, 25);
             this.textBox_Beta3.TabIndex = 9;
+            this.textBox_Beta3.Leave += new System.EventHandler(this.TextBox_Beta3_FokusLeave);
             // 
             // textBox_Beta2
             // 
@@ -193,6 +201,7 @@ namespace TeamAp
             this.textBox_Beta2.Name = "textBox_Beta2";
             this.textBox_Beta2.Size = new System.Drawing.Size(45, 25);
             this.textBox_Beta2.TabIndex = 10;
+            this.textBox_Beta2.Leave += new System.EventHandler(this.TextBox_Beta2_FokusLeave);
             // 
             // textBox_Beta1
             // 
@@ -201,6 +210,7 @@ namespace TeamAp
             this.textBox_Beta1.Name = "textBox_Beta1";
             this.textBox_Beta1.Size = new System.Drawing.Size(45, 25);
             this.textBox_Beta1.TabIndex = 11;
+            this.textBox_Beta1.Leave += new System.EventHandler(this.TextBox_Beta1_FokusLeave);
             // 
             // textBox_Alfa3
             // 
@@ -209,6 +219,7 @@ namespace TeamAp
             this.textBox_Alfa3.Name = "textBox_Alfa3";
             this.textBox_Alfa3.Size = new System.Drawing.Size(45, 25);
             this.textBox_Alfa3.TabIndex = 12;
+            this.textBox_Alfa3.Leave += new System.EventHandler(this.TextBox_Alfa3_FokusLeave);
             // 
             // textBox_Alfa2
             // 
@@ -217,6 +228,7 @@ namespace TeamAp
             this.textBox_Alfa2.Name = "textBox_Alfa2";
             this.textBox_Alfa2.Size = new System.Drawing.Size(45, 25);
             this.textBox_Alfa2.TabIndex = 13;
+            this.textBox_Alfa2.Leave += new System.EventHandler(this.TextBox_Alfa2_FokusLeave);
             // 
             // textBox_Alfa1
             // 
@@ -225,6 +237,7 @@ namespace TeamAp
             this.textBox_Alfa1.Name = "textBox_Alfa1";
             this.textBox_Alfa1.Size = new System.Drawing.Size(45, 25);
             this.textBox_Alfa1.TabIndex = 14;
+            this.textBox_Alfa1.Leave += new System.EventHandler(this.TextBox_Alfa1_FokusLeave);
             // 
             // textBox_Criteria
             // 
@@ -233,6 +246,7 @@ namespace TeamAp
             this.textBox_Criteria.Name = "textBox_Criteria";
             this.textBox_Criteria.Size = new System.Drawing.Size(45, 25);
             this.textBox_Criteria.TabIndex = 15;
+            this.textBox_Criteria.Leave += new System.EventHandler(this.TextBox_Criteria_FokusLeave);
             // 
             // label_Alternatives
             // 
@@ -344,6 +358,7 @@ namespace TeamAp
             this.listView_CriteriaToChose.Size = new System.Drawing.Size(50, 221);
             this.listView_CriteriaToChose.TabIndex = 27;
             this.listView_CriteriaToChose.UseCompatibleStateImageBehavior = false;
+            this.listView_CriteriaToChose.ItemActivate += new System.EventHandler(this.ListView_CriteriaToChose_ItemActivate);
             // 
             // label_Alfa4
             // 
@@ -414,6 +429,7 @@ namespace TeamAp
             this.checkBox_TopDownDistillation.TabIndex = 47;
             this.checkBox_TopDownDistillation.Text = "destylacja zstepujaca";
             this.checkBox_TopDownDistillation.UseVisualStyleBackColor = true;
+            this.checkBox_TopDownDistillation.Click += new System.EventHandler(this.CheckBox_TopDownDistillation_Click);
             // 
             // checkBox_UpwardDistillation
             // 
@@ -425,6 +441,7 @@ namespace TeamAp
             this.checkBox_UpwardDistillation.TabIndex = 46;
             this.checkBox_UpwardDistillation.Text = "destylacja wstepujaca";
             this.checkBox_UpwardDistillation.UseVisualStyleBackColor = true;
+            this.checkBox_UpwardDistillation.Click += new System.EventHandler(this.CheckBox_UpwardDistillation_Click);
             // 
             // checkBox_Rankings
             // 
@@ -436,6 +453,7 @@ namespace TeamAp
             this.checkBox_Rankings.TabIndex = 45;
             this.checkBox_Rankings.Text = "rankingi";
             this.checkBox_Rankings.UseVisualStyleBackColor = true;
+            this.checkBox_Rankings.Click += new System.EventHandler(this.CheckBox_Rankings_Click);
             // 
             // checkBox_CompatibilityMatrix
             // 
@@ -447,6 +465,7 @@ namespace TeamAp
             this.checkBox_CompatibilityMatrix.TabIndex = 42;
             this.checkBox_CompatibilityMatrix.Text = "macierz zgodnosci";
             this.checkBox_CompatibilityMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_CompatibilityMatrix.Click += new System.EventHandler(this.CheckBox_CompatibilityMatrix_Click);
             // 
             // checkBox_NonComplianceSets
             // 
@@ -458,6 +477,7 @@ namespace TeamAp
             this.checkBox_NonComplianceSets.TabIndex = 41;
             this.checkBox_NonComplianceSets.Text = "zbiory niezgodnosci";
             this.checkBox_NonComplianceSets.UseVisualStyleBackColor = true;
+            this.checkBox_NonComplianceSets.Click += new System.EventHandler(this.CheckBox_NonComplianceSets_Click);
             // 
             // checkBox_OutrankingSets
             // 
@@ -469,6 +489,7 @@ namespace TeamAp
             this.checkBox_OutrankingSets.TabIndex = 40;
             this.checkBox_OutrankingSets.Text = "zbiory przewyzszania";
             this.checkBox_OutrankingSets.UseVisualStyleBackColor = true;
+            this.checkBox_OutrankingSets.Click += new System.EventHandler(this.CheckBox_OutrankingSets_Click);
             // 
             // checkBox_SetEqualityMatrix
             // 
@@ -480,6 +501,7 @@ namespace TeamAp
             this.checkBox_SetEqualityMatrix.TabIndex = 39;
             this.checkBox_SetEqualityMatrix.Text = "macierz rownosci zbior. przew.";
             this.checkBox_SetEqualityMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_SetEqualityMatrix.Click += new System.EventHandler(this.CheckBox_SetEqualityMatrix_Click);
             // 
             // checkBox_RatingMatrix
             // 
@@ -491,6 +513,7 @@ namespace TeamAp
             this.checkBox_RatingMatrix.TabIndex = 38;
             this.checkBox_RatingMatrix.Text = "macierze ocen";
             this.checkBox_RatingMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_RatingMatrix.Click += new System.EventHandler(this.CheckBox_RatingMatrix_Click);
             // 
             // checkBox_CredibilityMatrix
             // 
@@ -502,6 +525,7 @@ namespace TeamAp
             this.checkBox_CredibilityMatrix.TabIndex = 37;
             this.checkBox_CredibilityMatrix.Text = "macierz wiarygodnosci";
             this.checkBox_CredibilityMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_CredibilityMatrix.Click += new System.EventHandler(this.CheckBox_CredibilityMatrix_Click);
             // 
             // checkBox_ComplianceSet
             // 
@@ -513,6 +537,7 @@ namespace TeamAp
             this.checkBox_ComplianceSet.TabIndex = 36;
             this.checkBox_ComplianceSet.Text = "zbiory zgodnosci";
             this.checkBox_ComplianceSet.UseVisualStyleBackColor = true;
+            this.checkBox_ComplianceSet.Click += new System.EventHandler(this.CheckBox_ComplianceSet_Click);
             // 
             // checkBox_CheckAllOptions
             // 
@@ -524,6 +549,7 @@ namespace TeamAp
             this.checkBox_CheckAllOptions.TabIndex = 35;
             this.checkBox_CheckAllOptions.Text = "zaznacz wszystko";
             this.checkBox_CheckAllOptions.UseVisualStyleBackColor = true;
+            this.checkBox_CheckAllOptions.Click += new System.EventHandler(this.CheckBox_CheckAllOptions_Click);
             // 
             // label_ChosingOptionsWithCheckBoxes
             // 
@@ -545,6 +571,7 @@ namespace TeamAp
             this.checkBox_TurnOffVeto.TabIndex = 33;
             this.checkBox_TurnOffVeto.Text = "wyłącz weto dla danego kryterium";
             this.checkBox_TurnOffVeto.UseVisualStyleBackColor = true;
+            this.checkBox_TurnOffVeto.Click += new System.EventHandler(this.CheckBox_TurnOffVeto_Click);
             // 
             // label4
             // 
