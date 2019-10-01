@@ -1,8 +1,10 @@
-﻿namespace TeamAp
+﻿using System.Windows.Forms;
+
+namespace TeamAp
 {
     partial class UserControl
     {
-        /// <summary>
+/*        /// <summary>
         /// Wymagana zmienna projektanta.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
@@ -15,10 +17,20 @@
         {
             if (disposing && (components != null))
             {
+                label_Alfa1.Text = "\\u03B1";
+                label_Alfa2.Text = "\\u03B1";
+                label_Alfa3.Text = "\\u03B1";
+                label_Alfa4.Text = "\\u03B1";
+
+                label_Beta1.Text = "\u03B2";
+                label_Beta2.Text = "\u03B2";
+                label_Beta3.Text = "\u03B2";
+                label_Beta4.Text = "\u03B2";
+
                 components.Dispose();
             }
             base.Dispose(disposing);
-        }
+        }*/
 
         #region Kod wygenerowany przez Projektanta składników
 
@@ -59,20 +71,20 @@
             this.label11 = new System.Windows.Forms.Label();
             this.textBox_DecimalPlaces = new System.Windows.Forms.TextBox();
             this.panel_ChosingOptionsWithCheckBoxes = new System.Windows.Forms.Panel();
-            this.label_ChosingOptionsWithCheckBoxes = new System.Windows.Forms.Label();
-            this.checkBox_TurnOffVeto = new System.Windows.Forms.CheckBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.checkBox_CheckAllOptions = new System.Windows.Forms.CheckBox();
-            this.checkBox_ComplianceSet = new System.Windows.Forms.CheckBox();
-            this.checkBox_CredibilityMatrix = new System.Windows.Forms.CheckBox();
-            this.checkBox_RatingMatrix = new System.Windows.Forms.CheckBox();
-            this.checkBox_SetEqualityMatrix = new System.Windows.Forms.CheckBox();
-            this.checkBox_OutrankingSets = new System.Windows.Forms.CheckBox();
-            this.checkBox_NonComplianceSets = new System.Windows.Forms.CheckBox();
-            this.checkBox_CompatibilityMatrix = new System.Windows.Forms.CheckBox();
             this.checkBox_TopDownDistillation = new System.Windows.Forms.CheckBox();
             this.checkBox_UpwardDistillation = new System.Windows.Forms.CheckBox();
             this.checkBox_Rankings = new System.Windows.Forms.CheckBox();
+            this.checkBox_CompatibilityMatrix = new System.Windows.Forms.CheckBox();
+            this.checkBox_NonComplianceSets = new System.Windows.Forms.CheckBox();
+            this.checkBox_OutrankingSets = new System.Windows.Forms.CheckBox();
+            this.checkBox_SetEqualityMatrix = new System.Windows.Forms.CheckBox();
+            this.checkBox_RatingMatrix = new System.Windows.Forms.CheckBox();
+            this.checkBox_CredibilityMatrix = new System.Windows.Forms.CheckBox();
+            this.checkBox_ComplianceSet = new System.Windows.Forms.CheckBox();
+            this.checkBox_CheckAllOptions = new System.Windows.Forms.CheckBox();
+            this.label_ChosingOptionsWithCheckBoxes = new System.Windows.Forms.Label();
+            this.checkBox_TurnOffVeto = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabControl_LeaderBoards = new System.Windows.Forms.TabControl();
             this.groupBox_ForPanelWithImg = new System.Windows.Forms.GroupBox();
             this.panel_WithScrllOptAndImg = new System.Windows.Forms.Panel();
@@ -83,49 +95,64 @@
             // 
             // button_CreateTab
             // 
+            this.button_CreateTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.button_CreateTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_CreateTab.ForeColor = System.Drawing.SystemColors.Window;
             this.button_CreateTab.Location = new System.Drawing.Point(240, 16);
             this.button_CreateTab.Name = "button_CreateTab";
-            this.button_CreateTab.Size = new System.Drawing.Size(100, 30);
+            this.button_CreateTab.Size = new System.Drawing.Size(105, 35);
             this.button_CreateTab.TabIndex = 0;
             this.button_CreateTab.Text = "Utworz Tabele";
-            this.button_CreateTab.UseVisualStyleBackColor = true;
+            this.button_CreateTab.UseVisualStyleBackColor = false;
             this.button_CreateTab.Click += new System.EventHandler(this.Button1_Click);
             // 
             // button_ReadTab
             // 
-            this.button_ReadTab.Location = new System.Drawing.Point(357, 16);
+            this.button_ReadTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.button_ReadTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_ReadTab.ForeColor = System.Drawing.SystemColors.Window;
+            this.button_ReadTab.Location = new System.Drawing.Point(352, 16);
             this.button_ReadTab.Name = "button_ReadTab";
-            this.button_ReadTab.Size = new System.Drawing.Size(100, 30);
+            this.button_ReadTab.Size = new System.Drawing.Size(111, 35);
             this.button_ReadTab.TabIndex = 1;
             this.button_ReadTab.Text = "Wczytaj Tabele";
-            this.button_ReadTab.UseVisualStyleBackColor = true;
+            this.button_ReadTab.UseVisualStyleBackColor = false;
             // 
             // button_Calculate
             // 
-            this.button_Calculate.Location = new System.Drawing.Point(357, 56);
+            this.button_Calculate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.button_Calculate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_Calculate.ForeColor = System.Drawing.SystemColors.Window;
+            this.button_Calculate.Location = new System.Drawing.Point(352, 56);
             this.button_Calculate.Name = "button_Calculate";
-            this.button_Calculate.Size = new System.Drawing.Size(100, 30);
+            this.button_Calculate.Size = new System.Drawing.Size(111, 35);
             this.button_Calculate.TabIndex = 2;
             this.button_Calculate.Text = "Oblicz";
-            this.button_Calculate.UseVisualStyleBackColor = true;
+            this.button_Calculate.UseVisualStyleBackColor = false;
             // 
             // button_SaveTab
             // 
+            this.button_SaveTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.button_SaveTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_SaveTab.ForeColor = System.Drawing.SystemColors.Window;
             this.button_SaveTab.Location = new System.Drawing.Point(240, 56);
             this.button_SaveTab.Name = "button_SaveTab";
-            this.button_SaveTab.Size = new System.Drawing.Size(100, 30);
+            this.button_SaveTab.Size = new System.Drawing.Size(105, 35);
             this.button_SaveTab.TabIndex = 3;
             this.button_SaveTab.Text = "Zapisz Tabele";
-            this.button_SaveTab.UseVisualStyleBackColor = true;
+            this.button_SaveTab.UseVisualStyleBackColor = false;
             // 
             // button_SaveData
             // 
+            this.button_SaveData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
+            this.button_SaveData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_SaveData.ForeColor = System.Drawing.SystemColors.Window;
             this.button_SaveData.Location = new System.Drawing.Point(308, 287);
             this.button_SaveData.Name = "button_SaveData";
-            this.button_SaveData.Size = new System.Drawing.Size(149, 36);
+            this.button_SaveData.Size = new System.Drawing.Size(149, 35);
             this.button_SaveData.TabIndex = 4;
             this.button_SaveData.Text = "Zapisz Dane";
-            this.button_SaveData.UseVisualStyleBackColor = true;
+            this.button_SaveData.UseVisualStyleBackColor = false;
             // 
             // textBox_Alternatives
             // 
@@ -241,32 +268,32 @@
             // label_Alfa1
             // 
             this.label_Alfa1.AutoSize = true;
-            this.label_Alfa1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Alfa1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label_Alfa1.Location = new System.Drawing.Point(37, 139);
             this.label_Alfa1.Name = "label_Alfa1";
-            this.label_Alfa1.Size = new System.Drawing.Size(16, 17);
+            this.label_Alfa1.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa1.TabIndex = 19;
-            this.label_Alfa1.Text = "a";
+            this.label_Alfa1.Text = "α";
             // 
             // label_Alfa2
             // 
             this.label_Alfa2.AutoSize = true;
-            this.label_Alfa2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Alfa2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label_Alfa2.Location = new System.Drawing.Point(35, 217);
             this.label_Alfa2.Name = "label_Alfa2";
-            this.label_Alfa2.Size = new System.Drawing.Size(16, 17);
+            this.label_Alfa2.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa2.TabIndex = 20;
-            this.label_Alfa2.Text = "a";
+            this.label_Alfa2.Text = "α";
             // 
             // label_Alfa3
             // 
             this.label_Alfa3.AutoSize = true;
-            this.label_Alfa3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Alfa3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label_Alfa3.Location = new System.Drawing.Point(37, 266);
             this.label_Alfa3.Name = "label_Alfa3";
-            this.label_Alfa3.Size = new System.Drawing.Size(16, 17);
+            this.label_Alfa3.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa3.TabIndex = 21;
-            this.label_Alfa3.Text = "a";
+            this.label_Alfa3.Text = "α";
             this.label_Alfa3.Click += new System.EventHandler(this.label6_Click);
             // 
             // label7
@@ -282,32 +309,32 @@
             // label_Beta1
             // 
             this.label_Beta1.AutoSize = true;
-            this.label_Beta1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Beta1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label_Beta1.Location = new System.Drawing.Point(132, 139);
             this.label_Beta1.Name = "label_Beta1";
-            this.label_Beta1.Size = new System.Drawing.Size(16, 17);
+            this.label_Beta1.Size = new System.Drawing.Size(16, 18);
             this.label_Beta1.TabIndex = 24;
-            this.label_Beta1.Text = "b";
+            this.label_Beta1.Text = "β";
             // 
             // label_Beta2
             // 
             this.label_Beta2.AutoSize = true;
-            this.label_Beta2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Beta2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label_Beta2.Location = new System.Drawing.Point(132, 217);
             this.label_Beta2.Name = "label_Beta2";
-            this.label_Beta2.Size = new System.Drawing.Size(16, 17);
+            this.label_Beta2.Size = new System.Drawing.Size(16, 18);
             this.label_Beta2.TabIndex = 25;
-            this.label_Beta2.Text = "b";
+            this.label_Beta2.Text = "β";
             // 
             // label_Beta3
             // 
             this.label_Beta3.AutoSize = true;
-            this.label_Beta3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Beta3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label_Beta3.Location = new System.Drawing.Point(132, 266);
             this.label_Beta3.Name = "label_Beta3";
-            this.label_Beta3.Size = new System.Drawing.Size(16, 17);
+            this.label_Beta3.Size = new System.Drawing.Size(16, 18);
             this.label_Beta3.TabIndex = 26;
-            this.label_Beta3.Text = "b";
+            this.label_Beta3.Text = "β";
             // 
             // listView_CriteriaToChose
             // 
@@ -321,22 +348,22 @@
             // label_Alfa4
             // 
             this.label_Alfa4.AutoSize = true;
-            this.label_Alfa4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Alfa4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label_Alfa4.Location = new System.Drawing.Point(328, 137);
             this.label_Alfa4.Name = "label_Alfa4";
-            this.label_Alfa4.Size = new System.Drawing.Size(16, 17);
+            this.label_Alfa4.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa4.TabIndex = 28;
-            this.label_Alfa4.Text = "a";
+            this.label_Alfa4.Text = "α";
             // 
             // label_Beta4
             // 
             this.label_Beta4.AutoSize = true;
-            this.label_Beta4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Beta4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label_Beta4.Location = new System.Drawing.Point(328, 182);
             this.label_Beta4.Name = "label_Beta4";
-            this.label_Beta4.Size = new System.Drawing.Size(16, 17);
+            this.label_Beta4.Size = new System.Drawing.Size(16, 18);
             this.label_Beta4.TabIndex = 29;
-            this.label_Beta4.Text = "b";
+            this.label_Beta4.Text = "β";
             // 
             // label11
             // 
@@ -377,6 +404,127 @@
             this.panel_ChosingOptionsWithCheckBoxes.TabIndex = 32;
             this.panel_ChosingOptionsWithCheckBoxes.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // checkBox_TopDownDistillation
+            // 
+            this.checkBox_TopDownDistillation.AutoSize = true;
+            this.checkBox_TopDownDistillation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_TopDownDistillation.Location = new System.Drawing.Point(18, 236);
+            this.checkBox_TopDownDistillation.Name = "checkBox_TopDownDistillation";
+            this.checkBox_TopDownDistillation.Size = new System.Drawing.Size(124, 17);
+            this.checkBox_TopDownDistillation.TabIndex = 47;
+            this.checkBox_TopDownDistillation.Text = "destylacja zstepujaca";
+            this.checkBox_TopDownDistillation.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_UpwardDistillation
+            // 
+            this.checkBox_UpwardDistillation.AutoSize = true;
+            this.checkBox_UpwardDistillation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_UpwardDistillation.Location = new System.Drawing.Point(18, 261);
+            this.checkBox_UpwardDistillation.Name = "checkBox_UpwardDistillation";
+            this.checkBox_UpwardDistillation.Size = new System.Drawing.Size(127, 17);
+            this.checkBox_UpwardDistillation.TabIndex = 46;
+            this.checkBox_UpwardDistillation.Text = "destylacja wstepujaca";
+            this.checkBox_UpwardDistillation.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_Rankings
+            // 
+            this.checkBox_Rankings.AutoSize = true;
+            this.checkBox_Rankings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_Rankings.Location = new System.Drawing.Point(18, 287);
+            this.checkBox_Rankings.Name = "checkBox_Rankings";
+            this.checkBox_Rankings.Size = new System.Drawing.Size(60, 17);
+            this.checkBox_Rankings.TabIndex = 45;
+            this.checkBox_Rankings.Text = "rankingi";
+            this.checkBox_Rankings.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_CompatibilityMatrix
+            // 
+            this.checkBox_CompatibilityMatrix.AutoSize = true;
+            this.checkBox_CompatibilityMatrix.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_CompatibilityMatrix.Location = new System.Drawing.Point(18, 81);
+            this.checkBox_CompatibilityMatrix.Name = "checkBox_CompatibilityMatrix";
+            this.checkBox_CompatibilityMatrix.Size = new System.Drawing.Size(110, 17);
+            this.checkBox_CompatibilityMatrix.TabIndex = 42;
+            this.checkBox_CompatibilityMatrix.Text = "macierz zgodnosci";
+            this.checkBox_CompatibilityMatrix.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_NonComplianceSets
+            // 
+            this.checkBox_NonComplianceSets.AutoSize = true;
+            this.checkBox_NonComplianceSets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_NonComplianceSets.Location = new System.Drawing.Point(18, 107);
+            this.checkBox_NonComplianceSets.Name = "checkBox_NonComplianceSets";
+            this.checkBox_NonComplianceSets.Size = new System.Drawing.Size(115, 17);
+            this.checkBox_NonComplianceSets.TabIndex = 41;
+            this.checkBox_NonComplianceSets.Text = "zbiory niezgodnosci";
+            this.checkBox_NonComplianceSets.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_OutrankingSets
+            // 
+            this.checkBox_OutrankingSets.AutoSize = true;
+            this.checkBox_OutrankingSets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_OutrankingSets.Location = new System.Drawing.Point(18, 132);
+            this.checkBox_OutrankingSets.Name = "checkBox_OutrankingSets";
+            this.checkBox_OutrankingSets.Size = new System.Drawing.Size(121, 17);
+            this.checkBox_OutrankingSets.TabIndex = 40;
+            this.checkBox_OutrankingSets.Text = "zbiory przewyzszania";
+            this.checkBox_OutrankingSets.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_SetEqualityMatrix
+            // 
+            this.checkBox_SetEqualityMatrix.AutoSize = true;
+            this.checkBox_SetEqualityMatrix.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_SetEqualityMatrix.Location = new System.Drawing.Point(18, 158);
+            this.checkBox_SetEqualityMatrix.Name = "checkBox_SetEqualityMatrix";
+            this.checkBox_SetEqualityMatrix.Size = new System.Drawing.Size(166, 17);
+            this.checkBox_SetEqualityMatrix.TabIndex = 39;
+            this.checkBox_SetEqualityMatrix.Text = "macierz rownosci zbior. przew.";
+            this.checkBox_SetEqualityMatrix.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_RatingMatrix
+            // 
+            this.checkBox_RatingMatrix.AutoSize = true;
+            this.checkBox_RatingMatrix.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_RatingMatrix.Location = new System.Drawing.Point(18, 210);
+            this.checkBox_RatingMatrix.Name = "checkBox_RatingMatrix";
+            this.checkBox_RatingMatrix.Size = new System.Drawing.Size(92, 17);
+            this.checkBox_RatingMatrix.TabIndex = 38;
+            this.checkBox_RatingMatrix.Text = "macierze ocen";
+            this.checkBox_RatingMatrix.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_CredibilityMatrix
+            // 
+            this.checkBox_CredibilityMatrix.AutoSize = true;
+            this.checkBox_CredibilityMatrix.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_CredibilityMatrix.Location = new System.Drawing.Point(18, 184);
+            this.checkBox_CredibilityMatrix.Name = "checkBox_CredibilityMatrix";
+            this.checkBox_CredibilityMatrix.Size = new System.Drawing.Size(129, 17);
+            this.checkBox_CredibilityMatrix.TabIndex = 37;
+            this.checkBox_CredibilityMatrix.Text = "macierz wiarygodnosci";
+            this.checkBox_CredibilityMatrix.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_ComplianceSet
+            // 
+            this.checkBox_ComplianceSet.AutoSize = true;
+            this.checkBox_ComplianceSet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_ComplianceSet.Location = new System.Drawing.Point(18, 55);
+            this.checkBox_ComplianceSet.Name = "checkBox_ComplianceSet";
+            this.checkBox_ComplianceSet.Size = new System.Drawing.Size(101, 17);
+            this.checkBox_ComplianceSet.TabIndex = 36;
+            this.checkBox_ComplianceSet.Text = "zbiory zgodnosci";
+            this.checkBox_ComplianceSet.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_CheckAllOptions
+            // 
+            this.checkBox_CheckAllOptions.AutoSize = true;
+            this.checkBox_CheckAllOptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_CheckAllOptions.Location = new System.Drawing.Point(18, 29);
+            this.checkBox_CheckAllOptions.Name = "checkBox_CheckAllOptions";
+            this.checkBox_CheckAllOptions.Size = new System.Drawing.Size(108, 17);
+            this.checkBox_CheckAllOptions.TabIndex = 35;
+            this.checkBox_CheckAllOptions.Text = "zaznacz wszystko";
+            this.checkBox_CheckAllOptions.UseVisualStyleBackColor = true;
+            // 
             // label_ChosingOptionsWithCheckBoxes
             // 
             this.label_ChosingOptionsWithCheckBoxes.AutoSize = true;
@@ -390,9 +538,10 @@
             // checkBox_TurnOffVeto
             // 
             this.checkBox_TurnOffVeto.AutoSize = true;
+            this.checkBox_TurnOffVeto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.checkBox_TurnOffVeto.Location = new System.Drawing.Point(38, 306);
             this.checkBox_TurnOffVeto.Name = "checkBox_TurnOffVeto";
-            this.checkBox_TurnOffVeto.Size = new System.Drawing.Size(187, 17);
+            this.checkBox_TurnOffVeto.Size = new System.Drawing.Size(184, 17);
             this.checkBox_TurnOffVeto.TabIndex = 33;
             this.checkBox_TurnOffVeto.Text = "wyłącz weto dla danego kryterium";
             this.checkBox_TurnOffVeto.UseVisualStyleBackColor = true;
@@ -406,116 +555,6 @@
             this.label4.Size = new System.Drawing.Size(178, 15);
             this.label4.TabIndex = 34;
             this.label4.Text = "współczynniki progu preferencji";
-            // 
-            // checkBox_CheckAllOptions
-            // 
-            this.checkBox_CheckAllOptions.AutoSize = true;
-            this.checkBox_CheckAllOptions.Location = new System.Drawing.Point(18, 29);
-            this.checkBox_CheckAllOptions.Name = "checkBox_CheckAllOptions";
-            this.checkBox_CheckAllOptions.Size = new System.Drawing.Size(111, 17);
-            this.checkBox_CheckAllOptions.TabIndex = 35;
-            this.checkBox_CheckAllOptions.Text = "zaznacz wszystko";
-            this.checkBox_CheckAllOptions.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_ComplianceSet
-            // 
-            this.checkBox_ComplianceSet.AutoSize = true;
-            this.checkBox_ComplianceSet.Location = new System.Drawing.Point(18, 55);
-            this.checkBox_ComplianceSet.Name = "checkBox_ComplianceSet";
-            this.checkBox_ComplianceSet.Size = new System.Drawing.Size(104, 17);
-            this.checkBox_ComplianceSet.TabIndex = 36;
-            this.checkBox_ComplianceSet.Text = "zbiory zgodnosci";
-            this.checkBox_ComplianceSet.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_CredibilityMatrix
-            // 
-            this.checkBox_CredibilityMatrix.AutoSize = true;
-            this.checkBox_CredibilityMatrix.Location = new System.Drawing.Point(18, 184);
-            this.checkBox_CredibilityMatrix.Name = "checkBox_CredibilityMatrix";
-            this.checkBox_CredibilityMatrix.Size = new System.Drawing.Size(132, 17);
-            this.checkBox_CredibilityMatrix.TabIndex = 37;
-            this.checkBox_CredibilityMatrix.Text = "macierz wiarygodnosci";
-            this.checkBox_CredibilityMatrix.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_RatingMatrix
-            // 
-            this.checkBox_RatingMatrix.AutoSize = true;
-            this.checkBox_RatingMatrix.Location = new System.Drawing.Point(18, 210);
-            this.checkBox_RatingMatrix.Name = "checkBox_RatingMatrix";
-            this.checkBox_RatingMatrix.Size = new System.Drawing.Size(95, 17);
-            this.checkBox_RatingMatrix.TabIndex = 38;
-            this.checkBox_RatingMatrix.Text = "macierze ocen";
-            this.checkBox_RatingMatrix.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_SetEqualityMatrix
-            // 
-            this.checkBox_SetEqualityMatrix.AutoSize = true;
-            this.checkBox_SetEqualityMatrix.Location = new System.Drawing.Point(18, 158);
-            this.checkBox_SetEqualityMatrix.Name = "checkBox_SetEqualityMatrix";
-            this.checkBox_SetEqualityMatrix.Size = new System.Drawing.Size(169, 17);
-            this.checkBox_SetEqualityMatrix.TabIndex = 39;
-            this.checkBox_SetEqualityMatrix.Text = "macierz rownosci zbior. przew.";
-            this.checkBox_SetEqualityMatrix.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_OutrankingSets
-            // 
-            this.checkBox_OutrankingSets.AutoSize = true;
-            this.checkBox_OutrankingSets.Location = new System.Drawing.Point(18, 132);
-            this.checkBox_OutrankingSets.Name = "checkBox_OutrankingSets";
-            this.checkBox_OutrankingSets.Size = new System.Drawing.Size(124, 17);
-            this.checkBox_OutrankingSets.TabIndex = 40;
-            this.checkBox_OutrankingSets.Text = "zbiory przewyzszania";
-            this.checkBox_OutrankingSets.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_NonComplianceSets
-            // 
-            this.checkBox_NonComplianceSets.AutoSize = true;
-            this.checkBox_NonComplianceSets.Location = new System.Drawing.Point(18, 107);
-            this.checkBox_NonComplianceSets.Name = "checkBox_NonComplianceSets";
-            this.checkBox_NonComplianceSets.Size = new System.Drawing.Size(118, 17);
-            this.checkBox_NonComplianceSets.TabIndex = 41;
-            this.checkBox_NonComplianceSets.Text = "zbiory niezgodnosci";
-            this.checkBox_NonComplianceSets.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_CompatibilityMatrix
-            // 
-            this.checkBox_CompatibilityMatrix.AutoSize = true;
-            this.checkBox_CompatibilityMatrix.Location = new System.Drawing.Point(18, 81);
-            this.checkBox_CompatibilityMatrix.Name = "checkBox_CompatibilityMatrix";
-            this.checkBox_CompatibilityMatrix.Size = new System.Drawing.Size(113, 17);
-            this.checkBox_CompatibilityMatrix.TabIndex = 42;
-            this.checkBox_CompatibilityMatrix.Text = "macierz zgodnosci";
-            this.checkBox_CompatibilityMatrix.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_TopDownDistillation
-            // 
-            this.checkBox_TopDownDistillation.AutoSize = true;
-            this.checkBox_TopDownDistillation.Location = new System.Drawing.Point(18, 236);
-            this.checkBox_TopDownDistillation.Name = "checkBox_TopDownDistillation";
-            this.checkBox_TopDownDistillation.Size = new System.Drawing.Size(127, 17);
-            this.checkBox_TopDownDistillation.TabIndex = 47;
-            this.checkBox_TopDownDistillation.Text = "destylacja zstepujaca";
-            this.checkBox_TopDownDistillation.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_UpwardDistillation
-            // 
-            this.checkBox_UpwardDistillation.AutoSize = true;
-            this.checkBox_UpwardDistillation.Location = new System.Drawing.Point(18, 261);
-            this.checkBox_UpwardDistillation.Name = "checkBox_UpwardDistillation";
-            this.checkBox_UpwardDistillation.Size = new System.Drawing.Size(130, 17);
-            this.checkBox_UpwardDistillation.TabIndex = 46;
-            this.checkBox_UpwardDistillation.Text = "destylacja wstepujaca";
-            this.checkBox_UpwardDistillation.UseVisualStyleBackColor = true;
-            // 
-            // checkBox_Rankings
-            // 
-            this.checkBox_Rankings.AutoSize = true;
-            this.checkBox_Rankings.Location = new System.Drawing.Point(18, 287);
-            this.checkBox_Rankings.Name = "checkBox_Rankings";
-            this.checkBox_Rankings.Size = new System.Drawing.Size(63, 17);
-            this.checkBox_Rankings.TabIndex = 45;
-            this.checkBox_Rankings.Text = "rankingi";
-            this.checkBox_Rankings.UseVisualStyleBackColor = true;
             // 
             // tabControl_LeaderBoards
             // 
@@ -551,7 +590,7 @@
             this.tableLayoutPanel_BasicMatrix.Name = "tableLayoutPanel_BasicMatrix";
             this.tableLayoutPanel_BasicMatrix.RowCount = 1;
             this.tableLayoutPanel_BasicMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel_BasicMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel_BasicMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 307F));
             this.tableLayoutPanel_BasicMatrix.Size = new System.Drawing.Size(501, 307);
             this.tableLayoutPanel_BasicMatrix.TabIndex = 38;
             // 
@@ -598,6 +637,7 @@
             this.Controls.Add(this.button_CreateTab);
             this.Name = "UserControl";
             this.Size = new System.Drawing.Size(1242, 720);
+            this.Load += new System.EventHandler(this.UserControl_Load);
             this.panel_ChosingOptionsWithCheckBoxes.ResumeLayout(false);
             this.panel_ChosingOptionsWithCheckBoxes.PerformLayout();
             this.groupBox_ForPanelWithImg.ResumeLayout(false);
@@ -608,54 +648,54 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button_CreateTab;
-        private System.Windows.Forms.Button button_ReadTab;
-        private System.Windows.Forms.Button button_Calculate;
-        private System.Windows.Forms.Button button_SaveTab;
-        private System.Windows.Forms.Button button_SaveData;
-        private System.Windows.Forms.TextBox textBox_Alternatives;
-        private System.Windows.Forms.TextBox textBox_Beta4;
-        private System.Windows.Forms.TextBox textBox_Alfa4;
-        private System.Windows.Forms.TextBox textBox_Beta3;
-        private System.Windows.Forms.TextBox textBox_Beta2;
-        private System.Windows.Forms.TextBox textBox_Beta1;
-        private System.Windows.Forms.TextBox textBox_Alfa3;
-        private System.Windows.Forms.TextBox textBox_Alfa2;
-        private System.Windows.Forms.TextBox textBox_Alfa1;
-        private System.Windows.Forms.Label label_Alternatives;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label_Alfa1;
-        private System.Windows.Forms.Label label_Alfa2;
-        private System.Windows.Forms.Label label_Alfa3;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label_Beta1;
-        private System.Windows.Forms.Label label_Beta2;
-        private System.Windows.Forms.Label label_Beta3;
-        private System.Windows.Forms.ListView listView_CriteriaToChose;
-        private System.Windows.Forms.Label label_Alfa4;
-        private System.Windows.Forms.Label label_Beta4;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox_DecimalPlaces;
-        private System.Windows.Forms.Panel panel_ChosingOptionsWithCheckBoxes;
-        private System.Windows.Forms.Label label_ChosingOptionsWithCheckBoxes;
-        private System.Windows.Forms.CheckBox checkBox_TurnOffVeto;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox checkBox_CompatibilityMatrix;
-        private System.Windows.Forms.CheckBox checkBox_NonComplianceSets;
-        private System.Windows.Forms.CheckBox checkBox_OutrankingSets;
-        private System.Windows.Forms.CheckBox checkBox_SetEqualityMatrix;
-        private System.Windows.Forms.CheckBox checkBox_RatingMatrix;
-        private System.Windows.Forms.CheckBox checkBox_CredibilityMatrix;
-        private System.Windows.Forms.CheckBox checkBox_ComplianceSet;
-        private System.Windows.Forms.CheckBox checkBox_CheckAllOptions;
-        private System.Windows.Forms.CheckBox checkBox_TopDownDistillation;
-        private System.Windows.Forms.CheckBox checkBox_UpwardDistillation;
-        private System.Windows.Forms.CheckBox checkBox_Rankings;
-        private System.Windows.Forms.TabControl tabControl_LeaderBoards;
-        private System.Windows.Forms.GroupBox groupBox_ForPanelWithImg;
-        private System.Windows.Forms.Panel panel_WithScrllOptAndImg;
-        private System.Windows.Forms.Label label_Criteria;
-        private System.Windows.Forms.TextBox textBox_Criteria;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel_BasicMatrix;
+        private Button button_CreateTab;
+        private Button button_ReadTab;
+        private Button button_Calculate;
+        private Button button_SaveTab;
+        private Button button_SaveData;
+        private TextBox textBox_Alternatives;
+        private TextBox textBox_Beta4;
+        private TextBox textBox_Alfa4;
+        private TextBox textBox_Beta3;
+        private TextBox textBox_Beta2;
+        private TextBox textBox_Beta1;
+        private TextBox textBox_Alfa3;
+        private TextBox textBox_Alfa2;
+        private TextBox textBox_Alfa1;
+        private Label label_Alternatives;
+        private Label label3;
+        private Label label_Alfa1;
+        private Label label_Alfa2;
+        private Label label_Alfa3;
+        private Label label7;
+        private Label label_Beta1;
+        private Label label_Beta2;
+        private Label label_Beta3;
+        private ListView listView_CriteriaToChose;
+        private Label label_Alfa4;
+        private Label label_Beta4;
+        private Label label11;
+        private TextBox textBox_DecimalPlaces;
+        private Panel panel_ChosingOptionsWithCheckBoxes;
+        private Label label_ChosingOptionsWithCheckBoxes;
+        private CheckBox checkBox_TurnOffVeto;
+        private Label label4;
+        private CheckBox checkBox_CompatibilityMatrix;
+        private CheckBox checkBox_NonComplianceSets;
+        private CheckBox checkBox_OutrankingSets;
+        private CheckBox checkBox_SetEqualityMatrix;
+        private CheckBox checkBox_RatingMatrix;
+        private CheckBox checkBox_CredibilityMatrix;
+        private CheckBox checkBox_ComplianceSet;
+        private CheckBox checkBox_CheckAllOptions;
+        private CheckBox checkBox_TopDownDistillation;
+        private CheckBox checkBox_UpwardDistillation;
+        private CheckBox checkBox_Rankings;
+        private TabControl tabControl_LeaderBoards;
+        private GroupBox groupBox_ForPanelWithImg;
+        private Panel panel_WithScrllOptAndImg;
+        private Label label_Criteria;
+        private TextBox textBox_Criteria;
+        private TableLayoutPanel tableLayoutPanel_BasicMatrix;
     }
 }

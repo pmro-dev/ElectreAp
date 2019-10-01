@@ -56,5 +56,10 @@ namespace TeamAp
         {
 
         }
+
+        private void UserControl_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
