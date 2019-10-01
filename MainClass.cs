@@ -196,5 +196,10 @@ namespace TeamAp
         {
 
         }
+
+        private void TextBox_DecimalPlaces_FokusLeave(object sender, EventArgs e)
+        {
+
+        }
     }
 }

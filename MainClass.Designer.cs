@@ -398,6 +398,7 @@ namespace TeamAp
             this.textBox_DecimalPlaces.Name = "textBox_DecimalPlaces";
             this.textBox_DecimalPlaces.Size = new System.Drawing.Size(45, 25);
             this.textBox_DecimalPlaces.TabIndex = 31;
+            this.textBox_DecimalPlaces.Leave += new System.EventHandler(this.TextBox_DecimalPlaces_FokusLeave);
             // 
             // panel_ChosingOptionsWithCheckBoxes
             // 
