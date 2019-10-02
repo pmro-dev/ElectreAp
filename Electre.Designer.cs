@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace TeamAp
+namespace ElectreAp
 {
     partial class UserControl
     {
@@ -257,7 +257,6 @@ namespace TeamAp
             this.label_Alternatives.Size = new System.Drawing.Size(80, 17);
             this.label_Alternatives.TabIndex = 16;
             this.label_Alternatives.Text = "Alternatywy";
-            this.label_Alternatives.Click += new System.EventHandler(this.Label1_Click);
             // 
             // label_Criteria
             // 
@@ -308,7 +307,6 @@ namespace TeamAp
             this.label_Alfa3.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa3.TabIndex = 21;
             this.label_Alfa3.Text = "α";
-            this.label_Alfa3.Click += new System.EventHandler(this.label6_Click);
             // 
             // label7
             // 
@@ -389,7 +387,6 @@ namespace TeamAp
             this.label11.Size = new System.Drawing.Size(116, 15);
             this.label11.TabIndex = 30;
             this.label11.Text = "miejsc po przecinku";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // textBox_DecimalPlaces
             // 
@@ -418,7 +415,6 @@ namespace TeamAp
             this.panel_ChosingOptionsWithCheckBoxes.Name = "panel_ChosingOptionsWithCheckBoxes";
             this.panel_ChosingOptionsWithCheckBoxes.Size = new System.Drawing.Size(240, 309);
             this.panel_ChosingOptionsWithCheckBoxes.TabIndex = 32;
-            this.panel_ChosingOptionsWithCheckBoxes.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // checkBox_TopDownDistillation
             // 

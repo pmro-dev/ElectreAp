@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TeamAp
+namespace ElectreAp
 {
     public partial class UserControl: System.Windows.Forms.UserControl
     {
@@ -17,48 +17,45 @@ namespace TeamAp
             InitializeComponent();
         }
 
-        private void TextBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void UserControl_Load(object sender, EventArgs e)
         {
 
         }
 
+        public int numbersOfCriterias;
+        public int numbersOfAlternatives;
+
         private void Button_CreateTab_Click(object sender, EventArgs e)
         {
+            try
+            {
+                //Reset(0);
+                numbersOfCriterias = Int32.Parse(textBox_Criteria.Text);
+                numbersOfAlternatives = Int32.Parse(textBox_Alternatives.Text);
+
+  //              TworzenieTabeli(liczbaAlternatyw, liczbaKryteriow);
+
+//                listaWartProgKryt = new Double[liczbaKryteriow][3][2];
+
+                // wypełnianie zerami
+/*                for (int i = 0; i < listaWartProgKryt.length; i++)
+                {
+                    for (int j = 0; j < listaWartProgKryt[0].length; j++)
+                    {
+                        for (int k = 0; k < listaWartProgKryt[0][0].length; k++)
+                        {
+                            listaWartProgKryt[i][j][k] = 0.0;
+                        }
+                    }
+                }
+*/
+
+            }
+            catch (Exception)
+            {
+                //PokazAlert("Informacja", "Błąd", "Do pól można wprowadzać tylko liczby całkowite!");
+                throw;
+            }
 
         }
 
