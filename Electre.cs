@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace ElectreAp
 {
-    public partial class UserControl: System.Windows.Forms.UserControl
+    public partial class Electre : Form
     {
-        public UserControl()
+        public Electre()
         {
             InitializeComponent();
         }
@@ -22,66 +23,77 @@ namespace ElectreAp
 
         }
 
-        public int numbersOfCriterias;
-        public int numbersOfAlternatives;
+        ElectreIII taskElectreIII = new ElectreIII();
+        int alternatives = 0;
+        int criteria = 0;
 
-        private void Button_CreateTab_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //Reset(0);
-                numbersOfCriterias = Int32.Parse(textBox_Criteria.Text);
-                numbersOfAlternatives = Int32.Parse(textBox_Alternatives.Text);
+        private void Button_CreateTab_Click(object sender, EventArgs e) {
 
-  //              TworzenieTabeli(liczbaAlternatyw, liczbaKryteriow);
+            alternatives = Int32.Parse(textBox_Alternatives.Text);
+            criteria = Int32.Parse(textBox_Criteria.Text);
+            
+            dataGridView_Matrix.DataSource = taskElectreIII.CreateTable(alternatives, criteria);
+            dataGridView_Matrix.Columns[0].ReadOnly = true;
+            dataGridView_Matrix.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(202,202,202);
+            dataGridView_Matrix.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dataGridView_Matrix.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            
+            listBox_CriteriaToChose.Items.AddRange(taskElectreIII.ColumnNamesDoListy.ToArray());
+            listBox_CriteriaToChose.Font = new Font(listBox_CriteriaToChose.Font.Name, 10);
+            listBox_CriteriaToChose.HorizontalScrollbar = true;
+        }
 
-//                listaWartProgKryt = new Double[liczbaKryteriow][3][2];
+        private void Button_ReadTab_Click(object sender, EventArgs e) {
+            //taskElectreIII.CreateMatrixForAlternativeData(alternatives, criteria);
+            //taskElectreIII.Wyp(alternatives, criteria);
+        }
 
-                // wypełnianie zerami
-/*                for (int i = 0; i < listaWartProgKryt.length; i++)
-                {
-                    for (int j = 0; j < listaWartProgKryt[0].length; j++)
-                    {
-                        for (int k = 0; k < listaWartProgKryt[0][0].length; k++)
-                        {
-                            listaWartProgKryt[i][j][k] = 0.0;
-                        }
-                    }
+        private void Button_SaveTab_Click(object sender, EventArgs e) {
+
+        }
+
+        private void Button_Calculate_Click(object sender, EventArgs e) {
+
+        }
+
+        private void Button_SaveData_Click(object sender, EventArgs e) {
+
+        }
+
+        private void CheckBox_TurnOffVeto_Click(object sender, EventArgs e) {
+            int selectedIndex = listBox_CriteriaToChose.SelectedIndex;
+            try {
+                if (checkBox_TurnOffVeto.Checked) {
+                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 999999999.9);
+                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 999999999.9);
+                    textBox_ProgAlfaV.Enabled = false;
+                    textBox_ProgAlfaV.Clear();
+                    textBox_ProgBetaV.Enabled = false;
+                    textBox_ProgBetaV.Clear();
                 }
-*/
-
+                else {
+                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 0.0);
+                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 0.0);
+                    textBox_ProgAlfaV.Enabled = true;
+                    textBox_ProgBetaV.Enabled = true;
+                    textBox_ProgAlfaV.Text = "0,0";
+                    textBox_ProgBetaV.Text = "0,0";
+                }
             }
-            catch (Exception)
-            {
-                //PokazAlert("Informacja", "Błąd", "Do pól można wprowadzać tylko liczby całkowite!");
-                throw;
+            catch (Exception ex) {
+                MessageBox.Show("Coś poszło nie tak. Sprawdź poprawność wprowadzonych danych a następnie wybierz kryterium z listy.", "Wystąpił błąd", MessageBoxButtons.OK); 
+                Console.WriteLine(ex);
+                if (checkBox_TurnOffVeto.Checked) {
+                    checkBox_TurnOffVeto.Checked = false;
+                }
+                else {
+                    checkBox_TurnOffVeto.Checked = true;
+                }
+                taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 0.0);
+                taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 0.0);
+                textBox_ProgAlfaV.Text = "0,0";
+                textBox_ProgBetaV.Text = "0,0";
             }
-
-        }
-
-        private void Button_ReadTab_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Button_SaveTab_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Button_Calculate_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Button_SaveData_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_TurnOffVeto_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void CheckBox_CheckAllOptions_Click(object sender, EventArgs e)
@@ -129,74 +141,212 @@ namespace ElectreAp
 
         }
 
+
         private void CheckBox_UpwardDistillation_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void CheckBox_Rankings_Click(object sender, EventArgs e)
-        {
+
+        private void CheckBox_Rankings_Click(object sender, EventArgs e) {
 
         }
 
-        private void TextBox_Alternatives_FokusLeave(object sender, EventArgs e)
-        {
 
+        Match matchInt;
+        Match matchDouble;
+        int columnIndex;
+        string valueOfSelectedCell;
+
+        private void dataGridView_Matrix_CellEndEdit(object sender, DataGridViewCellEventArgs dataGridEvent) {
+            if (dataGridView_Matrix.CurrentCell.ColumnIndex > 0) {
+                columnIndex = dataGridView_Matrix.CurrentCell.ColumnIndex;
+                valueOfSelectedCell = dataGridView_Matrix.Rows[dataGridEvent.RowIndex].Cells[columnIndex].Value.ToString();
+                matchDouble = Regex.Match(valueOfSelectedCell, @"^-?[0-9]+\,[0-9]+$", RegexOptions.IgnoreCase);
+                matchInt = Regex.Match(valueOfSelectedCell, @"^-?[0-9]+$", RegexOptions.IgnoreCase);
+
+                if (matchDouble.Success) {
+                    Console.WriteLine("wartosc rowindex = "+ dataGridEvent.RowIndex+" + 9 = "+(dataGridEvent.RowIndex+9));
+                    if (dataGridEvent.RowIndex > 2) {
+                        taskElectreIII.TabelaMatrix_SetValue((dataGridEvent.RowIndex) + 6, columnIndex - 1, Double.Parse(valueOfSelectedCell));
+                    }
+                } else if (matchInt.Success) {
+                    if (dataGridEvent.RowIndex > 2) {
+                        taskElectreIII.TabelaMatrix_SetValue((dataGridEvent.RowIndex) + 6, columnIndex - 1, Double.Parse(valueOfSelectedCell));
+                    }
+                }
+                else {
+                    valueOfSelectedCell = "0.00";
+                    dataGridView_Matrix.Rows[dataGridEvent.RowIndex].Cells[columnIndex].Value = "0,00";
+                    MessageBox.Show("Wprowadzono niedozwolone znaki w wybraną komórkę." +
+                        "\n\nDane należy wprowadzić w formacie CYFRY,CYFRY oraz opcjonalnie można dodać na początku znak ujemności." +
+                        "\n\nSpróbuj ponownie.", "Błąd danych", MessageBoxButtons.OK);
+                }
+            }
         }
 
-        private void TextBox_Criteria_FokusLeave(object sender, EventArgs e)
-        {
+        private void listBox_CriteriaToChose_SelectedIndexChanged(object sender, EventArgs e) {
+            int selectedIndex = listBox_CriteriaToChose.SelectedIndex;
+            Console.WriteLine("wybrany index = "+selectedIndex);
 
+            if (selectedIndex >= 0) {
+                if (taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 0) != 999999999.9) {
+                    checkBox_TurnOffVeto.Checked = false;
+                } else {
+                    checkBox_TurnOffVeto.Checked = true;
+                }
+                textBox_ProgAlfaQ.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 0, 0).ToString();
+                textBox_ProgAlfaP.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 1, 0).ToString();
+                if (!checkBox_TurnOffVeto.Checked) {
+                    textBox_ProgAlfaV.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 0).ToString();
+                    textBox_ProgBetaV.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 1).ToString();
+                    textBox_ProgAlfaV.Enabled = true;
+                    textBox_ProgBetaV.Enabled = true;
+                } else {
+                    textBox_ProgAlfaV.Enabled = false;
+                    textBox_ProgBetaV.Enabled = false;
+                    textBox_ProgAlfaV.Clear();
+                    textBox_ProgBetaV.Clear();
+                }
+                textBox_ProgBetaQ.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 0, 1).ToString();
+                textBox_ProgBetaP.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 1, 1).ToString();
+            };
         }
 
-        private void TextBox_Alfa1_FokusLeave(object sender, EventArgs e)
-        {
-
+        private void textBox_Alternatives_KeyPress(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationInt(textBox_Alternatives, keyEvent, 1)) {
+                    taskElectreIII.NumberOfAlternatives = Int32.Parse(textBox_Alternatives.Text);
+                }
+            } 
         }
 
-        private void TextBox_Beta1_FokusLeave(object sender, EventArgs e)
-        {
-
+        private void TextBox_Criteria_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationInt(textBox_Criteria, keyEvent, 1)) {
+                    taskElectreIII.NumberOfCriterias = Int32.Parse(textBox_Criteria.Text);
+                }
+            } 
         }
 
-        private void TextBox_Beta2_FokusLeave(object sender, EventArgs e)
-        {
-
+        private void TextBox_DecimalPlaces_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationInt(textBox_DecimalPlaces, keyEvent, 0)) {
+                    taskElectreIII.MiejscPoPrzecinku = Int32.Parse(textBox_DecimalPlaces.Text);
+                };
+            }
         }
 
-        private void TextBox_Beta3_FokusLeave(object sender, EventArgs e)
-        {
-
+        private void TextBox_ProgAlfaQ_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationDouble(textBox_ProgAlfaQ, keyEvent)) {
+                    EventEnterForThresholds(textBox_ProgAlfaQ, 0, 0);
+                };
+            }
         }
 
-        private void TextBox_Beta4_FokusLeave(object sender, EventArgs e)
-        {
-
+        private void TextBox_ProgBetaQ_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationDouble(textBox_ProgBetaQ, keyEvent)) {
+                    EventEnterForThresholds(textBox_ProgBetaQ, 0, 1);
+                };
+            }
         }
 
-        private void TextBox_Alfa2_FokusLeave(object sender, EventArgs e)
-        {
-
+        private void TextBox_ProgAlfaP_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationDouble(textBox_ProgAlfaP, keyEvent)) {
+                    EventEnterForThresholds(textBox_ProgAlfaP, 1, 0);
+                };
+            }
         }
 
-        private void TextBox_Alfa3_FokusLeave(object sender, EventArgs e)
-        {
-
+        private void TextBox_ProgBetaP_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationDouble(textBox_ProgBetaP, keyEvent)) {
+                    EventEnterForThresholds(textBox_ProgBetaP, 1, 1);
+                };
+            }
         }
 
-        private void TextBox_Alfa4_FokusLeave(object sender, EventArgs e)
-        {
-
+        private void TextBox_ProgAlfaV_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationDouble(textBox_ProgAlfaV, keyEvent)) {
+                    EventEnterForThresholds(textBox_ProgAlfaV, 2, 0);
+                };
+            }
         }
 
-        private void ListView_CriteriaToChose_ItemActivate(object sender, EventArgs e)
-        {
-
+        private void TextBox_ProgBetaV_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationDouble(textBox_ProgBetaV, keyEvent)) {
+                    EventEnterForThresholds(textBox_ProgBetaV, 2, 1);
+                };
+            }
         }
 
-        private void TextBox_DecimalPlaces_FokusLeave(object sender, EventArgs e)
-        {
+        private void TextBox_Alfa_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationDouble(textBox_Alfa, keyEvent)) {
+                    taskElectreIII.Alfa = Double.Parse(textBox_Alfa.Text);
+                };
+            }
+        }
 
+        private void TextBox_Beta_KeyDown(object sender, KeyEventArgs keyEvent) {
+            if (keyEvent.KeyCode.Equals(Keys.Enter)) {
+                if (TextBoxValidationDouble(textBox_Beta, keyEvent)) {
+                    taskElectreIII.Beta = Double.Parse(textBox_Beta.Text);
+                };
+            }
+        }
+
+        public void EventEnterForThresholds(TextBox textBox, int positionOfThreshold, int positionOfSymbol) {
+            int index = listBox_CriteriaToChose.SelectedIndex;
+            taskElectreIII.ListaWartProgKryt_SetValue(index, positionOfThreshold, positionOfSymbol, Double.Parse(textBox.Text));
+            switch(positionOfSymbol) {
+                case 0: taskElectreIII.TabelaMatrix_SetValue(positionOfThreshold + 3, index, Double.Parse(textBox.Text)); break;     
+                case 1: taskElectreIII.TabelaMatrix_SetValue(positionOfThreshold + 6, index, Double.Parse(textBox.Text)); break;
+            }
+        }
+
+        public Boolean TextBoxValidationInt(TextBox textBox, KeyEventArgs keyEvent, int caseOption) {
+            keyEvent.SuppressKeyPress = true;
+            matchInt = Regex.Match(textBox.Text, @"^[0-9]+$", RegexOptions.IgnoreCase);
+            ActiveControl = null;
+            if (!matchInt.Success) {
+                MessageBox.Show("Wystąpił błąd podczas wprowadzania danych.\nW danym polu należy wprowadzić liczby całkowite większe od 0.", "Błąd", MessageBoxButtons.OK);
+                textBox.Clear();
+                return false;
+            } 
+            else {
+                switch (caseOption) {
+                    case 0:
+                        if (Int32.Parse(textBox.Text) < 0 || Int32.Parse(textBox.Text) >= 15) { return false; }
+                        else { return true; }
+                    case 1:
+                        if(Int32.Parse(textBox.Text) != 0) { return true; } 
+                        else {
+                            MessageBox.Show("Wystąpił błąd podczas wprowadzania danych.\nW danym polu należy wprowadzić liczby całkowite większe od 0.", "Błąd", MessageBoxButtons.OK);
+                            return false;
+                        }
+                }
+                return false;
+            }
+        }
+
+        public Boolean TextBoxValidationDouble(TextBox textBox, KeyEventArgs keyEvent) {
+            keyEvent.SuppressKeyPress = true;
+            matchDouble = Regex.Match(textBox.Text, @"^-?[0-9]+\,[0-9]+$", RegexOptions.IgnoreCase);
+            matchInt = Regex.Match(textBox.Text, @"^-?[0-9]+$", RegexOptions.IgnoreCase);
+            ActiveControl = null;
+            if (!matchDouble.Success) {
+                if (!matchInt.Success) {
+                    MessageBox.Show("Wystąpił błąd podczas wprowadzania danych.\nW danym polu można wprowadzać jedynie liczby całkowite lub liczby z wartościami po przecinku z wykorzystaniem przecinka podczas określania wartości w polu.", "Błąd", MessageBoxButtons.OK);
+                    textBox.Text = "0,0";
+                    return false;
+                } else { return true; }
+            } else { return true; }
         }
     }
 }
