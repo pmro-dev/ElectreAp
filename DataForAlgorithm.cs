@@ -14,7 +14,7 @@ namespace ElectreAp
 
         // deklaracje zmiennych
         #region
-        public List<Double> listaKierunkow = new List<Double>();
+        private List<Double> listaKierunkow = new List<Double>();
         private List<Double> listaModow = new List<Double>();
         private List<Double> listaWagW = new List<Double>();
         private List<Double> listaProguQB = new List<Double>();
@@ -44,19 +44,25 @@ namespace ElectreAp
         private List<List<Int32>> listaAlternatyw = new List<List<Int32>>();
         private List<List<Int32>> listaNumerowOpcjiMacierzyOcen = new List<List<Int32>>();
 
-        public List<String> columnNames = new List<String>();
+        private List<String> columnNames = new List<String>();
+        public List<String> ColumnNames { get { return columnNames; } set { columnNames = value; } }
+        public void ColumnNames_SetValue(int index, string valueToSet) { columnNames[index] = valueToSet; }
+        public string ColumnNames_GetValue(int index) { return columnNames[index]; }
 
         private String[,] miejscaOpcjiPoDestylacjiZstepujacej;
         private String[,] miejscaOpcjiPoDestylacjiWstepujacej;
         private String[,] punktacjaOpcji;
         private String[,] punktacjaOpcjiZmienna;
         private String[,] tabRank;
-        public String[] columnNamesDoListy;
+        private String[] columnNamesDoListy;
+        public String[] ColumnNamesDoListy { get { return columnNamesDoListy; } set { columnNamesDoListy = value; } }
+        public void ColumnNamesDoListy_SetValue(int index, string valueToSet) { columnNamesDoListy[index] = valueToSet; }
+        public string ColumnNamesDoListy_GetValue(int index) { return columnNamesDoListy[index]; }
 
         private String valueHelp = "";
 
         private Double[,] CorcordanceMatrix;
-        public Double[,] tabelaAlternatyw;
+        private Double[,] tabelaAlternatyw;
         private Double[,] TabZstep;
         private Double[,] TabWstep;
         private Double[,] TabSum;
@@ -65,8 +71,17 @@ namespace ElectreAp
         private Double[,] roboczyMatrixDOgol;
         private Double[,] matrixRownosciZbiorowPrzewyzszania;
         private Double[,] roboczyMatrixD;
-        public Double[,] tabelaMatrix;
-        public Double[,,] listaWartProgKryt;
+        private Double[,] tabelaMatrix;
+        public void TabelaMatrix_SetValue(int row, int col, double valueToSet) { tabelaMatrix[row, col] = valueToSet; }        
+        public Double TabelaMatrix_GetValue(int row, int col) { return tabelaMatrix[row, col]; }
+
+        private Double[,,] listaWartProgKryt;
+        public void ListaWartProgKryt_SetValue(int index, int positionOfThreshold, int positionOfSymbol, double valueToSet) {
+            listaWartProgKryt[index, positionOfThreshold, positionOfSymbol] = valueToSet;
+        }
+        public Double ListaWartProgKryt_GetValue(int index, int positionOfThreshold, int positionOfSymbol) {
+            return listaWartProgKryt[index, positionOfThreshold, positionOfSymbol];
+        }
 
         private double wartoscZgodnosci;
         private double progQ = -1;
@@ -75,7 +90,9 @@ namespace ElectreAp
         private double testLogiczny = 0.0;
         private double Delta0 = 0.0;
         private double alfa = 0.15;
+        public double Alfa { get { return alfa; } set { alfa = value;} }
         private double beta = 0.3;
+        public double Beta { get { return beta; } set { beta = value; } }
         private double newDelta = 0.0;
         private double sDeltaK = 0.0;
         private double zmiennaPomocnicza = 0.0;
@@ -87,8 +104,11 @@ namespace ElectreAp
         private int liczbaZajetychMiejscWRankWDestZstep = 0;
         private int liczbaZajetychMiejscWRankWDestWstep = 0;
         private int miejscPoPrzecinku = 2;
-/*        private int liczbaKryteriow = 0;
-        private int liczbaAlternatyw = 0;*/
+        public int MiejscPoPrzecinku { get { return miejscPoPrzecinku; } set { miejscPoPrzecinku = value; } }
+        private int numberOfCriterias = 0;
+        public int NumberOfCriterias { get { return numberOfCriterias;  } set { numberOfCriterias = value; } }
+        private int numberOfAlternatives = 0;
+        public int NumberOfAlternatives { get { return numberOfAlternatives; } set { numberOfAlternatives = value; } }
         private int miejsceA = 0;
         private int miejsceB = 0;
         private int min = 0;
