@@ -2,7 +2,7 @@
 
 namespace ElectreAp
 {
-    partial class UserControl
+    partial class Electre
     {
 /*        /// <summary>
         /// Wymagana zmienna projektanta.
@@ -13,47 +13,29 @@ namespace ElectreAp
         /// Wyczyść wszystkie używane zasoby.
         /// </summary>
         /// <param name="disposing">prawda, jeżeli zarządzane zasoby powinny zostać zlikwidowane; Fałsz w przeciwnym wypadku.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                label_Alfa1.Text = "\\u03B1";
-                label_Alfa2.Text = "\\u03B1";
-                label_Alfa3.Text = "\\u03B1";
-                label_Alfa4.Text = "\\u03B1";
-
-                label_Beta1.Text = "\u03B2";
-                label_Beta2.Text = "\u03B2";
-                label_Beta3.Text = "\u03B2";
-                label_Beta4.Text = "\u03B2";
-
+        protected override void Dispose(bool disposing) {
+            if (disposing && (components != null)) {
                 components.Dispose();
             }
             base.Dispose(disposing);
         }*/
 
-        #region Kod wygenerowany przez Projektanta składników
-
-        /// <summary>
-        /// Metoda wymagana do obsługi projektanta — nie należy modyfikować 
-        /// jej zawartości w edytorze kodu.
-        /// </summary>
-        private void InitializeComponent()
-        {
+        private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.button_CreateTab = new System.Windows.Forms.Button();
             this.button_ReadTab = new System.Windows.Forms.Button();
             this.button_Calculate = new System.Windows.Forms.Button();
             this.button_SaveTab = new System.Windows.Forms.Button();
             this.button_SaveData = new System.Windows.Forms.Button();
             this.textBox_Alternatives = new System.Windows.Forms.TextBox();
-            this.textBox_Beta4 = new System.Windows.Forms.TextBox();
-            this.textBox_Alfa4 = new System.Windows.Forms.TextBox();
-            this.textBox_Beta3 = new System.Windows.Forms.TextBox();
-            this.textBox_Beta2 = new System.Windows.Forms.TextBox();
-            this.textBox_Beta1 = new System.Windows.Forms.TextBox();
-            this.textBox_Alfa3 = new System.Windows.Forms.TextBox();
-            this.textBox_Alfa2 = new System.Windows.Forms.TextBox();
-            this.textBox_Alfa1 = new System.Windows.Forms.TextBox();
+            this.textBox_Beta = new System.Windows.Forms.TextBox();
+            this.textBox_Alfa = new System.Windows.Forms.TextBox();
+            this.textBox_ProgBetaV = new System.Windows.Forms.TextBox();
+            this.textBox_ProgBetaP = new System.Windows.Forms.TextBox();
+            this.textBox_ProgBetaQ = new System.Windows.Forms.TextBox();
+            this.textBox_ProgAlfaV = new System.Windows.Forms.TextBox();
+            this.textBox_ProgAlfaP = new System.Windows.Forms.TextBox();
+            this.textBox_ProgAlfaQ = new System.Windows.Forms.TextBox();
             this.textBox_Criteria = new System.Windows.Forms.TextBox();
             this.label_Alternatives = new System.Windows.Forms.Label();
             this.label_Criteria = new System.Windows.Forms.Label();
@@ -65,7 +47,6 @@ namespace ElectreAp
             this.label_Beta1 = new System.Windows.Forms.Label();
             this.label_Beta2 = new System.Windows.Forms.Label();
             this.label_Beta3 = new System.Windows.Forms.Label();
-            this.listView_CriteriaToChose = new System.Windows.Forms.ListView();
             this.label_Alfa4 = new System.Windows.Forms.Label();
             this.label_Beta4 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -88,9 +69,12 @@ namespace ElectreAp
             this.tabControl_LeaderBoards = new System.Windows.Forms.TabControl();
             this.groupBox_ForPanelWithImg = new System.Windows.Forms.GroupBox();
             this.panel_WithScrllOptAndImg = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel_BasicMatrix = new System.Windows.Forms.TableLayoutPanel();
+            this.dataGridView_Matrix = new System.Windows.Forms.DataGridView();
+            this.listBox_CriteriaToChose = new System.Windows.Forms.ListBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.panel_ChosingOptionsWithCheckBoxes.SuspendLayout();
             this.groupBox_ForPanelWithImg.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Matrix)).BeginInit();
             this.SuspendLayout();
             // 
             // button_CreateTab
@@ -161,92 +145,102 @@ namespace ElectreAp
             // textBox_Alternatives
             // 
             this.textBox_Alternatives.Location = new System.Drawing.Point(67, 49);
+            this.textBox_Alternatives.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_Alternatives.Multiline = true;
             this.textBox_Alternatives.Name = "textBox_Alternatives";
             this.textBox_Alternatives.Size = new System.Drawing.Size(45, 25);
             this.textBox_Alternatives.TabIndex = 5;
-            this.textBox_Alternatives.Leave += new System.EventHandler(this.TextBox_Alternatives_FokusLeave);
+            this.textBox_Alternatives.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Alternatives_KeyPress);
             // 
-            // textBox_Beta4
+            // textBox_Beta
             // 
-            this.textBox_Beta4.Location = new System.Drawing.Point(354, 177);
-            this.textBox_Beta4.Multiline = true;
-            this.textBox_Beta4.Name = "textBox_Beta4";
-            this.textBox_Beta4.Size = new System.Drawing.Size(45, 25);
-            this.textBox_Beta4.TabIndex = 7;
-            this.textBox_Beta4.Leave += new System.EventHandler(this.TextBox_Beta4_FokusLeave);
+            this.textBox_Beta.Location = new System.Drawing.Point(354, 177);
+            this.textBox_Beta.MinimumSize = new System.Drawing.Size(45, 25);
+            this.textBox_Beta.Multiline = true;
+            this.textBox_Beta.Name = "textBox_Beta";
+            this.textBox_Beta.Size = new System.Drawing.Size(45, 25);
+            this.textBox_Beta.TabIndex = 7;
+            this.textBox_Beta.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_Beta_KeyDown);
             // 
-            // textBox_Alfa4
+            // textBox_Alfa
             // 
-            this.textBox_Alfa4.Location = new System.Drawing.Point(354, 135);
-            this.textBox_Alfa4.Multiline = true;
-            this.textBox_Alfa4.Name = "textBox_Alfa4";
-            this.textBox_Alfa4.Size = new System.Drawing.Size(45, 25);
-            this.textBox_Alfa4.TabIndex = 8;
-            this.textBox_Alfa4.Leave += new System.EventHandler(this.TextBox_Alfa4_FokusLeave);
+            this.textBox_Alfa.Location = new System.Drawing.Point(354, 135);
+            this.textBox_Alfa.MinimumSize = new System.Drawing.Size(45, 25);
+            this.textBox_Alfa.Multiline = true;
+            this.textBox_Alfa.Name = "textBox_Alfa";
+            this.textBox_Alfa.Size = new System.Drawing.Size(45, 25);
+            this.textBox_Alfa.TabIndex = 8;
+            this.textBox_Alfa.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_Alfa_KeyDown);
             // 
-            // textBox_Beta3
+            // textBox_ProgBetaV
             // 
-            this.textBox_Beta3.Location = new System.Drawing.Point(160, 261);
-            this.textBox_Beta3.Multiline = true;
-            this.textBox_Beta3.Name = "textBox_Beta3";
-            this.textBox_Beta3.Size = new System.Drawing.Size(45, 25);
-            this.textBox_Beta3.TabIndex = 9;
-            this.textBox_Beta3.Leave += new System.EventHandler(this.TextBox_Beta3_FokusLeave);
+            this.textBox_ProgBetaV.Location = new System.Drawing.Point(160, 261);
+            this.textBox_ProgBetaV.MinimumSize = new System.Drawing.Size(45, 25);
+            this.textBox_ProgBetaV.Multiline = true;
+            this.textBox_ProgBetaV.Name = "textBox_ProgBetaV";
+            this.textBox_ProgBetaV.Size = new System.Drawing.Size(45, 25);
+            this.textBox_ProgBetaV.TabIndex = 9;
+            this.textBox_ProgBetaV.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_ProgBetaV_KeyDown);
             // 
-            // textBox_Beta2
+            // textBox_ProgBetaP
             // 
-            this.textBox_Beta2.Location = new System.Drawing.Point(160, 214);
-            this.textBox_Beta2.Multiline = true;
-            this.textBox_Beta2.Name = "textBox_Beta2";
-            this.textBox_Beta2.Size = new System.Drawing.Size(45, 25);
-            this.textBox_Beta2.TabIndex = 10;
-            this.textBox_Beta2.Leave += new System.EventHandler(this.TextBox_Beta2_FokusLeave);
+            this.textBox_ProgBetaP.Location = new System.Drawing.Point(160, 214);
+            this.textBox_ProgBetaP.MinimumSize = new System.Drawing.Size(45, 25);
+            this.textBox_ProgBetaP.Multiline = true;
+            this.textBox_ProgBetaP.Name = "textBox_ProgBetaP";
+            this.textBox_ProgBetaP.Size = new System.Drawing.Size(45, 25);
+            this.textBox_ProgBetaP.TabIndex = 10;
+            this.textBox_ProgBetaP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_ProgBetaP_KeyDown);
             // 
-            // textBox_Beta1
+            // textBox_ProgBetaQ
             // 
-            this.textBox_Beta1.Location = new System.Drawing.Point(160, 137);
-            this.textBox_Beta1.Multiline = true;
-            this.textBox_Beta1.Name = "textBox_Beta1";
-            this.textBox_Beta1.Size = new System.Drawing.Size(45, 25);
-            this.textBox_Beta1.TabIndex = 11;
-            this.textBox_Beta1.Leave += new System.EventHandler(this.TextBox_Beta1_FokusLeave);
+            this.textBox_ProgBetaQ.Location = new System.Drawing.Point(160, 137);
+            this.textBox_ProgBetaQ.MinimumSize = new System.Drawing.Size(45, 25);
+            this.textBox_ProgBetaQ.Multiline = true;
+            this.textBox_ProgBetaQ.Name = "textBox_ProgBetaQ";
+            this.textBox_ProgBetaQ.Size = new System.Drawing.Size(45, 25);
+            this.textBox_ProgBetaQ.TabIndex = 11;
+            this.textBox_ProgBetaQ.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_ProgBetaQ_KeyDown);
             // 
-            // textBox_Alfa3
+            // textBox_ProgAlfaV
             // 
-            this.textBox_Alfa3.Location = new System.Drawing.Point(67, 261);
-            this.textBox_Alfa3.Multiline = true;
-            this.textBox_Alfa3.Name = "textBox_Alfa3";
-            this.textBox_Alfa3.Size = new System.Drawing.Size(45, 25);
-            this.textBox_Alfa3.TabIndex = 12;
-            this.textBox_Alfa3.Leave += new System.EventHandler(this.TextBox_Alfa3_FokusLeave);
+            this.textBox_ProgAlfaV.Location = new System.Drawing.Point(67, 261);
+            this.textBox_ProgAlfaV.MinimumSize = new System.Drawing.Size(45, 25);
+            this.textBox_ProgAlfaV.Multiline = true;
+            this.textBox_ProgAlfaV.Name = "textBox_ProgAlfaV";
+            this.textBox_ProgAlfaV.Size = new System.Drawing.Size(45, 25);
+            this.textBox_ProgAlfaV.TabIndex = 12;
+            this.textBox_ProgAlfaV.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_ProgAlfaV_KeyDown);
             // 
-            // textBox_Alfa2
+            // textBox_ProgAlfaP
             // 
-            this.textBox_Alfa2.Location = new System.Drawing.Point(67, 214);
-            this.textBox_Alfa2.Multiline = true;
-            this.textBox_Alfa2.Name = "textBox_Alfa2";
-            this.textBox_Alfa2.Size = new System.Drawing.Size(45, 25);
-            this.textBox_Alfa2.TabIndex = 13;
-            this.textBox_Alfa2.Leave += new System.EventHandler(this.TextBox_Alfa2_FokusLeave);
+            this.textBox_ProgAlfaP.Location = new System.Drawing.Point(67, 214);
+            this.textBox_ProgAlfaP.MinimumSize = new System.Drawing.Size(45, 25);
+            this.textBox_ProgAlfaP.Multiline = true;
+            this.textBox_ProgAlfaP.Name = "textBox_ProgAlfaP";
+            this.textBox_ProgAlfaP.Size = new System.Drawing.Size(45, 25);
+            this.textBox_ProgAlfaP.TabIndex = 13;
+            this.textBox_ProgAlfaP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_ProgAlfaP_KeyDown);
             // 
-            // textBox_Alfa1
+            // textBox_ProgAlfaQ
             // 
-            this.textBox_Alfa1.Location = new System.Drawing.Point(67, 137);
-            this.textBox_Alfa1.Multiline = true;
-            this.textBox_Alfa1.Name = "textBox_Alfa1";
-            this.textBox_Alfa1.Size = new System.Drawing.Size(45, 25);
-            this.textBox_Alfa1.TabIndex = 14;
-            this.textBox_Alfa1.Leave += new System.EventHandler(this.TextBox_Alfa1_FokusLeave);
+            this.textBox_ProgAlfaQ.Location = new System.Drawing.Point(67, 137);
+            this.textBox_ProgAlfaQ.MinimumSize = new System.Drawing.Size(45, 25);
+            this.textBox_ProgAlfaQ.Multiline = true;
+            this.textBox_ProgAlfaQ.Name = "textBox_ProgAlfaQ";
+            this.textBox_ProgAlfaQ.Size = new System.Drawing.Size(45, 25);
+            this.textBox_ProgAlfaQ.TabIndex = 14;
+            this.textBox_ProgAlfaQ.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_ProgAlfaQ_KeyDown);
             // 
             // textBox_Criteria
             // 
             this.textBox_Criteria.Location = new System.Drawing.Point(161, 49);
+            this.textBox_Criteria.MinimumSize = new System.Drawing.Size(45, 24);
             this.textBox_Criteria.Multiline = true;
             this.textBox_Criteria.Name = "textBox_Criteria";
-            this.textBox_Criteria.Size = new System.Drawing.Size(45, 25);
+            this.textBox_Criteria.Size = new System.Drawing.Size(45, 24);
             this.textBox_Criteria.TabIndex = 15;
-            this.textBox_Criteria.Leave += new System.EventHandler(this.TextBox_Criteria_FokusLeave);
+            this.textBox_Criteria.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_Criteria_KeyDown);
             // 
             // label_Alternatives
             // 
@@ -348,16 +342,6 @@ namespace ElectreAp
             this.label_Beta3.TabIndex = 26;
             this.label_Beta3.Text = "β";
             // 
-            // listView_CriteriaToChose
-            // 
-            this.listView_CriteriaToChose.HideSelection = false;
-            this.listView_CriteriaToChose.Location = new System.Drawing.Point(240, 102);
-            this.listView_CriteriaToChose.Name = "listView_CriteriaToChose";
-            this.listView_CriteriaToChose.Size = new System.Drawing.Size(50, 221);
-            this.listView_CriteriaToChose.TabIndex = 27;
-            this.listView_CriteriaToChose.UseCompatibleStateImageBehavior = false;
-            this.listView_CriteriaToChose.ItemActivate += new System.EventHandler(this.ListView_CriteriaToChose_ItemActivate);
-            // 
             // label_Alfa4
             // 
             this.label_Alfa4.AutoSize = true;
@@ -391,11 +375,12 @@ namespace ElectreAp
             // textBox_DecimalPlaces
             // 
             this.textBox_DecimalPlaces.Location = new System.Drawing.Point(354, 249);
+            this.textBox_DecimalPlaces.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_DecimalPlaces.Multiline = true;
             this.textBox_DecimalPlaces.Name = "textBox_DecimalPlaces";
             this.textBox_DecimalPlaces.Size = new System.Drawing.Size(45, 25);
             this.textBox_DecimalPlaces.TabIndex = 31;
-            this.textBox_DecimalPlaces.Leave += new System.EventHandler(this.TextBox_DecimalPlaces_FokusLeave);
+            this.textBox_DecimalPlaces.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_DecimalPlaces_KeyDown);
             // 
             // panel_ChosingOptionsWithCheckBoxes
             // 
@@ -605,25 +590,37 @@ namespace ElectreAp
             this.panel_WithScrllOptAndImg.Size = new System.Drawing.Size(489, 327);
             this.panel_WithScrllOptAndImg.TabIndex = 0;
             // 
-            // tableLayoutPanel_BasicMatrix
+            // dataGridView_Matrix
             // 
-            this.tableLayoutPanel_BasicMatrix.ColumnCount = 1;
-            this.tableLayoutPanel_BasicMatrix.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel_BasicMatrix.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel_BasicMatrix.Location = new System.Drawing.Point(730, 16);
-            this.tableLayoutPanel_BasicMatrix.Name = "tableLayoutPanel_BasicMatrix";
-            this.tableLayoutPanel_BasicMatrix.RowCount = 1;
-            this.tableLayoutPanel_BasicMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel_BasicMatrix.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 307F));
-            this.tableLayoutPanel_BasicMatrix.Size = new System.Drawing.Size(501, 307);
-            this.tableLayoutPanel_BasicMatrix.TabIndex = 38;
+            this.dataGridView_Matrix.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Matrix.Location = new System.Drawing.Point(720, 16);
+            this.dataGridView_Matrix.Name = "dataGridView_Matrix";
+            this.dataGridView_Matrix.Size = new System.Drawing.Size(494, 321);
+            this.dataGridView_Matrix.TabIndex = 38;
+            this.dataGridView_Matrix.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_Matrix_CellEndEdit);
             // 
-            // UserControl
+            // listBox_CriteriaToChose
+            // 
+            this.listBox_CriteriaToChose.FormattingEnabled = true;
+            this.listBox_CriteriaToChose.Location = new System.Drawing.Point(240, 106);
+            this.listBox_CriteriaToChose.Name = "listBox_CriteriaToChose";
+            this.listBox_CriteriaToChose.Size = new System.Drawing.Size(48, 212);
+            this.listBox_CriteriaToChose.TabIndex = 39;
+            this.listBox_CriteriaToChose.SelectedIndexChanged += new System.EventHandler(this.listBox_CriteriaToChose_SelectedIndexChanged);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // Electre
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.Controls.Add(this.tableLayoutPanel_BasicMatrix);
+            this.ClientSize = new System.Drawing.Size(1226, 700);
+            this.Controls.Add(this.listBox_CriteriaToChose);
+            this.Controls.Add(this.dataGridView_Matrix);
             this.Controls.Add(this.groupBox_ForPanelWithImg);
             this.Controls.Add(this.tabControl_LeaderBoards);
             this.Controls.Add(this.label4);
@@ -633,7 +630,6 @@ namespace ElectreAp
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label_Beta4);
             this.Controls.Add(this.label_Alfa4);
-            this.Controls.Add(this.listView_CriteriaToChose);
             this.Controls.Add(this.label_Beta3);
             this.Controls.Add(this.label_Beta2);
             this.Controls.Add(this.label_Beta1);
@@ -645,47 +641,49 @@ namespace ElectreAp
             this.Controls.Add(this.label_Criteria);
             this.Controls.Add(this.label_Alternatives);
             this.Controls.Add(this.textBox_Criteria);
-            this.Controls.Add(this.textBox_Alfa1);
-            this.Controls.Add(this.textBox_Alfa2);
-            this.Controls.Add(this.textBox_Alfa3);
-            this.Controls.Add(this.textBox_Beta1);
-            this.Controls.Add(this.textBox_Beta2);
-            this.Controls.Add(this.textBox_Beta3);
-            this.Controls.Add(this.textBox_Alfa4);
-            this.Controls.Add(this.textBox_Beta4);
+            this.Controls.Add(this.textBox_ProgAlfaQ);
+            this.Controls.Add(this.textBox_ProgAlfaP);
+            this.Controls.Add(this.textBox_ProgAlfaV);
+            this.Controls.Add(this.textBox_ProgBetaQ);
+            this.Controls.Add(this.textBox_ProgBetaP);
+            this.Controls.Add(this.textBox_ProgBetaV);
+            this.Controls.Add(this.textBox_Alfa);
+            this.Controls.Add(this.textBox_Beta);
             this.Controls.Add(this.textBox_Alternatives);
             this.Controls.Add(this.button_SaveData);
             this.Controls.Add(this.button_SaveTab);
             this.Controls.Add(this.button_Calculate);
             this.Controls.Add(this.button_ReadTab);
             this.Controls.Add(this.button_CreateTab);
-            this.Name = "UserControl";
-            this.Size = new System.Drawing.Size(1242, 720);
+            this.Name = "Electre";
             this.Load += new System.EventHandler(this.UserControl_Load);
             this.panel_ChosingOptionsWithCheckBoxes.ResumeLayout(false);
             this.panel_ChosingOptionsWithCheckBoxes.PerformLayout();
             this.groupBox_ForPanelWithImg.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Matrix)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
-        #endregion
+        void ValidDataInTextBox() { }
 
-        private Button button_CreateTab;
+        // deklaracje kontrolek
+        #region
+        public Button button_CreateTab;
         private Button button_ReadTab;
         private Button button_Calculate;
         private Button button_SaveTab;
         private Button button_SaveData;
         private TextBox textBox_Alternatives;
-        private TextBox textBox_Beta4;
-        private TextBox textBox_Alfa4;
-        private TextBox textBox_Beta3;
-        private TextBox textBox_Beta2;
-        private TextBox textBox_Beta1;
-        private TextBox textBox_Alfa3;
-        private TextBox textBox_Alfa2;
-        private TextBox textBox_Alfa1;
+        private TextBox textBox_Beta;
+        private TextBox textBox_Alfa;
+        private TextBox textBox_ProgBetaV;
+        private TextBox textBox_ProgBetaP;
+        private TextBox textBox_ProgBetaQ;
+        private TextBox textBox_ProgAlfaV;
+        private TextBox textBox_ProgAlfaP;
+        private TextBox textBox_ProgAlfaQ;
         private Label label_Alternatives;
         private Label label3;
         private Label label_Alfa1;
@@ -695,7 +693,6 @@ namespace ElectreAp
         private Label label_Beta1;
         private Label label_Beta2;
         private Label label_Beta3;
-        private ListView listView_CriteriaToChose;
         private Label label_Alfa4;
         private Label label_Beta4;
         private Label label11;
@@ -720,6 +717,12 @@ namespace ElectreAp
         private Panel panel_WithScrllOptAndImg;
         private Label label_Criteria;
         private TextBox textBox_Criteria;
-        private TableLayoutPanel tableLayoutPanel_BasicMatrix;
+
+        #endregion
+
+        private DataGridView dataGridView_Matrix;
+        private ListBox listBox_CriteriaToChose;
+        private ContextMenuStrip contextMenuStrip1;
+        private System.ComponentModel.IContainer components;
     }
 }
