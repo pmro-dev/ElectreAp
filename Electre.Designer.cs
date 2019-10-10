@@ -411,7 +411,6 @@ namespace ElectreAp
             this.checkBox_TopDownDistillation.TabIndex = 47;
             this.checkBox_TopDownDistillation.Text = "destylacja zstepujaca";
             this.checkBox_TopDownDistillation.UseVisualStyleBackColor = true;
-            this.checkBox_TopDownDistillation.Click += new System.EventHandler(this.CheckBox_TopDownDistillation_Click);
             // 
             // checkBox_UpwardDistillation
             // 
@@ -423,7 +422,6 @@ namespace ElectreAp
             this.checkBox_UpwardDistillation.TabIndex = 46;
             this.checkBox_UpwardDistillation.Text = "destylacja wstepujaca";
             this.checkBox_UpwardDistillation.UseVisualStyleBackColor = true;
-            this.checkBox_UpwardDistillation.Click += new System.EventHandler(this.CheckBox_UpwardDistillation_Click);
             // 
             // checkBox_Rankings
             // 
@@ -435,7 +433,6 @@ namespace ElectreAp
             this.checkBox_Rankings.TabIndex = 45;
             this.checkBox_Rankings.Text = "rankingi";
             this.checkBox_Rankings.UseVisualStyleBackColor = true;
-            this.checkBox_Rankings.Click += new System.EventHandler(this.CheckBox_Rankings_Click);
             // 
             // checkBox_CompatibilityMatrix
             // 
@@ -447,7 +444,6 @@ namespace ElectreAp
             this.checkBox_CompatibilityMatrix.TabIndex = 42;
             this.checkBox_CompatibilityMatrix.Text = "macierz zgodnosci";
             this.checkBox_CompatibilityMatrix.UseVisualStyleBackColor = true;
-            this.checkBox_CompatibilityMatrix.Click += new System.EventHandler(this.CheckBox_CompatibilityMatrix_Click);
             // 
             // checkBox_NonComplianceSets
             // 
@@ -459,7 +455,6 @@ namespace ElectreAp
             this.checkBox_NonComplianceSets.TabIndex = 41;
             this.checkBox_NonComplianceSets.Text = "zbiory niezgodnosci";
             this.checkBox_NonComplianceSets.UseVisualStyleBackColor = true;
-            this.checkBox_NonComplianceSets.Click += new System.EventHandler(this.CheckBox_NonComplianceSets_Click);
             // 
             // checkBox_OutrankingSets
             // 
@@ -471,7 +466,6 @@ namespace ElectreAp
             this.checkBox_OutrankingSets.TabIndex = 40;
             this.checkBox_OutrankingSets.Text = "zbiory przewyzszania";
             this.checkBox_OutrankingSets.UseVisualStyleBackColor = true;
-            this.checkBox_OutrankingSets.Click += new System.EventHandler(this.CheckBox_OutrankingSets_Click);
             // 
             // checkBox_SetEqualityMatrix
             // 
@@ -483,7 +477,6 @@ namespace ElectreAp
             this.checkBox_SetEqualityMatrix.TabIndex = 39;
             this.checkBox_SetEqualityMatrix.Text = "macierz rownosci zbior. przew.";
             this.checkBox_SetEqualityMatrix.UseVisualStyleBackColor = true;
-            this.checkBox_SetEqualityMatrix.Click += new System.EventHandler(this.CheckBox_SetEqualityMatrix_Click);
             // 
             // checkBox_RatingMatrix
             // 
@@ -495,7 +488,6 @@ namespace ElectreAp
             this.checkBox_RatingMatrix.TabIndex = 38;
             this.checkBox_RatingMatrix.Text = "macierze ocen";
             this.checkBox_RatingMatrix.UseVisualStyleBackColor = true;
-            this.checkBox_RatingMatrix.Click += new System.EventHandler(this.CheckBox_RatingMatrix_Click);
             // 
             // checkBox_CredibilityMatrix
             // 
@@ -507,7 +499,6 @@ namespace ElectreAp
             this.checkBox_CredibilityMatrix.TabIndex = 37;
             this.checkBox_CredibilityMatrix.Text = "macierz wiarygodnosci";
             this.checkBox_CredibilityMatrix.UseVisualStyleBackColor = true;
-            this.checkBox_CredibilityMatrix.Click += new System.EventHandler(this.CheckBox_CredibilityMatrix_Click);
             // 
             // checkBox_ComplianceSet
             // 
@@ -519,7 +510,6 @@ namespace ElectreAp
             this.checkBox_ComplianceSet.TabIndex = 36;
             this.checkBox_ComplianceSet.Text = "zbiory zgodnosci";
             this.checkBox_ComplianceSet.UseVisualStyleBackColor = true;
-            this.checkBox_ComplianceSet.Click += new System.EventHandler(this.CheckBox_ComplianceSet_Click);
             // 
             // checkBox_CheckAllOptions
             // 
@@ -531,7 +521,7 @@ namespace ElectreAp
             this.checkBox_CheckAllOptions.TabIndex = 35;
             this.checkBox_CheckAllOptions.Text = "zaznacz wszystko";
             this.checkBox_CheckAllOptions.UseVisualStyleBackColor = true;
-            this.checkBox_CheckAllOptions.Click += new System.EventHandler(this.CheckBox_CheckAllOptions_Click);
+            this.checkBox_CheckAllOptions.CheckedChanged += new System.EventHandler(this.CheckBox_CheckAllOptions_CheckedChanged);
             // 
             // label_ChosingOptionsWithCheckBoxes
             // 
