@@ -44,8 +44,7 @@ namespace ElectreAp
         }
 
         private void Button_ReadTab_Click(object sender, EventArgs e) {
-            //taskElectreIII.CreateMatrixForAlternativeData(alternatives, criteria);
-            //taskElectreIII.Wyp(alternatives, criteria);
+
         }
 
         private void Button_SaveTab_Click(object sender, EventArgs e) {
@@ -53,7 +52,29 @@ namespace ElectreAp
         }
 
         private void Button_Calculate_Click(object sender, EventArgs e) {
+            tabControl_LeaderBoards.TabPages.Clear();
+            //Reset(2);
 
+            try {
+                if (textBox_Alfa.Text != taskElectreIII.Beta.ToString()) {
+                    taskElectreIII.Alfa = Double.Parse(textBox_Alfa.Text);
+                }
+
+                if (textBox_Beta.Text != taskElectreIII.Alfa.ToString()) {
+                    taskElectreIII.Beta = Double.Parse(textBox_Beta.Text);
+                }
+
+                if (textBox_DecimalPlaces.Text != taskElectreIII.MiejscPoPrzecinku.ToString()) {
+                    taskElectreIII.MiejscPoPrzecinku = Int32.Parse(textBox_DecimalPlaces.Text);
+                }
+
+            }
+            catch (Exception ex) {
+                MessageBox.Show("W polach Alfa, Beta i Miejsca po przecniku można wprowadzać tylko cyfry! \n Ponadto dla Alfa i Beta używamy kropki nie przecinka", "Błąd", MessageBoxButtons.OK);
+                Console.WriteLine(ex);
+            }
+
+            taskElectreIII.DoCalculations();
         }
 
         private void Button_SaveData_Click(object sender, EventArgs e) {
@@ -96,60 +117,31 @@ namespace ElectreAp
             }
         }
 
-        private void CheckBox_CheckAllOptions_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_ComplianceSet_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_CompatibilityMatrix_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_NonComplianceSets_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_OutrankingSets_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_SetEqualityMatrix_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_CredibilityMatrix_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_RatingMatrix_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CheckBox_TopDownDistillation_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void CheckBox_UpwardDistillation_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void CheckBox_Rankings_Click(object sender, EventArgs e) {
-
+        private void CheckBox_CheckAllOptions_CheckedChanged(object sender, EventArgs e) {
+            if(checkBox_CheckAllOptions.Checked) {
+                checkBox_CompatibilityMatrix.Checked = true;
+                checkBox_ComplianceSet.Checked = true;
+                checkBox_CredibilityMatrix.Checked = true;
+                checkBox_NonComplianceSets.Checked = true;
+                checkBox_OutrankingSets.Checked = true;
+                checkBox_Rankings.Checked = true;
+                checkBox_RatingMatrix.Checked = true;
+                checkBox_SetEqualityMatrix.Checked = true;
+                checkBox_TopDownDistillation.Checked = true;
+                checkBox_UpwardDistillation.Checked = true;
+            }
+            else {
+                checkBox_CompatibilityMatrix.Checked = false;
+                checkBox_ComplianceSet.Checked = false;
+                checkBox_CredibilityMatrix.Checked = false;
+                checkBox_NonComplianceSets.Checked = false;
+                checkBox_OutrankingSets.Checked = false;
+                checkBox_Rankings.Checked = false;
+                checkBox_RatingMatrix.Checked = false;
+                checkBox_SetEqualityMatrix.Checked = false;
+                checkBox_TopDownDistillation.Checked = false;
+                checkBox_UpwardDistillation.Checked = false;
+            }
         }
 
 
@@ -322,7 +314,10 @@ namespace ElectreAp
             else {
                 switch (caseOption) {
                     case 0:
-                        if (Int32.Parse(textBox.Text) < 0 || Int32.Parse(textBox.Text) >= 15) { return false; }
+                        if (Int32.Parse(textBox.Text) < 0 || Int32.Parse(textBox.Text) >= 15) {
+                            MessageBox.Show("Wystąpił błąd podczas wprowadzania danych.\nW danym polu należy wprowadzić liczbę całkowitą z przedziału 0 - 15.", "Błąd", MessageBoxButtons.OK); 
+                            return false; 
+                        }
                         else { return true; }
                     case 1:
                         if(Int32.Parse(textBox.Text) != 0) { return true; } 
@@ -348,5 +343,6 @@ namespace ElectreAp
                 } else { return true; }
             } else { return true; }
         }
+
     }
 }
