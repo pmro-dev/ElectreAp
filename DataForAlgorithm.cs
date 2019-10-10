@@ -14,47 +14,47 @@ namespace ElectreAp
 
         // deklaracje zmiennych
         #region
-        private List<Double> listaKierunkow = new List<Double>();
-        private List<Double> listaModow = new List<Double>();
-        private List<Double> listaWagW = new List<Double>();
-        private List<Double> listaProguQB = new List<Double>();
-        private List<Double> listaProguPB = new List<Double>();
-        private List<Double> listaProguVB = new List<Double>();
-        private List<Double> listaProguQA = new List<Double>();
-        private List<Double> listaProguPA = new List<Double>();
-        private List<Double> listaProguVA = new List<Double>();
-        private List<Double[,]> listaZbiorowZgodnosci = new List<Double[,]>();
-        private List<Double[,]> listaZbiorowNieZgodnosci = new List<Double[,]>();
-        private List<Double[,]> listaZbiorowPrzewyzszania = new List<Double[,]>();
-        private List<Double[,]> listaMacierzyOcen = new List<Double[,]>();
-        private List<Int32> listaNumerowZNazwOpcji = new List<Int32>();
-        private List<Int32> listaNumerowZNazwNajlepszychOpcjiWewnatrz = new List<Int32>();
-        private List<Int32> listaNumerowZNazwOpcjiUsytWRank = new List<Int32>();
-        private List<Int32> listaNumerowZNazwOpcjiOgolZstep = new List<Int32>();
-        private List<Int32> listaNumerowZNazwOpcjiOgolWstep = new List<Int32>();
-        private List<Int32> listaNumZNazwPomoc = new List<Int32>();
-        private List<Int32> listaKtoZKimPrzegral = new List<Int32>();
-        private List<Int32> listaAltWRank = new List<Int32>();
-        private List<Int32> listaAltWRankNieSort = new List<Int32>();
-        private List<Int32> listaChwilowa = new List<Int32>();
-        private List<Int32> lul = new List<Int32>();
-        private List<Int32> listaDlaRank = new List<Int32>();
-        private List<String> rankingOpcjiFinalny = new List<String>();
-        private List<List<Int32>> listaRank = new List<List<Int32>>();
-        private List<List<Int32>> listaAlternatyw = new List<List<Int32>>();
-        private List<List<Int32>> listaNumerowOpcjiMacierzyOcen = new List<List<Int32>>();
+        protected List<Double> listaKierunkow = new List<Double>();
+        protected List<Int32> listaModow = new List<Int32>();
+        protected List<Double> listaWagW = new List<Double>();
+        protected List<Double> listaProguQB = new List<Double>();
+        protected List<Double> listaProguPB = new List<Double>();
+        protected List<Double> listaProguVB = new List<Double>();
+        protected List<Double> listaProguQA = new List<Double>();
+        protected List<Double> listaProguPA = new List<Double>();
+        protected List<Double> listaProguVA = new List<Double>();
+        protected List<Double[,]> listaZbiorowZgodnosci = new List<Double[,]>();
+        protected List<Double[,]> listaZbiorowNieZgodnosci = new List<Double[,]>();
+        protected List<Double[,]> listaZbiorowPrzewyzszania = new List<Double[,]>();
+        protected List<Double[,]> listaMacierzyOcen = new List<Double[,]>();
+        protected List<Int32> listaNumerowZNazwOpcji = new List<Int32>();
+        protected List<Int32> listaNumerowZNazwNajlepszychOpcjiWewnatrz = new List<Int32>();
+        protected List<Int32> listaNumerowZNazwOpcjiUsytWRank = new List<Int32>();
+        protected List<Int32> listaNumerowZNazwOpcjiOgolZstep = new List<Int32>();
+        protected List<Int32> listaNumerowZNazwOpcjiOgolWstep = new List<Int32>();
+        protected List<Int32> listaNumZNazwPomoc = new List<Int32>();
+        protected List<Int32> listaKtoZKimPrzegral = new List<Int32>();
+        protected List<Int32> listaAltWRank = new List<Int32>();
+        protected List<Int32> listaAltWRankNieSort = new List<Int32>();
+        protected List<Int32> listaChwilowa = new List<Int32>();
+        protected List<Int32> lul = new List<Int32>();
+        protected List<Int32> listaDlaRank = new List<Int32>();
+        protected List<String> rankingOpcjiFinalny = new List<String>();
+        protected List<List<Int32>> listaRank = new List<List<Int32>>();
+        protected List<List<Int32>> listaAlternatyw = new List<List<Int32>>();
+        protected List<List<Int32>> listaNumerowOpcjiMacierzyOcen = new List<List<Int32>>();
 
-        private List<String> columnNames = new List<String>();
+        protected List<String> columnNames = new List<String>();
         public List<String> ColumnNames { get { return columnNames; } set { columnNames = value; } }
         public void ColumnNames_SetValue(int index, string valueToSet) { columnNames[index] = valueToSet; }
         public string ColumnNames_GetValue(int index) { return columnNames[index]; }
 
-        private String[,] miejscaOpcjiPoDestylacjiZstepujacej;
-        private String[,] miejscaOpcjiPoDestylacjiWstepujacej;
-        private String[,] punktacjaOpcji;
-        private String[,] punktacjaOpcjiZmienna;
-        private String[,] tabRank;
-        private String[] columnNamesDoListy;
+        protected String[,] miejscaOpcjiPoDestylacjiZstepujacej;
+        protected String[,] miejscaOpcjiPoDestylacjiWstepujacej;
+        protected String[,] punktacjaOpcji;
+        protected String[,] punktacjaOpcjiZmienna;
+        protected String[,] tabRank;
+        protected String[] columnNamesDoListy;
         public String[] ColumnNamesDoListy { get { return columnNamesDoListy; } set { columnNamesDoListy = value; } }
         public void ColumnNamesDoListy_SetValue(int index, string valueToSet) { columnNamesDoListy[index] = valueToSet; }
         public string ColumnNamesDoListy_GetValue(int index) { return columnNamesDoListy[index]; }
@@ -62,7 +62,7 @@ namespace ElectreAp
         private String valueHelp = "";
 
         private Double[,] CorcordanceMatrix;
-        private Double[,] tabelaAlternatyw;
+        protected Double[,] tabelaAlternatyw;
         private Double[,] TabZstep;
         private Double[,] TabWstep;
         private Double[,] TabSum;
@@ -71,11 +71,11 @@ namespace ElectreAp
         private Double[,] roboczyMatrixDOgol;
         private Double[,] matrixRownosciZbiorowPrzewyzszania;
         private Double[,] roboczyMatrixD;
-        private Double[,] tabelaMatrix;
+        protected Double[,] tabelaMatrix;
         public void TabelaMatrix_SetValue(int row, int col, double valueToSet) { tabelaMatrix[row, col] = valueToSet; }        
         public Double TabelaMatrix_GetValue(int row, int col) { return tabelaMatrix[row, col]; }
 
-        private Double[,,] listaWartProgKryt;
+        protected Double[,,] listaWartProgKryt;
         public void ListaWartProgKryt_SetValue(int index, int positionOfThreshold, int positionOfSymbol, double valueToSet) {
             listaWartProgKryt[index, positionOfThreshold, positionOfSymbol] = valueToSet;
         }
@@ -84,9 +84,9 @@ namespace ElectreAp
         }
 
         private double wartoscZgodnosci;
-        private double progQ = -1;
-        private double progP = -1;
-        private double progV = -1;
+        protected double progQ = -1;
+        protected double progP = -1;
+        protected double progV = -1;
         private double testLogiczny = 0.0;
         private double Delta0 = 0.0;
         private double alfa = 0.15;
@@ -103,11 +103,11 @@ namespace ElectreAp
 
         private int liczbaZajetychMiejscWRankWDestZstep = 0;
         private int liczbaZajetychMiejscWRankWDestWstep = 0;
-        private int miejscPoPrzecinku = 2;
+        protected int miejscPoPrzecinku = 2;
         public int MiejscPoPrzecinku { get { return miejscPoPrzecinku; } set { miejscPoPrzecinku = value; } }
-        private int numberOfCriterias = 0;
+        protected int numberOfCriterias = 0;
         public int NumberOfCriterias { get { return numberOfCriterias;  } set { numberOfCriterias = value; } }
-        private int numberOfAlternatives = 0;
+        protected int numberOfAlternatives = 0;
         public int NumberOfAlternatives { get { return numberOfAlternatives; } set { numberOfAlternatives = value; } }
         private int miejsceA = 0;
         private int miejsceB = 0;
@@ -130,21 +130,10 @@ namespace ElectreAp
 
         public void CreateMatrixBasedOnTable(){ }
 
-        public void DivideThresholdsToLists() {
-        /*
-        uzupełnianie listy kierunków -> pobieranie wartości z matrixa tabeli
-        wartość kierunku ( 0 lub 1 ) mówi nam czy wartości ujemne ( 0 ) czy wartości dodatnie ( 1 ) 
-        dla danego kryterium są lepsze od tych drugich
-        np. kryterium pojemność silnika im większa wartość ( wartość kierunku 1 ) tym lepiej dla danej alternatywy (motoru)
-        np. kryterium oddległość od centrum miasta im mniejsza wartość ( wartość kierunku 0 ) tym lepiej dla danej alternatywy (nieruchomości)
-        */
-
-            
-        }
-
-        public void CreateMatrixForAlternativeData(int numberOfAlternatives, int numberOfCriterias) {
+        public void CreateMatrixForAlternativeData(int numberOfAlternatives, int numberOfCriterias)
+        {
             tabelaAlternatyw = new Double[numberOfAlternatives, numberOfCriterias];
-            
+
             // tworzenie matrixa dla wartości samych alternatyw
             // dane pobierane są z tabeli (wartości podane przez użytkownika do tabeli)
             // pierwsze 5 wierszy to kierunek, waga oraz progi
@@ -152,9 +141,11 @@ namespace ElectreAp
             // To one są pobierane z tabeli i zapisywane do oddzielnej tabeli dla samych alternatyw
             int licznik = 0;
             Console.WriteLine("wypisywana Tabela Matrix podczas przypisywania jej wartości do tabeliAlternatyw");
-            
-            for (int y = 9; y < numberOfAlternatives + 9; y++) {
-                for (int z = 0; z < numberOfCriterias; z++) {
+
+            for (int y = 9; y < numberOfAlternatives + 9; y++)
+            {
+                for (int z = 0; z < numberOfCriterias; z++)
+                {
                     tabelaAlternatyw[licznik, z] = tabelaMatrix[y, z];
                     Console.Write(tabelaMatrix[y, z] + " ");
                 }
@@ -163,8 +154,10 @@ namespace ElectreAp
 
             Console.WriteLine("Tabela Alternatyw");
 
-            for (int y = 0; y < numberOfAlternatives; y++) {
-                for (int z = 0; z < numberOfCriterias; z++) {
+            for (int y = 0; y < numberOfAlternatives; y++)
+            {
+                for (int z = 0; z < numberOfCriterias; z++)
+                {
                     Console.Write(tabelaAlternatyw[y, z] + " ");
                 }
                 Console.WriteLine("\n");
