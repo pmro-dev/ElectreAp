@@ -296,38 +296,6 @@ namespace ElectreAp
             CreateMatrixForAlternativeData(numberOfAlternatives, numberOfCriterias);
             CreateConcordanceSets();
 
-/*            string ps = AppDomain.CurrentDomain.BaseDirectory;
-            pathMathImg = ps + "\\MathImg\\wzor_mal_direct_prog.png";
-            Bitmap bm = new Bitmap(ps + "\\MathImg\\wzor_mal_direct_prog.png");
-            Console.WriteLine("TEST" + ps + "\\MathImg\\wzor_mal_direct_prog.PNG");
-            PrepareImgToShow(pathMathImg);
-            pathMathImg = "\\MathImg\\wzor_rosn_direct_prog.PNG";
-
-
-            PrepareImgToShow(pathMathImg);
-            pathMathImg = "\\MathImg\\wzor_mal_invers_prog.PNG";
-            PrepareImgToShow(pathMathImg);
-            pathMathImg = "\\MathImg\\wzor_rosn_invers_prog.PNG";
-            PrepareImgToShow(pathMathImg);
-            pathMathImg = "\\MathImg\\wzor_przeliczanie_wspolczynnikow.PNG";
-            PrepareImgToShow(pathMathImg);
-
-            if (CboxConcordanceSetsChecked) {
-                ShowConcordanceSets();
-                pathMathImg = "\\MathImg\\wspolczynnik_zgodnosci_kryterium_rosn.PNG";
-                PrepareImgToShow(pathMathImg);
-                pathMathImg = "\\MathImg\\wspolczynnik_zgodnosci_kryterium_mal.PNG";
-                PrepareImgToShow(pathMathImg);
-            }
-
-            CreateConcordanceMatrix(listaZbiorowZgodnosci, numberOfAlternatives);
-
-            if (CboxConcordanceMatrixChecked) {
-
-                ShowConcordanceMatrix();
-                pathMathImg = "\\MathImg\\indeks_zgodnosci.PNG";
-                PrepareImgToShow(pathMathImg);
-            }*/
         }
 
         public void DivideThresholdsToLists() {
