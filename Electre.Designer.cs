@@ -55,25 +55,23 @@ namespace ElectreAp
             this.checkBox_TopDownDistillation = new System.Windows.Forms.CheckBox();
             this.checkBox_UpwardDistillation = new System.Windows.Forms.CheckBox();
             this.checkBox_Rankings = new System.Windows.Forms.CheckBox();
-            this.checkBox_CompatibilityMatrix = new System.Windows.Forms.CheckBox();
-            this.checkBox_NonComplianceSets = new System.Windows.Forms.CheckBox();
+            this.checkBox_ConcordanceMatrix = new System.Windows.Forms.CheckBox();
+            this.checkBox_NonConcordanceSets = new System.Windows.Forms.CheckBox();
             this.checkBox_OutrankingSets = new System.Windows.Forms.CheckBox();
             this.checkBox_SetEqualityMatrix = new System.Windows.Forms.CheckBox();
             this.checkBox_RatingMatrix = new System.Windows.Forms.CheckBox();
             this.checkBox_CredibilityMatrix = new System.Windows.Forms.CheckBox();
-            this.checkBox_ComplianceSet = new System.Windows.Forms.CheckBox();
+            this.checkBox_ConcordanceSet = new System.Windows.Forms.CheckBox();
             this.checkBox_CheckAllOptions = new System.Windows.Forms.CheckBox();
             this.label_ChosingOptionsWithCheckBoxes = new System.Windows.Forms.Label();
             this.checkBox_TurnOffVeto = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.tabControl_LeaderBoards = new System.Windows.Forms.TabControl();
-            this.groupBox_ForPanelWithImg = new System.Windows.Forms.GroupBox();
-            this.panel_WithScrllOptAndImg = new System.Windows.Forms.Panel();
             this.dataGridView_Matrix = new System.Windows.Forms.DataGridView();
             this.listBox_CriteriaToChose = new System.Windows.Forms.ListBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.flowLayoutPanel_MathImg = new System.Windows.Forms.FlowLayoutPanel();
             this.panel_ChosingOptionsWithCheckBoxes.SuspendLayout();
-            this.groupBox_ForPanelWithImg.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Matrix)).BeginInit();
             this.SuspendLayout();
             // 
@@ -387,13 +385,13 @@ namespace ElectreAp
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_TopDownDistillation);
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_UpwardDistillation);
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_Rankings);
-            this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_CompatibilityMatrix);
-            this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_NonComplianceSets);
+            this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_ConcordanceMatrix);
+            this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_NonConcordanceSets);
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_OutrankingSets);
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_SetEqualityMatrix);
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_RatingMatrix);
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_CredibilityMatrix);
-            this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_ComplianceSet);
+            this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_ConcordanceSet);
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.checkBox_CheckAllOptions);
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.label_ChosingOptionsWithCheckBoxes);
             this.panel_ChosingOptionsWithCheckBoxes.Location = new System.Drawing.Point(474, 14);
@@ -411,6 +409,7 @@ namespace ElectreAp
             this.checkBox_TopDownDistillation.TabIndex = 47;
             this.checkBox_TopDownDistillation.Text = "destylacja zstepujaca";
             this.checkBox_TopDownDistillation.UseVisualStyleBackColor = true;
+            this.checkBox_TopDownDistillation.CheckedChanged += new System.EventHandler(this.checkBox_TopDownDistillation_CheckedChanged);
             // 
             // checkBox_UpwardDistillation
             // 
@@ -422,6 +421,7 @@ namespace ElectreAp
             this.checkBox_UpwardDistillation.TabIndex = 46;
             this.checkBox_UpwardDistillation.Text = "destylacja wstepujaca";
             this.checkBox_UpwardDistillation.UseVisualStyleBackColor = true;
+            this.checkBox_UpwardDistillation.CheckedChanged += new System.EventHandler(this.checkBox_UpwardDistillation_CheckedChanged);
             // 
             // checkBox_Rankings
             // 
@@ -433,28 +433,31 @@ namespace ElectreAp
             this.checkBox_Rankings.TabIndex = 45;
             this.checkBox_Rankings.Text = "rankingi";
             this.checkBox_Rankings.UseVisualStyleBackColor = true;
+            this.checkBox_Rankings.CheckedChanged += new System.EventHandler(this.checkBox_Rankings_CheckedChanged);
             // 
-            // checkBox_CompatibilityMatrix
+            // checkBox_ConcordanceMatrix
             // 
-            this.checkBox_CompatibilityMatrix.AutoSize = true;
-            this.checkBox_CompatibilityMatrix.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox_CompatibilityMatrix.Location = new System.Drawing.Point(18, 81);
-            this.checkBox_CompatibilityMatrix.Name = "checkBox_CompatibilityMatrix";
-            this.checkBox_CompatibilityMatrix.Size = new System.Drawing.Size(110, 17);
-            this.checkBox_CompatibilityMatrix.TabIndex = 42;
-            this.checkBox_CompatibilityMatrix.Text = "macierz zgodnosci";
-            this.checkBox_CompatibilityMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_ConcordanceMatrix.AutoSize = true;
+            this.checkBox_ConcordanceMatrix.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_ConcordanceMatrix.Location = new System.Drawing.Point(18, 81);
+            this.checkBox_ConcordanceMatrix.Name = "checkBox_ConcordanceMatrix";
+            this.checkBox_ConcordanceMatrix.Size = new System.Drawing.Size(110, 17);
+            this.checkBox_ConcordanceMatrix.TabIndex = 42;
+            this.checkBox_ConcordanceMatrix.Text = "macierz zgodnosci";
+            this.checkBox_ConcordanceMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_ConcordanceMatrix.CheckedChanged += new System.EventHandler(this.checkBox_ConcordanceMatrix_CheckedChanged);
             // 
-            // checkBox_NonComplianceSets
+            // checkBox_NonConcordanceSets
             // 
-            this.checkBox_NonComplianceSets.AutoSize = true;
-            this.checkBox_NonComplianceSets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox_NonComplianceSets.Location = new System.Drawing.Point(18, 107);
-            this.checkBox_NonComplianceSets.Name = "checkBox_NonComplianceSets";
-            this.checkBox_NonComplianceSets.Size = new System.Drawing.Size(115, 17);
-            this.checkBox_NonComplianceSets.TabIndex = 41;
-            this.checkBox_NonComplianceSets.Text = "zbiory niezgodnosci";
-            this.checkBox_NonComplianceSets.UseVisualStyleBackColor = true;
+            this.checkBox_NonConcordanceSets.AutoSize = true;
+            this.checkBox_NonConcordanceSets.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_NonConcordanceSets.Location = new System.Drawing.Point(18, 107);
+            this.checkBox_NonConcordanceSets.Name = "checkBox_NonConcordanceSets";
+            this.checkBox_NonConcordanceSets.Size = new System.Drawing.Size(115, 17);
+            this.checkBox_NonConcordanceSets.TabIndex = 41;
+            this.checkBox_NonConcordanceSets.Text = "zbiory niezgodnosci";
+            this.checkBox_NonConcordanceSets.UseVisualStyleBackColor = true;
+            this.checkBox_NonConcordanceSets.CheckedChanged += new System.EventHandler(this.checkBox_NonConcordanceSets_CheckedChanged);
             // 
             // checkBox_OutrankingSets
             // 
@@ -466,6 +469,7 @@ namespace ElectreAp
             this.checkBox_OutrankingSets.TabIndex = 40;
             this.checkBox_OutrankingSets.Text = "zbiory przewyzszania";
             this.checkBox_OutrankingSets.UseVisualStyleBackColor = true;
+            this.checkBox_OutrankingSets.CheckedChanged += new System.EventHandler(this.checkBox_OutrankingSets_CheckedChanged);
             // 
             // checkBox_SetEqualityMatrix
             // 
@@ -477,6 +481,7 @@ namespace ElectreAp
             this.checkBox_SetEqualityMatrix.TabIndex = 39;
             this.checkBox_SetEqualityMatrix.Text = "macierz rownosci zbior. przew.";
             this.checkBox_SetEqualityMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_SetEqualityMatrix.CheckedChanged += new System.EventHandler(this.checkBox_SetEqualityMatrix_CheckedChanged);
             // 
             // checkBox_RatingMatrix
             // 
@@ -488,6 +493,7 @@ namespace ElectreAp
             this.checkBox_RatingMatrix.TabIndex = 38;
             this.checkBox_RatingMatrix.Text = "macierze ocen";
             this.checkBox_RatingMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_RatingMatrix.CheckedChanged += new System.EventHandler(this.checkBox_RatingMatrix_CheckedChanged);
             // 
             // checkBox_CredibilityMatrix
             // 
@@ -499,17 +505,19 @@ namespace ElectreAp
             this.checkBox_CredibilityMatrix.TabIndex = 37;
             this.checkBox_CredibilityMatrix.Text = "macierz wiarygodnosci";
             this.checkBox_CredibilityMatrix.UseVisualStyleBackColor = true;
+            this.checkBox_CredibilityMatrix.CheckedChanged += new System.EventHandler(this.checkBox_CredibilityMatrix_CheckedChanged);
             // 
-            // checkBox_ComplianceSet
+            // checkBox_ConcordanceSet
             // 
-            this.checkBox_ComplianceSet.AutoSize = true;
-            this.checkBox_ComplianceSet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox_ComplianceSet.Location = new System.Drawing.Point(18, 55);
-            this.checkBox_ComplianceSet.Name = "checkBox_ComplianceSet";
-            this.checkBox_ComplianceSet.Size = new System.Drawing.Size(101, 17);
-            this.checkBox_ComplianceSet.TabIndex = 36;
-            this.checkBox_ComplianceSet.Text = "zbiory zgodnosci";
-            this.checkBox_ComplianceSet.UseVisualStyleBackColor = true;
+            this.checkBox_ConcordanceSet.AutoSize = true;
+            this.checkBox_ConcordanceSet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.checkBox_ConcordanceSet.Location = new System.Drawing.Point(18, 55);
+            this.checkBox_ConcordanceSet.Name = "checkBox_ConcordanceSet";
+            this.checkBox_ConcordanceSet.Size = new System.Drawing.Size(101, 17);
+            this.checkBox_ConcordanceSet.TabIndex = 36;
+            this.checkBox_ConcordanceSet.Text = "zbiory zgodnosci";
+            this.checkBox_ConcordanceSet.UseVisualStyleBackColor = true;
+            this.checkBox_ConcordanceSet.CheckedChanged += new System.EventHandler(this.checkBox_ConcordanceSets_CheckedChanged);
             // 
             // checkBox_CheckAllOptions
             // 
@@ -563,29 +571,12 @@ namespace ElectreAp
             this.tabControl_LeaderBoards.Size = new System.Drawing.Size(691, 352);
             this.tabControl_LeaderBoards.TabIndex = 36;
             // 
-            // groupBox_ForPanelWithImg
-            // 
-            this.groupBox_ForPanelWithImg.Controls.Add(this.panel_WithScrllOptAndImg);
-            this.groupBox_ForPanelWithImg.Location = new System.Drawing.Point(730, 343);
-            this.groupBox_ForPanelWithImg.Name = "groupBox_ForPanelWithImg";
-            this.groupBox_ForPanelWithImg.Size = new System.Drawing.Size(501, 352);
-            this.groupBox_ForPanelWithImg.TabIndex = 37;
-            this.groupBox_ForPanelWithImg.TabStop = false;
-            this.groupBox_ForPanelWithImg.Text = "Wykorzystane wzory";
-            // 
-            // panel_WithScrllOptAndImg
-            // 
-            this.panel_WithScrllOptAndImg.Location = new System.Drawing.Point(6, 19);
-            this.panel_WithScrllOptAndImg.Name = "panel_WithScrllOptAndImg";
-            this.panel_WithScrllOptAndImg.Size = new System.Drawing.Size(489, 327);
-            this.panel_WithScrllOptAndImg.TabIndex = 0;
-            // 
             // dataGridView_Matrix
             // 
             this.dataGridView_Matrix.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Matrix.Location = new System.Drawing.Point(720, 16);
             this.dataGridView_Matrix.Name = "dataGridView_Matrix";
-            this.dataGridView_Matrix.Size = new System.Drawing.Size(494, 321);
+            this.dataGridView_Matrix.Size = new System.Drawing.Size(507, 321);
             this.dataGridView_Matrix.TabIndex = 38;
             this.dataGridView_Matrix.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_Matrix_CellEndEdit);
             // 
@@ -603,15 +594,26 @@ namespace ElectreAp
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // flowLayoutPanel_MathImg
+            // 
+            this.flowLayoutPanel_MathImg.Location = new System.Drawing.Point(720, 343);
+            this.flowLayoutPanel_MathImg.Name = "flowLayoutPanel_MathImg";
+            this.flowLayoutPanel_MathImg.Size = new System.Drawing.Size(507, 352);
+            this.flowLayoutPanel_MathImg.TabIndex = 41;
+            this.flowLayoutPanel_MathImg.BackColor = System.Drawing.Color.White;
+            this.flowLayoutPanel_MathImg.AutoScroll = true;
+            this.flowLayoutPanel_MathImg.HorizontalScroll.Visible = true;
+            this.flowLayoutPanel_MathImg.HorizontalScroll.Enabled = true;
+            // 
             // Electre
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1226, 700);
+            this.ClientSize = new System.Drawing.Size(1232, 698);
+            this.Controls.Add(this.flowLayoutPanel_MathImg);
             this.Controls.Add(this.listBox_CriteriaToChose);
             this.Controls.Add(this.dataGridView_Matrix);
-            this.Controls.Add(this.groupBox_ForPanelWithImg);
             this.Controls.Add(this.tabControl_LeaderBoards);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBox_TurnOffVeto);
@@ -649,7 +651,6 @@ namespace ElectreAp
             this.Load += new System.EventHandler(this.UserControl_Load);
             this.panel_ChosingOptionsWithCheckBoxes.ResumeLayout(false);
             this.panel_ChosingOptionsWithCheckBoxes.PerformLayout();
-            this.groupBox_ForPanelWithImg.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Matrix)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -691,20 +692,18 @@ namespace ElectreAp
         private Label label_ChosingOptionsWithCheckBoxes;
         private CheckBox checkBox_TurnOffVeto;
         private Label label4;
-        private CheckBox checkBox_CompatibilityMatrix;
-        private CheckBox checkBox_NonComplianceSets;
+        private CheckBox checkBox_ConcordanceMatrix;
+        private CheckBox checkBox_NonConcordanceSets;
         private CheckBox checkBox_OutrankingSets;
         private CheckBox checkBox_SetEqualityMatrix;
         private CheckBox checkBox_RatingMatrix;
         private CheckBox checkBox_CredibilityMatrix;
-        private CheckBox checkBox_ComplianceSet;
+        private CheckBox checkBox_ConcordanceSet;
         private CheckBox checkBox_CheckAllOptions;
         private CheckBox checkBox_TopDownDistillation;
         private CheckBox checkBox_UpwardDistillation;
         private CheckBox checkBox_Rankings;
         private TabControl tabControl_LeaderBoards;
-        private GroupBox groupBox_ForPanelWithImg;
-        private Panel panel_WithScrllOptAndImg;
         private Label label_Criteria;
         private TextBox textBox_Criteria;
 
@@ -714,5 +713,6 @@ namespace ElectreAp
         private ListBox listBox_CriteriaToChose;
         private ContextMenuStrip contextMenuStrip1;
         private System.ComponentModel.IContainer components;
+        private FlowLayoutPanel flowLayoutPanel_MathImg;
     }
 }
