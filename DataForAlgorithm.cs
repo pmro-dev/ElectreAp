@@ -31,7 +31,9 @@ namespace ElectreAp
         protected List<Int32> listaNumerowZNazwNajlepszychOpcjiWewnatrz = new List<Int32>();
         protected List<Int32> listaNumerowZNazwOpcjiUsytWRank = new List<Int32>();
         protected List<Int32> listaNumerowZNazwOpcjiOgolZstep = new List<Int32>();
+        public List<Int32> ListaNumerowZNazwOpcjiOgolZstep { get { return listaNumerowZNazwOpcjiOgolZstep; } }
         protected List<Int32> listaNumerowZNazwOpcjiOgolWstep = new List<Int32>();
+        public List<Int32> ListaNumerowZNazwOpcjiOgolWstep { get { return listaNumerowZNazwOpcjiOgolWstep; } }
         protected List<Int32> listaNumZNazwPomoc = new List<Int32>();
         protected List<Int32> listaKtoZKimPrzegral = new List<Int32>();
         protected List<Int32> listaAltWRank = new List<Int32>();
@@ -69,6 +71,7 @@ namespace ElectreAp
         // macierz wskaźników wiarygodności inaczej Credibility Matrix
         private Double[,] credibilityMatrix;
         private Double[,] roboczyMatrixDOgol;
+        public Double[,] RoboczyMatrixDOgol { get { return roboczyMatrixDOgol; } }
         private Double[,] matrixRownosciZbiorowPrzewyzszania;
         private Double[,] roboczyMatrixD;
         protected Double[,] tabelaMatrix;
@@ -93,7 +96,7 @@ namespace ElectreAp
         public double Alfa { get { return alfa; } set { alfa = value;} }
         private double beta = 0.3;
         public double Beta { get { return beta; } set { beta = value; } }
-        private double newDelta = 0.0;
+        protected double newDelta = 0.0;
         private double sDeltaK = 0.0;
         private double zmiennaPomocnicza = 0.0;
         private double wartoscMax = 0.0;
@@ -116,16 +119,38 @@ namespace ElectreAp
         // wiersz wskazuje na wariant do rozpatrzenia
         private int wiersz = -1;
         private int numerNiepasujacego = -1;
-        private int maxim = 0;
+        protected int maxim = 0;
         private int pomocna = 0;
         private int licz = 0;
 
         private Boolean testDC = false;
         private Boolean testDelta = false;
         // destylacja zstępująca == true, destylacja wstępująca == false
-        private Boolean typDestylacji = true;
+        protected Boolean typDestylacji = true;
+        public Boolean TypDestylacji { get { return typDestylacji; } set { typDestylacji = value; } }
         private Boolean tescik = false;
         private Boolean tescikBol = false;
+
+        private Boolean cboxConcordanceSetsChecked = false;
+        public Boolean CboxConcordanceSetsChecked { get { return cboxConcordanceSetsChecked; } set { cboxConcordanceSetsChecked = value; } }
+        private Boolean cboxConcordanceMatrixChecked = false;
+        public Boolean CboxConcordanceMatrixChecked { get { return cboxConcordanceMatrixChecked; } set { cboxConcordanceMatrixChecked = value; } }
+        private Boolean cboxNonConcordanceSetsChecked = false;
+        public Boolean CboxNonConcordanceSetsChecked { get { return cboxNonConcordanceSetsChecked; } set { cboxNonConcordanceSetsChecked = value; } }
+        private Boolean cboxOutrankingSetsChecked = false;
+        public Boolean CboxOutrankingSetsChecked { get { return cboxOutrankingSetsChecked; } set { cboxOutrankingSetsChecked = value; } }
+        private Boolean cboxSetEqualityMatrixChecked = false;
+        public Boolean CboxSetEqualityMatrixChecked { get { return cboxSetEqualityMatrixChecked; } set { cboxSetEqualityMatrixChecked = value; } }
+        private Boolean cboxCredibilityMatrixChecked = false;
+        public Boolean CboxCredibilityMatrixChecked { get { return cboxCredibilityMatrixChecked; } set { cboxCredibilityMatrixChecked = value; } }
+        private Boolean cboxRatingMatrixChecked = false;
+        public Boolean CboxRatingMatrixChecked { get { return cboxRatingMatrixChecked; } set { cboxRatingMatrixChecked = value; } }
+        private Boolean cboxTopDownDistillationChecked = false;
+        public Boolean CboxTopDownDistillationChecked { get { return cboxTopDownDistillationChecked; } set { cboxTopDownDistillationChecked = value; } }
+        private Boolean cboxUpwardDistillationChecked = false;
+        public Boolean CboxUpwardDistillationChecked { get { return cboxUpwardDistillationChecked; } set { cboxUpwardDistillationChecked = value; } }
+        private Boolean cboxRankingsChecked = false;
+        public Boolean CboxRankingsChecked { get { return cboxRankingsChecked; } set { cboxRankingsChecked = value; } }
         #endregion
 
         public void CreateMatrixBasedOnTable(){ }
