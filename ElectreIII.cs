@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using ElectreAp;
 /*using static ElectreAp.Tables;*/
 
 namespace ElectreAp
@@ -10,14 +13,13 @@ namespace ElectreAp
     class ElectreIII : DataForAlgorithm, IAlgorithm, IElectreIII
     {
 
-        public ElectreIII()
-        {
+        public ElectreIII() {
 
         }
 
         public double CalculateSDeltaK(double deltaLast)
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
         public void CalculateThreshold(double[,,] table, double value, int i, int mod) {
@@ -62,7 +64,7 @@ namespace ElectreAp
 
         public void CheckingIsThereThisSameOptions(int y)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void CreateConcordanceSets() {
@@ -216,35 +218,119 @@ namespace ElectreAp
 
         public void CreateDiscordanceSets()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void CreateFinalRanking(double[,] tabSum)
         {
-            throw new NotImplementedException();
+            
         }
 
-        public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
+        //public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
+        public void CreateOutrankingSets()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void CreateSumTableOfDistillations(double[,] tabTopDownDistillation, double[,] tabUpwardDistillation)
         {
-            throw new NotImplementedException();
+            
         }
 
         public double[][] CreateTabOfDistillation(string[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
+        public void CreateTabTopDown()
+        {
+
+        }
+
+        public void CreateTabUpward()
+        {
+
+        }
+
+        public void ShowTabOfDistillation(Double[,] tab) {
+
+        }
+
+        Double[,] concordanceMatrix;
+        double valueOfConcordance;
+
+        //public void CreateConcordanceMatrix(List<Double[,]> listaZbiorowZgodnosci, int numberOfAlternatives) {
+        public void CreateConcordanceMatrix() {
+            concordanceMatrix = new Double[numberOfAlternatives, numberOfAlternatives];
+            double sumOfQuotients = 0;
+            double sumOfWeights= 0;
+
+            // wybór kolumny
+            for (int j = 0; j < numberOfAlternatives; j++) {
+                // wybór wiersza
+                for (int k = 0; k < numberOfAlternatives; k++) {
+                    sumOfWeights = 0;
+                    sumOfQuotients = 0;
+
+                    // wybór zbioru zgodnosci dla i-tego kryterium
+                    for (int i = 0; i < listaZbiorowZgodnosci.Count; i++) {
+                        sumOfQuotients = sumOfQuotients + (listaWagW[i] * (double)listaZbiorowZgodnosci[i].GetValue(k, j));
+                        sumOfWeights = sumOfWeights + listaWagW[i];
+                    }
+                    if (sumOfWeights == 0) {
+                        valueOfConcordance = 0;
+                    }
+                    else {
+                        valueOfConcordance = (sumOfQuotients / sumOfWeights);
+                    }
+
+                    concordanceMatrix[k,j] = Math.Round(valueOfConcordance, miejscPoPrzecinku);
+                }
+            }
+        }
+
+        string pathMathImg;
         public void DoCalculations() {
+
             DivideThresholdsToLists();
             CreateMatrixForAlternativeData(numberOfAlternatives, numberOfCriterias);
+            CreateConcordanceSets();
+
+/*            string ps = AppDomain.CurrentDomain.BaseDirectory;
+            pathMathImg = ps + "\\MathImg\\wzor_mal_direct_prog.png";
+            Bitmap bm = new Bitmap(ps + "\\MathImg\\wzor_mal_direct_prog.png");
+            Console.WriteLine("TEST" + ps + "\\MathImg\\wzor_mal_direct_prog.PNG");
+            PrepareImgToShow(pathMathImg);
+            pathMathImg = "\\MathImg\\wzor_rosn_direct_prog.PNG";
+
+
+            PrepareImgToShow(pathMathImg);
+            pathMathImg = "\\MathImg\\wzor_mal_invers_prog.PNG";
+            PrepareImgToShow(pathMathImg);
+            pathMathImg = "\\MathImg\\wzor_rosn_invers_prog.PNG";
+            PrepareImgToShow(pathMathImg);
+            pathMathImg = "\\MathImg\\wzor_przeliczanie_wspolczynnikow.PNG";
+            PrepareImgToShow(pathMathImg);
+
+            if (CboxConcordanceSetsChecked) {
+                ShowConcordanceSets();
+                pathMathImg = "\\MathImg\\wspolczynnik_zgodnosci_kryterium_rosn.PNG";
+                PrepareImgToShow(pathMathImg);
+                pathMathImg = "\\MathImg\\wspolczynnik_zgodnosci_kryterium_mal.PNG";
+                PrepareImgToShow(pathMathImg);
+            }
+
+            CreateConcordanceMatrix(listaZbiorowZgodnosci, numberOfAlternatives);
+
+            if (CboxConcordanceMatrixChecked) {
+
+                ShowConcordanceMatrix();
+                pathMathImg = "\\MathImg\\indeks_zgodnosci.PNG";
+                PrepareImgToShow(pathMathImg);
+            }*/
         }
 
-        private void DivideThresholdsToLists() {
+        public void DivideThresholdsToLists() {
             /*
                 uzupełnianie listy kierunków -> pobieranie wartości z matrixa tabeli
                 wartość kierunku ( 0 lub 1 ) mówi nam czy wartości ujemne ( 0 ) czy wartości dodatnie ( 1 ) 
@@ -395,62 +481,97 @@ namespace ElectreAp
 
         public void DoStageFirst()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void DoStageSecond()
         {
-            throw new NotImplementedException();
+            
         }
 
         public void DoStepFifth(double lastDelta, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void DoStepFourth(double deltaLast, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void DoStepSecond(double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void DoStepSeventh(double[,] ratingMatrix, double qualificationOfTheBestOption, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void DoStepSixth(double[,] ratingMatrix, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void Exchange(int max, int min)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void FindMax(string[][] rankingOfOptionsAfterDistillation)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void FindMax(string[,] rankingOfOptionsAfterDistillation)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void FindMin()
         {
-            throw new NotImplementedException();
+            
+        }
+
+        public void PrepareTopDownDistillation() {
+            listaNumerowZNazwOpcjiUsytWRank.Clear();
+            newDelta = 0.0;
+            typDestylacji = true;
+        }
+
+        public void PrepareUpwardDistillation() {
+            listaNumerowZNazwOpcjiUsytWRank.Clear();
+            newDelta = 0.0;
+            typDestylacji = false;
+        }
+
+        public void PrepareUpwardScore() {
+            FindMax(miejscaOpcjiPoDestylacjiWstepujacej);
+            //ZnajdzMaxim(miejscaOpcjiPoDestylacjiWstepujacej);
+            Exchange(maxim, 1);
+            //Zamien(maxim, 1);
         }
 
         public void ShowConcordanceSets()
         {
             throw new NotImplementedException();
+        }
+
+        public void ShowConcordanceMatrix() {
+            // wypisanie CorcordanceMatrix
+            Console.WriteLine("MACIERZ ZGODNOSCI");
+            for (int y = 0; y < numberOfAlternatives; y++)
+            {
+                for (int z = 0; z < numberOfAlternatives; z++)
+                {
+                    Console.Write(concordanceMatrix[y,z] + " | ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("\n\n");
+            
+            //TabComplete(concordanceMatrix, "Macierz Zgod.");
         }
 
         public void ShowDiscordanceSets()
@@ -481,6 +602,21 @@ namespace ElectreAp
         double[,] IElectreIII.CreateTabOfDistillation(string[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ)
         {
             throw new NotImplementedException();
+        }
+
+        public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowTopDownDiistillation()
+        {
+
+        }
+
+        public void ShowUpwardDistillation()
+        {
+
         }
     }
 }
