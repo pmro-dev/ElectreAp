@@ -51,6 +51,8 @@ namespace ElectreAp
 
         }
 
+        string pathMathImg = "";
+
         private void Button_Calculate_Click(object sender, EventArgs e) {
             tabControl_LeaderBoards.TabPages.Clear();
             //Reset(2);
@@ -74,7 +76,146 @@ namespace ElectreAp
                 Console.WriteLine(ex);
             }
 
-            taskElectreIII.DoCalculations();
+            //taskElectreIII.DoCalculations();
+            taskElectreIII.DivideThresholdsToLists();
+            taskElectreIII.CreateMatrixForAlternativeData(taskElectreIII.NumberOfAlternatives, taskElectreIII.NumberOfCriterias);
+            taskElectreIII.CreateConcordanceSets();
+
+            string ps = AppDomain.CurrentDomain.BaseDirectory;
+            pathMathImg = ps + "\\MathImg\\wzor_mal_direct_prog.PNG";
+            PrepareImgToShow(pathMathImg);
+            pathMathImg = ps + "\\MathImg\\wzor_rosn_direct_prog.PNG";
+            PrepareImgToShow(pathMathImg);
+            pathMathImg = ps + "\\MathImg\\wzor_mal_invers_prog.PNG";
+            PrepareImgToShow(pathMathImg);
+            pathMathImg = ps + "\\MathImg\\wzor_rosn_invers_prog.PNG";
+            PrepareImgToShow(pathMathImg);
+            pathMathImg = ps + "\\MathImg\\wzor_przeliczanie_wspolczynnikow.PNG";
+            PrepareImgToShow(pathMathImg);
+
+            if(taskElectreIII.CboxConcordanceSetsChecked) {
+                taskElectreIII.ShowConcordanceSets();
+                pathMathImg = ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_rosn.PNG";
+                PrepareImgToShow(pathMathImg);
+                pathMathImg = ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_mal.PNG";
+                PrepareImgToShow(pathMathImg);
+            }
+
+            taskElectreIII.CreateConcordanceMatrix();
+
+            if (taskElectreIII.CboxConcordanceMatrixChecked) {
+                taskElectreIII.ShowConcordanceMatrix();
+                pathMathImg = ps + "\\MathImg\\indeks_zgodnosci.PNG";
+                PrepareImgToShow(pathMathImg);
+            }
+
+            taskElectreIII.CreateDiscordanceSets();
+
+            if (taskElectreIII.CboxNonConcordanceSetsChecked) {
+                taskElectreIII.ShowDiscordanceSets();
+                pathMathImg = ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_rosn.PNG";
+                PrepareImgToShow(pathMathImg);
+                pathMathImg = ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_mal.PNG";
+                PrepareImgToShow(pathMathImg);
+            }
+
+            taskElectreIII.CreateOutrankingSets();
+
+            if (taskElectreIII.CboxOutrankingSetsChecked) {
+                taskElectreIII.ShowOutrankingSets();
+                pathMathImg = ps + "\\MathImg\\WartoscPrzewyzszania.JPG";
+                PrepareImgToShow(pathMathImg);
+            }
+
+            // tworz zbiory wiarygodnosci
+            taskElectreIII.DoStageFirst();
+
+            if (taskElectreIII.CboxSetEqualityMatrixChecked) {
+                taskElectreIII.ShowStageFirst();
+                //WypiszEtap1(matrixRownosciZbiorowPrzewyzszania);
+            }
+
+            taskElectreIII.DoStageSecond();
+
+            if (taskElectreIII.CboxCredibilityMatrixChecked) {
+                taskElectreIII.ShowStageSecond();
+                //WypiszEtap2(credibilityMatrix);
+                pathMathImg = ps + "\\MathImg\\indeks_wiarygodnosci.PNG";
+                PrepareImgToShow(pathMathImg);
+            }
+
+            taskElectreIII.PrepareTopDownDistillation();
+            // wykonaj destylacje zstępującą
+            taskElectreIII.DoStepSecond(taskElectreIII.RoboczyMatrixDOgol, taskElectreIII.TypDestylacji, taskElectreIII.ListaNumerowZNazwOpcjiOgolZstep);
+            //Krok2(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolZstep);
+            
+            taskElectreIII.PrepareUpwardDistillation();
+
+            // wykonaj destylację wstępującą
+            taskElectreIII.DoStepSecond(taskElectreIII.RoboczyMatrixDOgol, taskElectreIII.TypDestylacji, taskElectreIII.ListaNumerowZNazwOpcjiOgolWstep);
+            //Krok2(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolWstep);
+
+            if (taskElectreIII.CboxTopDownDistillationChecked) {
+                taskElectreIII.ShowTopDownDiistillation();
+                //WypisywanieZstep();
+            }
+
+            taskElectreIII.PrepareUpwardScore();
+
+            if (taskElectreIII.CboxUpwardDistillationChecked) {
+                taskElectreIII.ShowUpwardDistillation();
+                //WypisywanieWstep();
+            }
+
+            if (taskElectreIII.CboxUpwardDistillationChecked || taskElectreIII.CboxTopDownDistillationChecked) {
+                pathMathImg = ps + "\\MathImg\\alfa_zero.PNG";
+                PrepareImgToShow(pathMathImg);
+                pathMathImg = ps + "\\MathImg\\s_alfa.PNG";
+                PrepareImgToShow(pathMathImg);
+                pathMathImg = ps + "\\MathImg\\alfa_nplus.PNG";
+                PrepareImgToShow(pathMathImg);
+            }
+
+            taskElectreIII.CreateTabTopDown();
+            //UtworzTabZstep();
+            //taskElectreIII.ShowTabOfDistillation();
+            //WypiszTabDest(TabZstep);
+
+            taskElectreIII.CreateTabUpward();
+            //UtworzTabWstep();
+            //taskElectreIII.ShowTabOfDistillation();
+            //WypiszTabDest(TabWstep);
+
+            //taskElectreIII.CreateSumTableOfDistillations();
+            //UtworzTabSum();
+            //taskElectreIII.ShowTabOfDistillation();
+            //WypiszTabDest(TabSum);
+
+            if (taskElectreIII.CboxRankingsChecked) {
+/*                TabComplete(miejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
+                TabComplete(miejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
+                TabComplete(TabSum, "Finalna Macierz Zależności", lul);*/
+            }
+
+            //taskElectreIII.CreateFinalRanking();
+            //RankingFinalowy(TabSum);
+
+            AddTabPage();
+        }
+
+        public void PrepareImgToShow(String pathMathImg) {
+            try {
+                PictureBox pictureBox = new PictureBox();
+                Image img = Image.FromFile(pathMathImg);
+                pictureBox.Image = img;
+                pictureBox.ClientSize = new Size(flowLayoutPanel_MathImg.Width-25, flowLayoutPanel_MathImg.Height);
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                flowLayoutPanel_MathImg.Controls.Add(pictureBox);
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex);
+                MessageBox.Show("Problem z wczytaniem obrazka ze ścieżki -> " + pathMathImg, "Błąd", MessageBoxButtons.OK);
+            }
         }
 
         private void Button_SaveData_Click(object sender, EventArgs e) {
@@ -119,10 +260,10 @@ namespace ElectreAp
 
         private void CheckBox_CheckAllOptions_CheckedChanged(object sender, EventArgs e) {
             if(checkBox_CheckAllOptions.Checked) {
-                checkBox_CompatibilityMatrix.Checked = true;
-                checkBox_ComplianceSet.Checked = true;
+                checkBox_ConcordanceMatrix.Checked = true;
+                checkBox_ConcordanceSet.Checked = true;
                 checkBox_CredibilityMatrix.Checked = true;
-                checkBox_NonComplianceSets.Checked = true;
+                checkBox_NonConcordanceSets.Checked = true;
                 checkBox_OutrankingSets.Checked = true;
                 checkBox_Rankings.Checked = true;
                 checkBox_RatingMatrix.Checked = true;
@@ -131,10 +272,10 @@ namespace ElectreAp
                 checkBox_UpwardDistillation.Checked = true;
             }
             else {
-                checkBox_CompatibilityMatrix.Checked = false;
-                checkBox_ComplianceSet.Checked = false;
+                checkBox_ConcordanceMatrix.Checked = false;
+                checkBox_ConcordanceSet.Checked = false;
                 checkBox_CredibilityMatrix.Checked = false;
-                checkBox_NonComplianceSets.Checked = false;
+                checkBox_NonConcordanceSets.Checked = false;
                 checkBox_OutrankingSets.Checked = false;
                 checkBox_Rankings.Checked = false;
                 checkBox_RatingMatrix.Checked = false;
@@ -142,6 +283,31 @@ namespace ElectreAp
                 checkBox_TopDownDistillation.Checked = false;
                 checkBox_UpwardDistillation.Checked = false;
             }
+        }
+
+        private void AddTabPage() {
+        //private void AddTabPage(Double[,] matrix, String nazwa, List<Int32> roboczaListaNumerowOpcji) {
+            /*            tabPage.Text = "";
+                        tabPage.Name = "";
+                        DataGridView dg = new DataGridView();
+                        dg.Rows.AddRange();
+                        dg.Columns.AddRange();
+                        //dg.DataSource
+                        DataSet ds = new DataSet(); 
+                        //ds.Tables.add
+                        tabPage.Controls.Add(dg);
+                        tabControl_LeaderBoards.TabPages.Add(tabPage);*/
+            TabPage tabPage = new TabPage();
+            tabPage.Text = "Tablica nr. 1";
+
+            DataGridView dataGridView = new DataGridView();
+            dataGridView.Size = new Size(690, 350);
+            DataTable dataTable = new DataTable();
+            DataColumn data = new DataColumn();
+
+            tabPage.Controls.Add(dataGridView);
+            tabControl_LeaderBoards.TabPages.Add(tabPage);
+
         }
 
 
@@ -344,5 +510,54 @@ namespace ElectreAp
             } else { return true; }
         }
 
+        private void checkBox_ConcordanceSets_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_ConcordanceSet.Checked) { taskElectreIII.CboxConcordanceSetsChecked = true; }
+            else { taskElectreIII.CboxConcordanceSetsChecked = false; }
+        }
+
+        private void checkBox_ConcordanceMatrix_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_ConcordanceMatrix.Checked) { taskElectreIII.CboxConcordanceMatrixChecked = true; }
+            else { taskElectreIII.CboxConcordanceMatrixChecked = false; }
+        }
+
+        private void checkBox_NonConcordanceSets_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_NonConcordanceSets.Checked) { taskElectreIII.CboxNonConcordanceSetsChecked = true; }
+            else { taskElectreIII.CboxNonConcordanceSetsChecked = false; }
+        }
+
+        private void checkBox_OutrankingSets_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_OutrankingSets.Checked) { taskElectreIII.CboxOutrankingSetsChecked = true; }
+            else { taskElectreIII.CboxOutrankingSetsChecked = false; }
+        }
+
+        private void checkBox_SetEqualityMatrix_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_SetEqualityMatrix.Checked) { taskElectreIII.CboxSetEqualityMatrixChecked = true; }
+            else { taskElectreIII.CboxSetEqualityMatrixChecked = false; }
+        }
+
+        private void checkBox_CredibilityMatrix_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_CredibilityMatrix.Checked) { taskElectreIII.CboxCredibilityMatrixChecked = true; }
+            else { taskElectreIII.CboxCredibilityMatrixChecked = false; }
+        }
+
+        private void checkBox_RatingMatrix_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_RatingMatrix.Checked) { taskElectreIII.CboxRatingMatrixChecked = true; }
+            else { taskElectreIII.CboxRatingMatrixChecked = false; }
+        }
+
+        private void checkBox_TopDownDistillation_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_TopDownDistillation.Checked) { taskElectreIII.CboxTopDownDistillationChecked = true; }
+            else { taskElectreIII.CboxTopDownDistillationChecked = false; }
+        }
+
+        private void checkBox_UpwardDistillation_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_UpwardDistillation.Checked) { taskElectreIII.CboxUpwardDistillationChecked = true; }
+            else { taskElectreIII.CboxUpwardDistillationChecked = false; }
+        }
+
+        private void checkBox_Rankings_CheckedChanged(object sender, EventArgs e) {
+            if (checkBox_Rankings.Checked) { taskElectreIII.CboxRankingsChecked = true; }
+            else { taskElectreIII.CboxRankingsChecked = false; }
+        }
     }
 }
