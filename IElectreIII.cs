@@ -23,11 +23,11 @@ namespace ElectreAp
         void DoStepSixth(Double[,] ratingMatrix, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
         void DoStepSeventh(Double[,] ratingMatrix, double qualificationOfTheBestOption, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
         void FindMin();
-        void CreateFinalRanking(Double[,] tabSum);
+        void CreateFinalRanking();
         void CheckingIsThereThisSameOptions(int y);
         Double[,] CreateTabOfDistillation(String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ);
-        void ShowTableDataOfDistillation(Double[,] tab);
-        void CreateSumTableOfDistillations(Double[,] tabTopDownDistillation, Double[,] tabUpwardDistillation);
+        void ShowTableDataOfDistillation(Double[,] tabDistillation);
+        void CreateSumTableOfDistillations();
         void FindMax(String[,] rankingOfOptionsAfterDistillation);
         void Exchange(int max, int min);
     }

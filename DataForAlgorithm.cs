@@ -52,7 +52,9 @@ namespace ElectreAp
         public string ColumnNames_GetValue(int index) { return columnNames[index]; }
 
         protected String[,] miejscaOpcjiPoDestylacjiZstepujacej;
+        public String[,] MiejscaOpcjiPoDestylacjiZstepujacej { get { return miejscaOpcjiPoDestylacjiZstepujacej; } }
         protected String[,] miejscaOpcjiPoDestylacjiWstepujacej;
+        public String[,] MiejscaOpcjiPoDestylacjiWstepujacej { get { return miejscaOpcjiPoDestylacjiWstepujacej; } }
         protected String[,] punktacjaOpcji;
         protected String[,] punktacjaOpcjiZmienna;
         protected String[,] tabRank;
@@ -63,11 +65,14 @@ namespace ElectreAp
 
         private String valueHelp = "";
 
-        private Double[,] CorcordanceMatrix;
+        protected Double[,] concordanceMatrix;
         protected Double[,] tabelaAlternatyw;
-        private Double[,] TabZstep;
-        private Double[,] TabWstep;
-        private Double[,] TabSum;
+        private Double[,] tabZstep;
+        public Double[,] TabZstep { get { return tabZstep; } set { tabZstep = value; } }
+        private Double[,] tabWstep;
+        public Double[,] TabWstep { get { return tabWstep; } set { tabWstep = value; } }
+        private Double[,] tabSum;
+        public Double[,] TabSum { get { return tabSum; } set { tabSum = value; } }
         // macierz wskaźników wiarygodności inaczej Credibility Matrix
         private Double[,] credibilityMatrix;
         private Double[,] roboczyMatrixDOgol;

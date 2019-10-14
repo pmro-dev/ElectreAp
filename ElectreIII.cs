@@ -221,8 +221,8 @@ namespace ElectreAp
             
         }
 
-        public void CreateFinalRanking(double[,] tabSum)
-        {
+        //public void CreateFinalRanking(double[,] tabSum)
+        public void CreateFinalRanking() {
             
         }
 
@@ -232,12 +232,12 @@ namespace ElectreAp
             
         }
 
-        public void CreateSumTableOfDistillations(double[,] tabTopDownDistillation, double[,] tabUpwardDistillation)
-        {
+       // public void CreateSumTableOfDistillations(double[,] tabTopDownDistillation, double[,] tabUpwardDistillation)
+        public void CreateSumTableOfDistillations() {
             
         }
 
-        public double[][] CreateTabOfDistillation(string[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ)
+        public Double[,] CreateTabOfDistillation(String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ)
         {
             return null;
         }
@@ -256,7 +256,7 @@ namespace ElectreAp
 
         }
 
-        Double[,] concordanceMatrix;
+        //Double[,] concordanceMatrix;
         double valueOfConcordance;
 
         //public void CreateConcordanceMatrix(List<Double[,]> listaZbiorowZgodnosci, int numberOfAlternatives) {
@@ -562,14 +562,9 @@ namespace ElectreAp
             throw new NotImplementedException();
         }
 
-        public void ShowTableDataOfDistillation(double[,] tab)
+        public void ShowTableDataOfDistillation(double[,] tabDestillation)
         {
-            throw new NotImplementedException();
-        }
-
-        double[,] IElectreIII.CreateTabOfDistillation(string[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ)
-        {
-            throw new NotImplementedException();
+            
         }
 
         public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
