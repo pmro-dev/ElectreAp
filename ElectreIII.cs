@@ -357,23 +357,119 @@ namespace ElectreAp
 
         //public void CreateFinalRanking(double[,] tabSum)
         public void CreateFinalRanking() {
-            
+            listaAlternatyw = new List<List<Int32>>();
+            // budowanie listy kto z kim przegrywa
+            for (int i = 0; i < TabSum.GetLength(1); i++) {
+                listaKtoZKimPrzegral = new List<Int32>();
+                for (int j = 0; j < TabSum.GetLength(0); j++) {
+                    if (TabSum[i, j] == -1) {
+                        listaKtoZKimPrzegral.Add((j + 1));
+                    }
+                }
+                listaAlternatyw.Add(listaKtoZKimPrzegral);
+            }
+            // wypisywanie powyższej listy
+            for (int i = 1; i < listaAlternatyw.Count + 1; i++) {
+                Console.WriteLine("A" + i + " ");
+                for (int j = 0; j < listaAlternatyw[i - 1].Count; j++) {
+                    if (!listaAlternatyw[i - 1].Any()) {
+                        Console.Write(" NULL");
+                    }
+                    else {
+                        Console.Write("a" + listaAlternatyw[i - 1][j]+ " ");
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            listaRank = new List<List<Int32>>();
+
+            listaAltWRank = new List<Int32>();
+            listaAltWRankNieSort = new List<Int32>();
+            listaChwilowa = new List<Int32>();
+
+            FindMin();
+
+            Console.WriteLine("RANKING FINALNY:");
+            for (int i = 0; i < listaRank.Count; i++) {
+                for (int j = 0; j < listaRank[i].Count; j++) {
+                    Console.Write("A" + listaRank[i][j] + " ");
+                }
+                Console.WriteLine();
+            }
+            ChangeRankListToTable(listaRank);
+        }
+        
+        public void ChangeRankListToTable(List<List<Int32>> listaRank) {
+            for (int i = 0; i < listaRank.Count; i++) {
+                for (int j = 0; j < listaRank[i].Count; j++) {
+                    tabRank[1, listaRank[i][j] - 1] = (i + 1).ToString();
+                }
+            }
         }
 
         //public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
-        public void CreateOutrankingSets()
-        {
-            
+        public void CreateOutrankingSets() {
+            Console.WriteLine("SPRAWDZAMY listaZbiorowNieZgodnosci.size() =" + listaZbiorowNieZgodnosci.Count);
+            for (int numerZbioru = 0; numerZbioru < listaZbiorowNieZgodnosci.Count; numerZbioru++) {
+                /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości */
+                Double[,] matrixKryterium = new double[numberOfAlternatives, numberOfAlternatives];
+                for (int numerWiersza = 0; numerWiersza < listaZbiorowNieZgodnosci[numerZbioru].GetLength(1); numerWiersza++) {
+                    for (int numerKolumny = 0; numerKolumny < listaZbiorowNieZgodnosci[numerZbioru].GetLength(0); numerKolumny++) {
+                        if (listaZbiorowNieZgodnosci[numerZbioru][numerWiersza, numerKolumny] > concordanceMatrix[numerWiersza, numerKolumny]) {
+                            matrixKryterium[numerWiersza, numerKolumny] = 1;
+                        }
+                        else {
+                            matrixKryterium[numerWiersza, numerKolumny] = 0;
+                        }
+                    }
+                }
+                listaZbiorowPrzewyzszania.Add(matrixKryterium);
+            }
         }
 
        // public void CreateSumTableOfDistillations(double[,] tabTopDownDistillation, double[,] tabUpwardDistillation)
         public void CreateSumTableOfDistillations() {
-            
+            tabSum = new double[numberOfAlternatives, numberOfAlternatives];
+            for (int i = 0; i < tabSum.GetLength(1); i++) {
+                for (int j = 0; j < tabSum.GetLength(0); j++) {
+                    if (tabZstep[i, j] == 1 && tabWstep[i, j] == 1) {
+                        tabSum[i, j] = 1;
+                    }
+                    else if ((tabZstep[i, j] == 1 && tabWstep[i, j] == 0) || (tabZstep[i, j] == 0 && tabWstep[i, j] == 1)) {
+                        tabSum[i, j] = 1;
+                    }
+                    else if ((tabZstep[i, j] == 0 && tabWstep[i, j] == 0)) {
+                        tabSum[i, j] = 0;
+                    }
+                    else if ((tabZstep[i, j] == 0 && tabWstep[i, j] == -1) || (tabZstep[i, j] == -1 && tabWstep[i, j] == 0)) {
+                        tabSum[i, j] = -1;
+                    }
+                    else if ((tabZstep[i, j] == -1 && tabWstep[i, j] == -1)) {
+                        tabSum[i, j] = -1;
+                    }
+                    else if ((tabZstep[i, j] == -1 && tabWstep[i, j] == 1) || (tabZstep[i, j] == 1 && tabWstep[i, j] == -1)) {
+                        tabSum[i, j] = 2;
+                    }
+                }
+            }
         }
 
-        public Double[,] CreateTabOfDistillation(String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ)
-        {
-            return null;
+        public void CreateTabOfDistillation(double[,] tableOfDistillation, String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ) {
+            tableOfDistillation = new double[numberOfAlternatives, numberOfAlternatives];
+            for (int i = 0; i < tableOfDistillation.GetLength(1); i++) {
+                for (int j = 0; j < tableOfDistillation.GetLength(0); j++) {
+                    if (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) < Int32.Parse(placesOfOptionsAfterDistillation[1, j])) {
+                        tableOfDistillation[i, j] = 1;
+                    }
+                    else if (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) == Int32.Parse(placesOfOptionsAfterDistillation[1, j])) {
+                        tableOfDistillation[i, j] = 0;
+                    }
+                    else {
+                        tableOfDistillation[i, j] = -1;
+                    }
+                }
+            }
         }
 
         public void CreateTabTopDown()
