@@ -25,7 +25,7 @@ namespace ElectreAp
         void FindMin();
         void CreateFinalRanking();
         void CheckingIsThereThisSameOptions(int y);
-        Double[,] CreateTabOfDistillation(String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ);
+        void CreateTabOfDistillation(double[,] tableOfDistillation, String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ);
         void ShowTableDataOfDistillation(Double[,] tabDistillation);
         void CreateSumTableOfDistillations();
         void FindMax(String[,] rankingOfOptionsAfterDistillation);

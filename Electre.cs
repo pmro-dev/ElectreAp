@@ -201,6 +201,10 @@ namespace ElectreAp
 
             taskElectreIII.CreateFinalRanking();
             //RankingFinalowy(TabSum);
+                        
+            if (checkBox_Rankings.Checked) {
+                AddTabPage(taskElectreIII.TabRank, "Rank. Final.");
+            }
         }
 
         public void PrepareImgToShow(String pathMathImg) {
