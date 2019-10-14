@@ -192,7 +192,7 @@ namespace ElectreAp
             //UtworzTabSum();
             taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabSum);
             //WypiszTabDest(TabSum);
-
+            
             if (taskElectreIII.CboxRankingsChecked) {
                 AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
                 AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");

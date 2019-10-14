@@ -216,9 +216,143 @@ namespace ElectreAp
             }
         }
 
-        public void CreateDiscordanceSets()
-        {
-            
+        public void CreateDiscordanceSets() {
+            // var1 i var2 są to zmienne do których przypisujemy odpowiednie wartości alternatyw, a te są wykorzystywane w algorytmie
+            double var2 = 0;
+            double var1 = 0;
+            // y1 i z1 są to współrzędne odpowiednio wiersza i kolumny zmiennej var1
+            int y1 = 0;
+            int z1 = 0;
+
+            /* licz1 (poruszanie się po kolumnach / kryteriach)*/
+            for (int licz1 = 0; licz1 < numberOfCriterias; licz1++) {
+                /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości */
+                Double[,] matrixKryterium = new double[numberOfAlternatives, numberOfAlternatives];
+                // sprawdzamy czy kierunek rosnący
+                if (listaKierunkow[licz1] == 1) {
+                    // poruszanie się po kolumnach alternatyw
+                    for (int i = 0; i < numberOfAlternatives; i++) {
+                        /* licz2 (poruszanie się po wierszach) */
+                        for (int licz2 = 0; licz2 < numberOfAlternatives; licz2++) {
+                            if (i == 0 && licz2 == 0) {
+                                // na początku obydwie porównywalne wartości są takie same
+                                var1 = tabelaAlternatyw[licz2, licz1];
+                                y1 = licz2;
+                                z1 = licz1;
+                                var2 = tabelaAlternatyw[licz2, licz1];
+                            }
+                            else {
+                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli licz1
+                                // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
+                                // dla danej tabeli będzie to wartość z wiersza LICZ2 i kolumny LICZ1
+                                var2 = tabelaAlternatyw[licz2, licz1];
+                            }
+
+                            switch (listaModow[licz1]) {
+                                case -1:
+                                    progQ = listaProguQB[licz1];
+                                    progP = listaProguPB[licz1];
+                                    progV = listaProguVB[licz1];
+                                    break;
+                                case 0:
+                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var1, licz1, 0); }
+                                    else { CalculateThreshold(listaWartProgKryt, var2, licz1, 0); }
+                                    break;
+                                case 1:
+                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, licz1, 1); }
+                                    else { CalculateThreshold(listaWartProgKryt, var1, licz1, 1); }
+                                    break;
+                            }
+
+                            if (listaWartProgKryt[licz1,2,0] == 999999999.9) {
+                                matrixKryterium[i, licz2] = 0;
+                            }
+                            //                  WEDŁUG ROYA
+                            else if (var2 <= var1 + progP) {
+                                matrixKryterium[i, licz2] = 0;
+                            }
+                            else if (progP < var2 - var1 && var2 - var1 < progV) {
+                                Console.WriteLine("var2 - var1 - progP / progV - progP");
+                                Console.WriteLine(var2 + " - " + var1 + " - " + progP + " / " + progV + " - " + progP);
+                                double suma = ((var2 - var1 - progP) / (progV - progP));
+                                matrixKryterium[i, licz2] = Math.Round(suma, miejscPoPrzecinku);
+                                suma = 0;
+                            }
+                            else if (var2 >= var1 + progV) {
+                                matrixKryterium[i, licz2] = 1;
+                            }
+                        }
+
+                        if (y1 + 1 < numberOfAlternatives) {
+                            y1 = y1 + 1;
+                            var1 = tabelaAlternatyw[y1, z1];
+                        }
+                    }
+                }
+                // sprawdzamy czy kierunek malejący
+                else if (listaKierunkow[licz1] == 0) {
+                    for (int i = 0; i < numberOfAlternatives; i++) {
+                        /* licz2 (poruszanie się po wierszach) */
+                        for (int licz2 = 0; licz2 < numberOfAlternatives; licz2++) {
+                            if (i == 0 && licz2 == 0) {
+                                // na początku obydwie porównywalne wartości są takie same
+                                var1 = tabelaAlternatyw[licz2, licz1];
+                                y1 = licz2;
+                                z1 = licz1;
+                                var2 = tabelaAlternatyw[licz2, licz1];
+                            }
+                            else {
+                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli licz1
+                                // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
+                                // dla danej tabeli będzie to wartość z wiersza LICZ2 i kolumny LICZ1
+                                var2 = tabelaAlternatyw[licz2, licz1];
+                            }
+
+                            switch (listaModow[licz1]) {
+                                case -1:
+                                    progQ = listaProguQB[licz1];
+                                    progP = listaProguPB[licz1];
+                                    progV = listaProguVB[licz1];
+                                    break;
+                                case 0:
+                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, licz1, 0); }
+                                    else { CalculateThreshold(listaWartProgKryt, var1, licz1, 0); }
+                                    break;
+                                case 1:
+                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, licz1, 1); }
+                                    else { CalculateThreshold(listaWartProgKryt, var1, licz1, 1); }
+                                    break;
+                            }
+
+                            if (listaWartProgKryt[licz1, 2, 0] == 999999999.9) {
+                                matrixKryterium[i, licz2] = 0;
+                            }
+                            //                  WEDŁUG ROYA
+                            else if ((var1 - var2) <= progP) {
+                                Console.WriteLine(var1 + " - " + var2 + " <= " + progP);
+                                matrixKryterium[i, licz2] = 0;
+                            }
+                            else if (var1 - progV < var2 && var2 < var1 - progP) {
+                                Console.WriteLine("progP < var1 - var2 && var1 - var2 < progV");
+                                Console.WriteLine(progP + " < " + var1 + " - " + var2 + " && " + var1 + " - " + var2 + " < " + progV);
+                                double suma = ((var1 - var2 - progP) / (progV - progP));
+                                matrixKryterium[i, licz2] = Math.Round(suma, miejscPoPrzecinku);
+                                suma = 0;
+                            }
+                            else if ((var1 - var2) >= progV) {
+                                matrixKryterium[i, licz2] = 1;
+                            }
+                        }
+
+                        if (y1 + 1 < numberOfAlternatives) {
+                            y1 = y1 + 1;
+                            var1 = tabelaAlternatyw[y1, z1];
+                        }
+                    }
+                }
+
+                listaZbiorowNieZgodnosci.Add(matrixKryterium);
+            }
         }
 
         //public void CreateFinalRanking(double[,] tabSum)
