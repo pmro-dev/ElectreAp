@@ -23,6 +23,7 @@ namespace ElectreAp
 
         }
 
+
         ElectreIII taskElectreIII = new ElectreIII();
         int alternatives = 0;
         int criteria = 0;
@@ -51,8 +52,9 @@ namespace ElectreAp
 
         }
 
-        string pathMathImg = "";
 
+        string pathMathImg = "";
+        List<Int32> lul = new List<Int32>();
         private void Button_Calculate_Click(object sender, EventArgs e) {
             tabControl_LeaderBoards.TabPages.Clear();
             //Reset(2);
@@ -178,29 +180,27 @@ namespace ElectreAp
 
             taskElectreIII.CreateTabTopDown();
             //UtworzTabZstep();
-            //taskElectreIII.ShowTabOfDistillation();
+            taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabZstep);
             //WypiszTabDest(TabZstep);
 
             taskElectreIII.CreateTabUpward();
             //UtworzTabWstep();
-            //taskElectreIII.ShowTabOfDistillation();
+            taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabWstep);
             //WypiszTabDest(TabWstep);
 
-            //taskElectreIII.CreateSumTableOfDistillations();
+            taskElectreIII.CreateSumTableOfDistillations();
             //UtworzTabSum();
-            //taskElectreIII.ShowTabOfDistillation();
+            taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabSum);
             //WypiszTabDest(TabSum);
 
             if (taskElectreIII.CboxRankingsChecked) {
-/*                TabComplete(miejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
-                TabComplete(miejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
-                TabComplete(TabSum, "Finalna Macierz Zależności", lul);*/
+                AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
+                AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
+                AddTabPage(taskElectreIII.TabSum, "Finalna Macierz Zależności", lul);
             }
 
-            //taskElectreIII.CreateFinalRanking();
+            taskElectreIII.CreateFinalRanking();
             //RankingFinalowy(TabSum);
-
-            AddTabPage();
         }
 
         public void PrepareImgToShow(String pathMathImg) {
@@ -285,29 +285,153 @@ namespace ElectreAp
             }
         }
 
-        private void AddTabPage() {
-        //private void AddTabPage(Double[,] matrix, String nazwa, List<Int32> roboczaListaNumerowOpcji) {
-            /*            tabPage.Text = "";
-                        tabPage.Name = "";
-                        DataGridView dg = new DataGridView();
-                        dg.Rows.AddRange();
-                        dg.Columns.AddRange();
-                        //dg.DataSource
-                        DataSet ds = new DataSet(); 
-                        //ds.Tables.add
-                        tabPage.Controls.Add(dg);
-                        tabControl_LeaderBoards.TabPages.Add(tabPage);*/
+        public void AddTabPage(Object[,] matrixData, String namePage) {
+
+            Console.WriteLine("LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             TabPage tabPage = new TabPage();
-            tabPage.Text = "Tablica nr. 1";
+            tabPage.Text = namePage;
 
             DataGridView dataGridView = new DataGridView();
             dataGridView.Size = new Size(690, 350);
             DataTable dataTable = new DataTable();
-            DataColumn data = new DataColumn();
 
+            /* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
+            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej */
+
+            for (int licz = 0; licz < (matrixData.GetLength(1) + 1); licz++) {
+                DataColumn column = new DataColumn();
+                column.ColumnName = "A" + licz;
+                dataTable.Columns.Add(column);
+            }
+
+            int x;
+            if ("Rank. Zstep.".Equals(namePage) || "Rank. Wstep.".Equals(namePage) || "Rank. Final.".Equals(namePage)) {
+                dataTable.Columns[0].ColumnName = "Wariant";
+                x = 1;
+            }
+            else {
+                dataTable.Columns[0].ColumnName = "X";
+                x = 0;
+            }
+
+            for (int y = x; y < matrixData.GetLength(0); y++) {
+                DataRow dataRow = dataTable.NewRow();
+                List<string> row = new List<string>();
+
+                for (int z = 0; z < matrixData.GetLength(1) + 1; z++) {
+                    if (z == 0) {
+                        if ("Rank. Zstep.".Equals(namePage) || "Rank. Wstep.".Equals(namePage) || "Rank. Final.".Equals(namePage)) {
+                            row.Add("Pozycja");
+                        }
+                        else
+                        {
+                            row.Add("A" + (y + 1));
+                        }
+                    }
+                    else {
+                        row.Add(matrixData[y, z - 1].ToString());
+                        Console.WriteLine("WARTOSC MATRIXA = " + matrixData[y, z - 1]);
+                        Console.WriteLine("ROW = " + row[z]);
+                    }
+                }
+                dataTable.Rows.Add(row);
+            }
+
+            dataGridView.DataSource = dataTable;
             tabPage.Controls.Add(dataGridView);
             tabControl_LeaderBoards.TabPages.Add(tabPage);
+        }
 
+
+        Double zmiennaHelp;
+        public void AddTabPage(Double[,] matrixData, string namePage, List<Int32> roboczaListaNumerowOpcji) {
+            TabPage tabPage = new TabPage();
+            tabPage.Text = namePage;
+
+            DataGridView dataGridView = new DataGridView();
+            dataGridView.Size = new Size(690, 350);
+            DataTable dataTable = new DataTable();
+
+            Boolean bool1 = namePage.Contains("Ocen");
+            Boolean bool2 = namePage.Contains("Finalna");
+
+            /* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
+            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej */
+            for (int licz = 0; licz < matrixData.GetLength(0) + 1; licz++) {
+                DataColumn column = new DataColumn();
+                if (bool1 && licz > 0 && licz < matrixData.GetLength(0) + 1) {
+                    //columnNamesView.add("A" + (roboczaListaNumerowOpcji.get(licz - 1) + 1));
+/*                    int liczenie = roboczaListaNumerowOpcji[licz - 1] + 1;
+                    dataGridView.Columns.Add("","A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString());*/
+                    column.ColumnName = "A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString();
+                    dataTable.Columns.Add(column);
+                }
+                else {
+                    column.ColumnName = "A" + licz;
+                    dataTable.Columns.Add(column);
+                    //columnNamesView.add("A" + licz);
+                }
+            }
+
+            dataTable.Columns[0].ColumnName = "X";
+
+            for (int y = 0; y < matrixData.GetLength(1); y++) {
+
+                //ObservableList<String> row = FXCollections.observableArrayList();
+                DataRow dataRow = dataTable.NewRow();
+                List<string> row = new List<string>();
+
+                for (int z = 0; z < matrixData.GetLength(1) + 1; z++) {
+                    if (z == 0) {
+                        if (bool1) {
+                            switch (y) {
+                                case 0:
+                                    row.Add("Power");
+                                    break;
+
+                                case 1:
+                                    row.Add("Weakness");
+                                    break;
+
+                                case 2:
+                                    row.Add("Qualification");
+                                    break;
+                            }
+                        }
+                        else {
+                            row.Add("A" + (y + 1));
+                        }
+                    }
+                    else {
+                        if (bool2) {
+                            zmiennaHelp = matrixData[y, z - 1];
+                            switch (matrixData[y, z - 1]) {
+                                case -1.0:
+                                    row.Add("\u20B1");
+                                    break;
+                                case 0.0:
+                                    row.Add("I");
+                                    break;
+                                case 1.0:
+                                    row.Add("\u03A1");
+                                    break;
+                                case 2.0:
+                                    row.Add("R");
+                                    break;
+                            }
+                        }
+                        else {
+                            row.Add(matrixData[y, z - 1].ToString());
+                        }
+                    }
+                }
+
+                dataTable.Rows.Add(row);
+            }
+
+            dataGridView.DataSource = dataTable;
+            tabPage.Controls.Add(dataGridView);
+            tabControl_LeaderBoards.TabPages.Add(tabPage);
         }
 
 
