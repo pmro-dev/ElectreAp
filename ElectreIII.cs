@@ -773,9 +773,40 @@ namespace ElectreAp
             
         }
 
-        public void DoStepFourth(double deltaLast, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
-        {
-            
+
+        Double zmiennaPomocnicza = 0.0;
+        Double wartoscMax = 0.0;
+        public void DoStepFourth(double deltaLast, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
+            Console.WriteLine("Krok 4");
+            Boolean testDelta = false;
+            zmiennaPomocnicza = deltaLast - CalculateSDeltaK(deltaLast);
+            Console.WriteLine("deltaLast - ObliczSDeltaK(deltaLast) poniżej");
+            Console.WriteLine(deltaLast + " - " + CalculateSDeltaK(deltaLast));
+            Console.WriteLine("zmiennaPomocnicza = " + zmiennaPomocnicza);
+            for (int numerWiersza = 0; numerWiersza < workingMatrix.GetLength(1); numerWiersza++) {
+                for (int numerKolumny = 0; numerKolumny < workingMatrix.GetLength(0); numerKolumny++) {
+                    if (workingMatrix[numerWiersza, numerKolumny] < zmiennaPomocnicza) {
+                        testDelta = true;
+                        break;
+                    }
+                }
+            }
+            Console.WriteLine("testDelta = " + testDelta);
+            if (testDelta == false) { newDelta = 0.0; }
+            else {
+                wartoscMax = 0.0;
+                for (int numerWiersza = 0; numerWiersza < workingMatrix.GetLength(1); numerWiersza++) {
+                    for (int numerKolumny = 0; numerKolumny < workingMatrix.GetLength(0); numerKolumny++) {
+                        if (workingMatrix[numerWiersza, numerKolumny] > wartoscMax && workingMatrix[numerWiersza, numerKolumny] < zmiennaPomocnicza && numerWiersza != numerKolumny) {
+                            wartoscMax = workingMatrix[numerWiersza, numerKolumny];
+                        }
+                    }
+                }
+                newDelta = wartoscMax;
+            }
+            Console.WriteLine("Wartość współczynnika Alfa (newDelta) = " + newDelta);
+            Console.WriteLine("Krok 4");
+            DoStepFifth(newDelta, workingMatrix, typDestylacji, workingListOfNumbersOfOptions);
         }
 
         public void DoStepSecond(double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
