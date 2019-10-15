@@ -769,8 +769,7 @@ namespace ElectreAp
             }
         }
 
-        public void DoStepFifth(double lastDelta, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
-        {
+        public void DoStepFifth(double lastDelta, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
             
         }
 
@@ -779,9 +778,24 @@ namespace ElectreAp
             
         }
 
-        public void DoStepSecond(double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
-        {
-            
+        public void DoStepSecond(double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
+            Console.WriteLine("Krok 2");
+            double deltaMax = 0.0;
+            for (int numerWiersza = 0; numerWiersza < workingMatrix.GetLength(1); numerWiersza++) {
+                for (int numerKolumny = 0; numerKolumny < workingMatrix.GetLength(0); numerKolumny++) {
+                    if (workingMatrix[numerWiersza, numerKolumny] > deltaMax && numerWiersza != numerKolumny) {
+                        deltaMax = workingMatrix[numerWiersza, numerKolumny];
+                    }
+                }
+            }
+            if (deltaMax != 0) {
+                Console.WriteLine("Krok 2 - DeltaMax = " + deltaMax);
+                DoStepFourth(deltaMax, workingMatrix, typDestylacji, workingListOfNumbersOfOptions);
+            }
+            else {
+                Console.WriteLine("KONIEC przy KROK 2");
+                DoStepFourth(deltaMax, workingMatrix, typDestylacji, workingListOfNumbersOfOptions);
+            }
         }
 
         public void DoStepSeventh(double[,] ratingMatrix, double qualificationOfTheBestOption, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
