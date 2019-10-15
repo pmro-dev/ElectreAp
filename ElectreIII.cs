@@ -702,9 +702,30 @@ namespace ElectreAp
             return Math.Round(symbol, miejscPoPrzecinku);
         }
 
-        public void DoStageFirst()
-        {
-            
+
+        Double testLogiczny = 0.0;
+        Boolean testDC = false;
+        public void DoStageFirst() {
+            // matrix -> jedna tabela do zapisu inf. czy wartosci z takiej samej komorki ale dla roznych zbiorow przewyzszania sa sobie równe
+            matrixRownosciZbiorowPrzewyzszania = new double[numberOfAlternatives, numberOfAlternatives];
+            Console.WriteLine("alternatywy wartosc: " + numberOfAlternatives);
+            for (int numerWiersza = 0; numerWiersza < matrixRownosciZbiorowPrzewyzszania.GetLength(1); numerWiersza++) {
+                for (int numerKolumny = 0; numerKolumny < matrixRownosciZbiorowPrzewyzszania.GetLength(0); numerKolumny++) {
+                    //suma2 = 0.0;
+                    for (int numerZbioruPrzewyzsszania = 0; numerZbioruPrzewyzsszania < listaZbiorowPrzewyzszania.Count; numerZbioruPrzewyzsszania++) {
+                        if (1 == listaZbiorowPrzewyzszania[numerZbioruPrzewyzsszania][numerWiersza, numerKolumny]) {
+                            testDC = true;
+                            break;
+                        }
+                    }
+                    if (testDC) { testLogiczny = 1.0; }
+                    else { testLogiczny = 0.0; }
+                    Console.WriteLine("wartosc testu: " + testLogiczny);
+                    Console.WriteLine("wartosc wiersza: " + numerWiersza);
+                    Console.WriteLine("wartosc kolumny: " + numerKolumny);
+                    matrixRownosciZbiorowPrzewyzszania[numerWiersza, numerKolumny] = testLogiczny;
+                }
+            }
         }
 
         public void DoStageSecond()
