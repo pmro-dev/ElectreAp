@@ -17,9 +17,9 @@ namespace ElectreAp
 
         }
 
-        public double CalculateSDeltaK(double deltaLast)
-        {
-            return 0;
+        public double CalculateSDeltaK(double deltaLast) {
+            sDeltaK = beta - (alfa * deltaLast);
+            return sDeltaK;
         }
 
         public void CalculateThreshold(double[,,] table, double value, int i, int mod) {
@@ -62,9 +62,38 @@ namespace ElectreAp
             }
         }
 
-        public void CheckingIsThereThisSameOptions(int y)
-        {
-            
+        public void CheckingIsThereThisSameOptions(int y) {
+            if (y < punktacjaOpcjiZmienna.GetLength(1) - 1) {
+                if (Int32.Parse(punktacjaOpcjiZmienna[1, y]) == Int32.Parse(punktacjaOpcjiZmienna[1, y + 1])) {
+                    if (CboxRankingsChecked) {
+                        Console.WriteLine(punktacjaOpcjiZmienna[0, y] + " ");
+                    }
+                    y++;
+                    CheckingIsThereThisSameOptions(y);
+                }
+                else {
+                    if (CboxRankingsChecked) {
+                        Console.WriteLine(punktacjaOpcjiZmienna[0, y] + " ");
+                    }
+                    y++;
+                    CheckingIsThereThisSameOptions(y);
+                }
+            }
+            else if (y == punktacjaOpcjiZmienna.GetLength(1) - 1) {
+                if (Int32.Parse(punktacjaOpcjiZmienna[1, y - 1]) == Int32.Parse(punktacjaOpcjiZmienna[1, y])) {
+                    if (CboxRankingsChecked) {
+                        Console.WriteLine(punktacjaOpcjiZmienna[0, y] + " ");
+                    }
+                }
+                else {
+                    if (CboxRankingsChecked) {
+                        Console.WriteLine(punktacjaOpcjiZmienna[0, y] + " ");
+                    }
+                }
+            }
+            if (CboxRankingsChecked) {
+                Console.WriteLine("\n\n");
+            }
         }
 
         public void CreateConcordanceSets() {
