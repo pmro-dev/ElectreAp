@@ -502,7 +502,13 @@ namespace ElectreAp
         }
 
         public void ShowTabOfDistillation(Double[,] tab) {
-
+            Console.WriteLine("TAB DEST");
+            for (int i = 0; i < tab.GetLength(1); i++) {
+                for (int j = 0; j < tab.GetLength(0); j++) {
+                    Console.WriteLine(tab[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
         }
 
         //Double[,] concordanceMatrix;
