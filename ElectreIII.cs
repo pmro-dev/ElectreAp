@@ -728,9 +728,45 @@ namespace ElectreAp
             }
         }
 
-        public void DoStageSecond()
-        {
-            
+        public void DoStageSecond() {
+            double iloczyn = 1;
+            double zmiennaPomocnicza = 0;
+            credibilityMatrix = new Double[numberOfAlternatives, numberOfAlternatives];
+            roboczyMatrixDOgol = new Double[numberOfAlternatives, numberOfAlternatives];
+            for (int numerWiersza = 0; numerWiersza < credibilityMatrix.GetLength(1); numerWiersza++) {
+                for (int numerKolumny = 0; numerKolumny < credibilityMatrix.GetLength(0); numerKolumny++) {
+                    if (matrixRownosciZbiorowPrzewyzszania[numerWiersza, numerKolumny] == 0.0) {
+                        credibilityMatrix[numerWiersza, numerKolumny] = concordanceMatrix[numerWiersza, numerKolumny];
+                        roboczyMatrixDOgol[numerWiersza, numerKolumny] = concordanceMatrix[numerWiersza, numerKolumny];
+                    }
+                    else {
+                        for (int numerZbioru = 0; numerZbioru < listaZbiorowNieZgodnosci.Count; numerZbioru++) {
+                            if (listaZbiorowNieZgodnosci[numerZbioru][numerWiersza, numerKolumny] >= concordanceMatrix[numerWiersza, numerKolumny]) {
+                                // zapobiegnięcie dzielenia przez 0
+                                if ((1 - concordanceMatrix[numerWiersza, numerKolumny]) == 0) {
+                                    zmiennaPomocnicza = 0;
+                                }
+                                else {
+                                    zmiennaPomocnicza = ((1 - listaZbiorowNieZgodnosci[numerZbioru][numerWiersza, numerKolumny]) / (1 - concordanceMatrix[numerWiersza, numerKolumny]));
+                                }
+                                iloczyn = iloczyn * zmiennaPomocnicza;
+                            }
+                        }
+                        if (iloczyn == 0) {
+                            credibilityMatrix[numerWiersza, numerKolumny] = 0;
+                            roboczyMatrixDOgol[numerWiersza, numerKolumny] = 0;
+                        }
+                        else {
+                            iloczyn = concordanceMatrix[numerWiersza, numerKolumny] * iloczyn;
+                            iloczyn = Math.Round(iloczyn, miejscPoPrzecinku);
+                            credibilityMatrix[numerWiersza, numerKolumny] = iloczyn;
+                            roboczyMatrixDOgol[numerWiersza, numerKolumny] = iloczyn;
+                        }
+                        iloczyn = 1;
+                        zmiennaPomocnicza = 0;
+                    }
+                }
+            }
         }
 
         public void DoStepFifth(double lastDelta, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
