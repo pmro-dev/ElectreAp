@@ -489,26 +489,16 @@ namespace ElectreAp
             for (int i = 0; i < tableOfDistillation.GetLength(1); i++) {
                 for (int j = 0; j < tableOfDistillation.GetLength(0); j++) {
                     if (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) < Int32.Parse(placesOfOptionsAfterDistillation[1, j])) {
-                        tableOfDistillation[i, j] = 1;
+                        tableOfDistillation[i, j] = valueX;
                     }
                     else if (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) == Int32.Parse(placesOfOptionsAfterDistillation[1, j])) {
-                        tableOfDistillation[i, j] = 0;
+                        tableOfDistillation[i, j] = valueY;
                     }
                     else {
-                        tableOfDistillation[i, j] = -1;
+                        tableOfDistillation[i, j] = valueZ;
                     }
                 }
             }
-        }
-
-        public void CreateTabTopDown()
-        {
-
-        }
-
-        public void CreateTabUpward()
-        {
-
         }
 
         public void ShowTabOfDistillation(Double[,] tab) {
