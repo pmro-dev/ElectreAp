@@ -604,7 +604,7 @@ namespace ElectreAp
             }
 
             if (CboxOutrankingSetsChecked) {
-                ShowOutrankingSets();
+                ShowSets(listaZbiorowPrzewyzszania, "Przewyższania");
                 listOfPathsImages.Add(ps + "\\MathImg\\WartoscPrzewyzszania.JPG");
             }
 
@@ -1592,18 +1592,6 @@ namespace ElectreAp
         }
 
 
-        public void ShowOutrankingSets()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public void ShowStageFirst()
-        {
-            throw new NotImplementedException();
-        }
-
-
         public void ShowStage(Double[,] matrix, string name) {
 
             Console.WriteLine("{0} Matrix", name);
@@ -1629,9 +1617,29 @@ namespace ElectreAp
             }
         }
 
-        public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
-        {
-            throw new NotImplementedException();
+        public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets) {
+
+            Console.WriteLine("SPRAWDZAMY listaZbiorowNieZgodnosci.size() =" + listaZbiorowNieZgodnosci.Count);
+
+            for (int numerZbioru = 0; numerZbioru < listaZbiorowNieZgodnosci.Count; numerZbioru++) {
+
+                /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości */
+                Double[,] matrixKryterium = new Double[numberOfAlternatives, numberOfAlternatives];
+
+                for (int numerWiersza = 0; numerWiersza < listaZbiorowNieZgodnosci[numerZbioru].GetLength(1); numerWiersza++) {
+
+                    for (int numerKolumny = 0; numerKolumny < listaZbiorowNieZgodnosci[numerZbioru].GetLength(0); numerKolumny++) {
+
+                        if (listaZbiorowNieZgodnosci[numerZbioru][numerWiersza, numerKolumny] > concordanceMatrix[numerWiersza, numerKolumny]) {
+                            matrixKryterium[numerWiersza, numerKolumny] = 1;
+                        }
+                        else {
+                            matrixKryterium[numerWiersza, numerKolumny] = 0;
+                        }
+                    }
+                }
+                listOfOutrankingSets.Add(matrixKryterium);
+            }
         }
 
         public void ShowDistillation(string name, String[,] miejscaOpcjiPoDestylacji) {
