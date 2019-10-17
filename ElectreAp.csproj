@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataPage.cs" />
     <Compile Include="ElectreIII.cs" />
     <Compile Include="ExcelManaging.cs" />
     <Compile Include="Program.cs">
