@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -550,7 +551,100 @@ namespace ElectreAp
             DivideThresholdsToLists();
             CreateMatrixForAlternativeData(numberOfAlternatives, numberOfCriterias);
             CreateConcordanceSets();
+            CreateConcordanceMatrix();
+            CreateDiscordanceSets();
+            CreateOutrankingSets();
+            DoStageFirst();
+            DoStageSecond();
+            PrepareTopDownDistillation();
+            // wykonaj destylacje zstępującą
+            DoStepSecond(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolZstep);
+            PrepareUpwardDistillation();
+            // wykonaj destylację wstępującą
+            DoStepSecond(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolWstep);
+            PrepareUpwardScore();
+            CreateTabOfDistillation(tabZstep, miejscaOpcjiPoDestylacjiZstepujacej, -1, 0, 1);
+            ShowTabOfDistillation(tabZstep);
+            CreateTabOfDistillation(tabWstep, miejscaOpcjiPoDestylacjiWstepujacej, 1, 0, -1);
+            ShowTabOfDistillation(tabWstep);
+            CreateSumTableOfDistillations();
+            ShowTabOfDistillation(tabSum);
+            CreateFinalRanking();
+            /*PreparedImagesAndShowCollections();*/
+        }
 
+
+        List<string> listOfPathsImages = new List<string>();
+        public List<string> ListOfPathsImages { get { return listOfPathsImages; } }
+
+        public void PreparedImagesAndShowCollections() {
+
+            string ps = AppDomain.CurrentDomain.BaseDirectory;
+            listOfPathsImages.Add(ps + "\\MathImg\\wzor_mal_direct_prog.PNG");
+            listOfPathsImages.Add(ps + "\\MathImg\\wzor_rosn_direct_prog.PNG");
+            listOfPathsImages.Add(ps + "\\MathImg\\wzor_mal_invers_prog.PNG");
+            listOfPathsImages.Add(ps + "\\MathImg\\wzor_rosn_invers_prog.PNG");
+            listOfPathsImages.Add(ps + "\\MathImg\\wzor_przeliczanie_wspolczynnikow.PNG");
+
+            if (CboxConcordanceSetsChecked) {
+                ShowConcordanceSets();
+                listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_rosn.PNG");
+                listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_mal.PNG");
+            }
+
+            if (CboxConcordanceMatrixChecked) {
+                ShowConcordanceMatrix();
+                listOfPathsImages.Add(ps + "\\MathImg\\indeks_zgodnosci.PNG");
+            }
+
+            if (CboxNonConcordanceSetsChecked) {
+                ShowDiscordanceSets();
+                listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_rosn.PNG");
+                listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_mal.PNG");
+            }
+
+            if (CboxOutrankingSetsChecked) {
+                ShowOutrankingSets();
+                listOfPathsImages.Add(ps + "\\MathImg\\WartoscPrzewyzszania.JPG");
+            }
+
+            if (CboxSetEqualityMatrixChecked) {
+                ShowStageFirst();
+            }
+
+            if (CboxCredibilityMatrixChecked) {
+                ShowStageSecond();
+                listOfPathsImages.Add(ps + "\\MathImg\\indeks_wiarygodnosci.PNG");
+            }
+
+            if (CboxTopDownDistillationChecked) {
+                ShowDistillation("ZSTĘPUJĄCA", miejscaOpcjiPoDestylacjiZstepujacej);
+            }
+
+            if (CboxUpwardDistillationChecked) {
+                ShowDistillation("WSTĘPUJĄCA", miejscaOpcjiPoDestylacjiWstepujacej);
+            }
+
+            if (CboxUpwardDistillationChecked || CboxTopDownDistillationChecked) {
+                listOfPathsImages.Add(ps + "\\MathImg\\alfa_zero.PNG");
+                listOfPathsImages.Add(ps + "\\MathImg\\s_alfa.PNG");
+                listOfPathsImages.Add(ps + "\\MathImg\\alfa_nplus.PNG");
+            }
+
+            if (CboxRankingsChecked) {
+                PreparedDataTable(miejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
+                PreparedDataTable(miejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
+                PreparedDataTable(tabSum, "Finalna Macierz Zależności", lul);
+            }
+
+            if (CboxRatingMatrixChecked) {
+                if (TypDestylacji) {
+                    PreparedDataTable(macierzOcen, "Macierz Ocen " + listaMacierzyOcen.Count + " (D.Z.)", workingListOfNumbersOfOptions);
+                }
+                else {
+                    PreparedDataTable(macierzOcen, "Macierz Ocen " + listaMacierzyOcen.Count + " (D.W.)", workingListOfNumbersOfOptions);
+                }
+            }
         }
 
         public void DivideThresholdsToLists() {
@@ -769,8 +863,245 @@ namespace ElectreAp
             }
         }
 
+
+        Double zmiennaPomocnicza1 = 0.0;
+        double zmiennaPomocna = 0.0;
         public void DoStepFifth(double lastDelta, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
-            
+            Console.WriteLine("Krok 5");
+            Double[,] macierzWygranych = new Double[workingMatrix.GetLength(1), workingMatrix.GetLength(0)];
+            //listaMacierzyWygranych
+            List<Int32> listaNazwOpcjiMacOc = new List<Int32>();
+            // macierz dla power(wiersz 0) weakness (wiersz 1) i qualification (wieresz 2)
+            Double[,] macierzOcen = new Double[3, workingMatrix.GetLength(0)];
+
+            for (int numerWiersza = 0; numerWiersza < workingMatrix.GetLength(1); numerWiersza++) {
+                for (int numerKolumny = 0; numerKolumny < workingMatrix.GetLength(0); numerKolumny++) {
+                    
+                    zmiennaPomocnicza1 = workingMatrix[numerWiersza, numerKolumny] - CalculateSDeltaK(workingMatrix[numerWiersza, numerKolumny]);
+                    
+                    if (zmiennaPomocnicza1 > workingMatrix[numerKolumny, numerWiersza] && workingMatrix[numerWiersza, numerKolumny] > lastDelta) {
+                        macierzWygranych[numerWiersza, numerKolumny] = 1;
+                        zmiennaPomocna = macierzOcen[0, numerWiersza] + 1;
+                        macierzOcen[0, numerWiersza] = zmiennaPomocna;
+                        zmiennaPomocna = macierzOcen[1, numerKolumny] - 1;
+                        macierzOcen[1, numerKolumny] = zmiennaPomocna;
+                    }
+                    else { macierzWygranych[numerWiersza, numerKolumny] = 0; }
+                }
+            }
+
+            int kolumnaOceny;
+            double zmiennaTymczasowa;
+
+            for (kolumnaOceny = 0; kolumnaOceny < macierzOcen.GetLength(0); kolumnaOceny++) {
+                zmiennaTymczasowa = macierzOcen[0, kolumnaOceny] + macierzOcen[1, kolumnaOceny];
+                macierzOcen[2, kolumnaOceny] = zmiennaTymczasowa;
+            }
+
+            listaMacierzyOcen.Add(macierzOcen);
+
+            if (CboxRatingMatrixChecked) {
+                if (typeOfDistillation) {
+                    PreparedDataTable(macierzOcen, "Macierz Ocen " + listaMacierzyOcen.Count + " (D.Z.)", workingListOfNumbersOfOptions);
+                }
+                else {
+                    PreparedDataTable(macierzOcen, "Macierz Ocen " + listaMacierzyOcen.Count + " (D.W.)", workingListOfNumbersOfOptions);
+                }
+            }
+
+            if (CboxRatingMatrixChecked) {
+                Console.WriteLine("Macierz Ocen");
+                Console.Write("        ");
+
+                for (int r = 0; r < workingListOfNumbersOfOptions.Count; r++) {
+                    Console.Write("A" + workingListOfNumbersOfOptions[r] + " | ");
+                    listaNazwOpcjiMacOc.Add(workingListOfNumbersOfOptions[r]);
+                }
+
+                Console.WriteLine();
+                listaNumerowOpcjiMacierzyOcen.Add(listaNazwOpcjiMacOc);
+
+                for (int wierszOceny = 0; wierszOceny < macierzOcen.GetLength(1); wierszOceny++) {
+                    switch (wierszOceny) {
+                        case 0:
+                            Console.Write("POWER ");
+                            break;
+                        case 1:
+                            Console.Write("WEAKN ");
+                            break;
+                        case 2:
+                            Console.Write("QUALI ");
+                            break;
+                    }
+
+                    for (kolumnaOceny = 0; kolumnaOceny < macierzOcen.GetLength(0); kolumnaOceny++) {
+                        Console.Write(macierzOcen[wierszOceny, kolumnaOceny] + " | ");
+                    }
+
+                    Console.WriteLine();
+                }
+                Console.WriteLine("\n\n");
+            }
+            DoStepSixth(macierzOcen, workingMatrix, typeOfDistillation, workingListOfNumbersOfOptions);
+        }
+
+        /*        private List<Object[,]> lista = new List<Object[,]>();
+                private Dictionary<String, DataTable> dataTableDictionary = new Dictionary<String, DataTable>();
+                public Dictionary<String, DataTable> DataTableDictionary { get { return dataTableDictionary; } }*/
+        /*       private List<DataTable> listOfDataTables = new List<DataTable>();
+                public List<DataTable, String> ListOfDataTables { get { return listOfDataTables; } }*/
+
+        /*        List<DataPage> listOfDataPage = new List<DataPage>();
+                public List<DataPage> ListOfDataPage { get { return listOfDataPage; } }*/
+
+
+        private List<DataTable> listOfDataTable = new List<DataTable>();
+        public List<DataTable> ListOfDataTable { get { return listOfDataTable; } }
+    
+        public void PreparedDataTable(Object[,] matrixData, String namePage) {
+            Console.WriteLine("LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            TabPage tabPage = new TabPage();
+            tabPage.Text = namePage;
+            DataGridView dataGridView = new DataGridView();
+            dataGridView.Size = new Size(690, 350);
+            DataTable dataTable = new DataTable();
+
+            /* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
+            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej */
+            for (int licz = 0; licz < (matrixData.GetLength(1) + 1); licz++) {
+                DataColumn column = new DataColumn();
+                column.ColumnName = "A" + licz;
+                dataTable.Columns.Add(column);
+            }
+
+            int x;
+
+            if ("Rank. Zstep.".Equals(namePage) || "Rank. Wstep.".Equals(namePage) || "Rank. Final.".Equals(namePage)) {
+                dataTable.Columns[0].ColumnName = "Wariant";
+                x = 1;
+            }
+            else {
+                dataTable.Columns[0].ColumnName = "X";
+                x = 0;
+            }
+            for (int y = x; y < matrixData.GetLength(0); y++) {
+                DataRow dataRow = dataTable.NewRow();
+                List<string> row = new List<string>();
+                for (int z = 0; z < matrixData.GetLength(1) + 1; z++) {
+                    if (z == 0) {
+                        if ("Rank. Zstep.".Equals(namePage) || "Rank. Wstep.".Equals(namePage) || "Rank. Final.".Equals(namePage)) {
+                            row.Add("Pozycja");
+                        }
+                        else {
+                            row.Add("A" + (y + 1));
+                        }
+                    }
+                    else {
+                        row.Add(matrixData[y, z - 1].ToString());
+                        Console.WriteLine("WARTOSC MATRIXA = " + matrixData[y, z - 1]);
+                        Console.WriteLine("ROW = " + row[z]);
+                    }
+                }
+                dataTable.Rows.Add(row);
+                dataTable.TableName = namePage;
+            }
+
+            listOfDataTable.Add(dataTable);
+/*            DataPage dataPage = new DataPage();
+            dataPage.Data = dataTable;
+            dataPage.PageName = namePage;
+            listOfDataPage.Add(dataPage);*/
+            //dataTableDictionary.Add(namePage, dataTable);
+            //listOfDataTables.Add(dataTable);
+
+            /*            dataGridView.DataSource = dataTable;
+                        tabPage.Controls.Add(dataGridView);
+                        tabControl_LeaderBoards.TabPages.Add(tabPage);*/
+        }
+
+
+        Double zmiennaHelp;
+
+        public void PreparedDataTable(Double[,] matrixData, string namePage, List<Int32> roboczaListaNumerowOpcji) {
+            TabPage tabPage = new TabPage();
+            tabPage.Text = namePage;
+            DataGridView dataGridView = new DataGridView();
+            dataGridView.Size = new Size(690, 350);
+            DataTable dataTable = new DataTable();
+            Boolean bool1 = namePage.Contains("Ocen");
+            Boolean bool2 = namePage.Contains("Finalna");
+
+            /* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
+            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej */
+            for (int licz = 0; licz < matrixData.GetLength(0) + 1; licz++) {
+                DataColumn column = new DataColumn();
+                if (bool1 && licz > 0 && licz < matrixData.GetLength(0) + 1) {
+                    //columnNamesView.add("A" + (roboczaListaNumerowOpcji.get(licz - 1) + 1));
+                    /*                    int liczenie = roboczaListaNumerowOpcji[licz - 1] + 1;
+                                        dataGridView.Columns.Add("","A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString());*/
+                    column.ColumnName = "A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString();
+                    dataTable.Columns.Add(column);
+                }
+                else {
+                    column.ColumnName = "A" + licz;
+                    dataTable.Columns.Add(column);
+                    //columnNamesView.add("A" + licz);
+                }
+            }
+
+            dataTable.Columns[0].ColumnName = "X";
+
+            for (int y = 0; y < matrixData.GetLength(1); y++) {
+                DataRow dataRow = dataTable.NewRow();
+                List<string> row = new List<string>();
+                for (int z = 0; z < matrixData.GetLength(1) + 1; z++) {
+                    if (z == 0) {
+                        if (bool1) {
+                            switch (y) {
+                                case 0:
+                                    row.Add("Power");
+                                    break;
+
+                                case 1:
+                                    row.Add("Weakness");
+                                    break;
+
+                                case 2:
+                                    row.Add("Qualification");
+                                    break;
+                            }
+                        }
+                        else {
+                            row.Add("A" + (y + 1));
+                        }
+                    }
+                    else {
+                        if (bool2) {
+                            zmiennaHelp = matrixData[y, z - 1];
+                            switch (matrixData[y, z - 1]) {
+                                case -1.0:
+                                    row.Add("\u20B1");
+                                    break;
+                                case 0.0:
+                                    row.Add("I");
+                                    break;
+                                case 1.0:
+                                    row.Add("\u03A1");
+                                    break;
+                                case 2.0:
+                                    row.Add("R");
+                                    break;
+                            }
+                        }
+                        else {
+                            row.Add(matrixData[y, z - 1].ToString());
+                        }
+                    }
+                }
+                dataTable.Rows.Add(row);
+                dataTable.TableName = namePage;
+            }
+            listOfDataTable.Add(dataTable);
         }
 
 
@@ -806,7 +1137,7 @@ namespace ElectreAp
             }
             Console.WriteLine("Wartość współczynnika Alfa (newDelta) = " + newDelta);
             Console.WriteLine("Krok 4");
-            DoStepFifth(newDelta, workingMatrix, typDestylacji, workingListOfNumbersOfOptions);
+            DoStepFifth(newDelta, workingMatrix, typeOfDistillation, workingListOfNumbersOfOptions);
         }
 
         public void DoStepSecond(double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
@@ -821,30 +1152,274 @@ namespace ElectreAp
             }
             if (deltaMax != 0) {
                 Console.WriteLine("Krok 2 - DeltaMax = " + deltaMax);
-                DoStepFourth(deltaMax, workingMatrix, typDestylacji, workingListOfNumbersOfOptions);
+                DoStepFourth(deltaMax, workingMatrix, typeOfDistillation, workingListOfNumbersOfOptions);
             }
             else {
                 Console.WriteLine("KONIEC przy KROK 2");
-                DoStepFourth(deltaMax, workingMatrix, typDestylacji, workingListOfNumbersOfOptions);
+                DoStepFourth(deltaMax, workingMatrix, typeOfDistillation, workingListOfNumbersOfOptions);
             }
         }
 
-        public void DoStepSeventh(double[,] ratingMatrix, double qualificationOfTheBestOption, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
-        {
-            
+
+        int miejsceA = 0;
+        int miejsceB = 0;
+
+        public void DoStepSeventh(double[,] ratingMatrix, double qualificationOfTheBestOption, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
+            Console.WriteLine("Krok 7");
+            int liczbaNajlepszychOpcji = 0;
+            listaNumerowZNazwNajlepszychOpcjiWewnatrz = new List<Int32>();
+            Console.WriteLine("rozmiar listaNumerowZNazwOpcji PRZED = " + workingListOfNumbersOfOptions.Count);
+            listaNumerowZNazwOpcjiUsytWRank.Sort();
+
+            // liczymy ile opcji ma najlepszą (lub najgorszą) ocenę
+            for (int kolumnaOceny = 0; kolumnaOceny < ratingMatrix.GetLength(0); kolumnaOceny++) {
+                if (qualificationOfTheBestOption == ratingMatrix[2, kolumnaOceny]) {
+                    liczbaNajlepszychOpcji++;
+                }
+            }
+
+            Console.WriteLine("Liczba Najlepszych / Najgorszych Opcji = " + liczbaNajlepszychOpcji);
+            // tworzymy nową macierz dla najlepszych opcji - macierz credibility tylko dla najlepszych opcji wewnątrz
+            Double[,] matrixNajlepszychOpcjiWewnatrz = new Double[liczbaNajlepszychOpcji, liczbaNajlepszychOpcji];
+            Console.WriteLine("rozmiar matrixnajlepszychopcjiwewnatrz = " + matrixNajlepszychOpcjiWewnatrz.GetLength(0));
+            int numerNajlepszejOpcjiWew = -1;
+            int numerWierszaX = 0;
+            int numerKolumnyY = 0;
+
+            // wszystkie opcje, które mają najlepszą (najgorszą) ocenę równą qualificationNajlepszejOpcji / najgorszej opcji dodajemy do nowego matrixa "matrixNajlepszychOpcjiWewnatrz" / "matrix.. najgorszychOpcji"
+            for (int numerKolumny = 0; numerKolumny < ratingMatrix.GetLength(0); numerKolumny++) {
+                double wartoscKomorkiMacierzOcen = ratingMatrix[2, numerKolumny];
+                if (qualificationOfTheBestOption == wartoscKomorkiMacierzOcen) {
+                    Console.WriteLine("kolumna naj kwali = " + numerKolumny);
+                    for (int numerWiersza = 0; numerWiersza < workingMatrix.GetLength(1); numerWiersza++) {
+                        wartoscKomorkiMacierzOcen = ratingMatrix[2, numerWiersza];
+                        if (qualificationOfTheBestOption == wartoscKomorkiMacierzOcen) {
+                            Console.WriteLine("wiersz naj kwali = " + numerWiersza);
+                            double pomocna1 = workingMatrix[numerWiersza, numerKolumny];
+                            matrixNajlepszychOpcjiWewnatrz[numerWierszaX, numerKolumnyY] = pomocna1;
+                            numerNajlepszejOpcjiWew = numerWiersza;
+                            numerWierszaX++;
+                        }
+                    }
+                    numerWierszaX = 0;
+                    numerKolumnyY++;
+                    listaNumerowZNazwNajlepszychOpcjiWewnatrz.Add(workingListOfNumbersOfOptions[numerKolumny]);
+                }
+
+            }
+
+            // WYPISYWANIE ZAWARTOSCI listaNumerowZNazwNajlepszychOpcjiWewnatrz
+            Console.WriteLine("listaNumerowZNazwNajlepszychOpcjiWewnatrz:");
+            for (int p = 0; p < listaNumerowZNazwNajlepszychOpcjiWewnatrz.Count; p++) {
+                Console.WriteLine(listaNumerowZNazwNajlepszychOpcjiWewnatrz[p]);
+            }
+            Console.WriteLine("\n\n");
+
+            ////////////// SYTUACJA 1
+
+            // sytuacja gdy jest jedna opcja z najlepszym qualification
+            if (matrixNajlepszychOpcjiWewnatrz.GetLength(0) == 1) {
+                if (typeOfDistillation == true) {
+                    listaNumerowZNazwOpcjiUsytWRank.Add(workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]);
+                    listaNumerowZNazwOpcjiUsytWRank.Sort();
+                    miejscaOpcjiPoDestylacjiZstepujacej[1, workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]] = (liczbaZajetychMiejscWRankWDestZstep + 1).ToString();
+                    listaNumerowZNazwOpcjiOgolZstep.Remove(workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]);
+                    Console.WriteLine("dla TRUE rozmiar listaNumerowZNazwOpcji PO = " + workingListOfNumbersOfOptions.Count);
+                    listaNumZNazwPomoc = listaNumerowZNazwOpcjiOgolZstep;
+                    liczbaZajetychMiejscWRankWDestZstep++;
+                }
+                else {
+                    listaNumerowZNazwOpcjiUsytWRank.Add(workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]);
+                    listaNumerowZNazwOpcjiUsytWRank.Sort();
+                    miejscaOpcjiPoDestylacjiWstepujacej[1, workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]] = (liczbaZajetychMiejscWRankWDestWstep + 1).ToString();
+                    listaNumerowZNazwOpcjiOgolWstep.Remove(workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]);
+
+                    Console.WriteLine("dla FALSE rozmiar listaNumerowZNazwOpcji PO = " + workingListOfNumbersOfOptions.Count);
+                    listaNumZNazwPomoc = listaNumerowZNazwOpcjiOgolWstep;
+                    liczbaZajetychMiejscWRankWDestWstep++;
+                }
+
+                // SPRAWDZAMY CZY OGÓLNIE ZOSTAŁY NAM JESZCZE JAKIEŚ OPCJE DO PORÓWNANIA
+                if (listaNumZNazwPomoc.Count > 1) {
+                    Double[,] nowyRoboczy = new double[listaNumZNazwPomoc.Count, listaNumZNazwPomoc.Count];
+                    Console.WriteLine("Rozmiar nowyRoboczy = " + listaNumZNazwPomoc.Count);
+                    int wspolrzednaXWiersz = 0;
+                    int wspolrzednaYKolumna = 0;
+                    Console.WriteLine("numerNajlepszejOpcjiWew = " + numerNajlepszejOpcjiWew);
+                    miejsceA = 0;
+                    miejsceB = 0;
+                    Console.WriteLine("miejsceA: " + miejsceA);
+                    Console.WriteLine("miejsceB: " + miejsceB);
+
+                    for (int numerWiersza = 0; numerWiersza < roboczyMatrixDOgol.GetLength(1); numerWiersza++) {
+                        //if (!CzyJestWLiscie(numerWiersza, listaNumerowZNazwOpcjiUsytWRank)) {
+                        if (!listaNumerowZNazwOpcjiUsytWRank.Contains(numerWiersza)) {
+                            for (int numerKolumny = 0; numerKolumny < roboczyMatrixDOgol.GetLength(0); numerKolumny++) {
+                                if (!listaNumerowZNazwOpcjiUsytWRank.Contains(numerKolumny)) {
+                                    double wartoscKomorki = roboczyMatrixDOgol[numerWiersza, numerKolumny];
+                                    nowyRoboczy[wspolrzednaXWiersz, wspolrzednaYKolumna] = wartoscKomorki;
+                                    wspolrzednaYKolumna++;
+                                }
+                            }
+                            wspolrzednaXWiersz++;
+                        }
+                        wspolrzednaYKolumna = 0;
+                    }
+                    wspolrzednaXWiersz = 0;
+                    wspolrzednaYKolumna = 0;
+                    DoStepSecond(nowyRoboczy, typeOfDistillation, listaNumZNazwPomoc);
+                }
+                else if (listaNumZNazwPomoc.Count == 1) {
+                    if (typeOfDistillation == true) {
+                        miejscaOpcjiPoDestylacjiZstepujacej[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestZstep + 1).ToString();
+                        liczbaZajetychMiejscWRankWDestZstep++;
+                    }
+                    else if (typeOfDistillation == false) {
+                        miejscaOpcjiPoDestylacjiWstepujacej[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestWstep + 1).ToString();
+                        liczbaZajetychMiejscWRankWDestWstep++;
+                    }
+                    Console.WriteLine("KONIEC");
+                }
+                else {
+                    Console.WriteLine("BRAK OPCJI W listaNumerowZNazwOpcji KONIEC");
+                }
+            }
+
+            ////////////// SYTUACJA 2
+
+            else if (matrixNajlepszychOpcjiWewnatrz.GetLength(0) > 1 && newDelta > 0) {
+                DoStepFourth(newDelta, matrixNajlepszychOpcjiWewnatrz, typeOfDistillation, listaNumerowZNazwNajlepszychOpcjiWewnatrz);
+            }
+
+            ////////////// SYTUACJA 3
+
+            else if (matrixNajlepszychOpcjiWewnatrz.GetLength(0) > 1 && newDelta == 0) {
+                for (int k = 0; k < listaNumerowZNazwNajlepszychOpcjiWewnatrz.Count; k++) {
+                    if (typeOfDistillation == true) {
+                        listaNumerowZNazwOpcjiUsytWRank.Add(listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]);
+                        listaNumerowZNazwOpcjiUsytWRank.Sort();
+                        //  NAJPIERW NAJLEPSZYM OPCJOM W MATRIXIE ZAPISUJEMY JAKIE MIEJSCE W RANKINGU ZAJĘŁY
+                        miejscaOpcjiPoDestylacjiZstepujacej[1, listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]] = (liczbaZajetychMiejscWRankWDestZstep + 1).ToString();
+
+                        // Z listaNumerowZNazwOpcji USUWAMY NUMERY OPCJI, KTÓRE OTRZYMAŁY SWOJE MIEJSCE W RANKINGU
+                        for (int j = 0; j < listaNumerowZNazwOpcjiOgolZstep.Count; j++) {
+                            if (listaNumerowZNazwOpcjiOgolZstep[j] == listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]) {
+                                listaNumerowZNazwOpcjiOgolZstep.Remove(j);
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        listaNumerowZNazwOpcjiUsytWRank.Add(listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]);
+                        listaNumerowZNazwOpcjiUsytWRank.Sort();
+                        //  NAJPIERW NAJGORSZYM OPCJOM W MATRIXIE ZAPISUJEMY JAKIE MIEJSCE W RANKINGU ZAJĘŁY
+                        miejscaOpcjiPoDestylacjiWstepujacej[1, listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]] = (liczbaZajetychMiejscWRankWDestWstep + 1).ToString();
+
+                        // Z listaNumerowZNazwOpcji USUWAMY NUMERY OPCJI, KTÓRE OTRZYMAŁY SWOJE MIEJSCE W RANKINGU   
+                        for (int j = 0; j < listaNumerowZNazwOpcjiOgolWstep.Count; j++) {
+                            if (listaNumerowZNazwOpcjiOgolWstep[j] == listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]) {
+                                listaNumerowZNazwOpcjiOgolWstep.Remove(j);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                // to musimy dodać żeby w rankingDestylacji... dać znać, że kolejne miejsce w rankingu zostały już zajętę
+                if (typeOfDistillation == true) {
+                    liczbaZajetychMiejscWRankWDestZstep++;
+                    listaNumZNazwPomoc = listaNumerowZNazwOpcjiOgolZstep;
+                }
+                else if (typeOfDistillation == false) {
+                    liczbaZajetychMiejscWRankWDestWstep++;
+                    listaNumZNazwPomoc = listaNumerowZNazwOpcjiOgolWstep;
+                }
+
+                // TERAZ SPRAWDZAMY CZY OPROCZ WYGRANYCH OPCJI ZOSTAŁY NAM JESZCZE JAKIEŚ DO PORÓWNANIA  
+                // JEŚLI ZOSTAŁO NAM JESZCZE DO PORÓWNANIA KILKA OPCJI TO MUSIMY ZAAKTUALIZOWAĆ MATRIX ROBOCZY (USUNĄĆ OPCJE ULOKOWANE JUZ W RANKINGU) I WYWOŁAĆ ODPOWIEDNIĄ FUNKCJĘ KROKU
+                if (listaNumZNazwPomoc.Count > 1) {
+                    Double[,] nowyRoboczy = new Double[listaNumZNazwPomoc.Count, listaNumZNazwPomoc.Count];
+                    Console.WriteLine("nowyRoboczy o rozmiarze = " + listaNumZNazwPomoc.Count);
+                    int wspolrzednaXWiersz = 0;
+                    int wspolrzednaYKolumna = 0;
+                    int miejsceA = 0;
+                    int miejsceB = 0;
+
+                    for (int numerWiersza = 0; numerWiersza < roboczyMatrixDOgol.GetLength(1); numerWiersza++) {
+                        //if (!CzyJestWLiscie(numerWiersza, listaNumerowZNazwOpcjiUsytWRank)) {
+                        if (!listaNumerowZNazwOpcjiUsytWRank.Contains(numerWiersza)) {
+                            for (int numerKolumny = 0; numerKolumny < roboczyMatrixDOgol.GetLength(0); numerKolumny++) {
+                                //if (!CzyJestWLiscie(numerKolumny, listaNumerowZNazwOpcjiUsytWRank)) {
+                                if (!listaNumerowZNazwOpcjiUsytWRank.Contains(numerKolumny)) {
+                                    double wartoscKomorki = roboczyMatrixDOgol[numerWiersza, numerKolumny];
+                                    nowyRoboczy[wspolrzednaXWiersz, wspolrzednaYKolumna] = wartoscKomorki;
+                                    wspolrzednaYKolumna++;
+                                }
+                            }
+                            wspolrzednaXWiersz++;
+                        }
+                        wspolrzednaYKolumna = 0;
+                    }
+                    wspolrzednaXWiersz = 0;
+                    wspolrzednaYKolumna = 0;
+
+                    DoStepSecond(nowyRoboczy, typeOfDistillation, listaNumZNazwPomoc);
+                }
+
+                // JEŚLI ZOSTAŁA NAM OSTATNIA OPCJA TO LĄDUJE ONA NA KOŃCU RANKINGU
+                else if (listaNumZNazwPomoc.Count == 1) {
+                    if (typeOfDistillation == true) {
+                        listaNumerowZNazwOpcjiUsytWRank.Add(listaNumZNazwPomoc[0]);
+                        listaNumerowZNazwOpcjiUsytWRank.Sort();
+                        miejscaOpcjiPoDestylacjiZstepujacej[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestZstep + 1).ToString();
+                        listaNumZNazwPomoc.Remove(0);
+                        liczbaZajetychMiejscWRankWDestZstep++;
+                    }
+                    else {
+                        listaNumerowZNazwOpcjiUsytWRank.Add(listaNumZNazwPomoc[0]);
+                        listaNumerowZNazwOpcjiUsytWRank.Sort();
+                        miejscaOpcjiPoDestylacjiWstepujacej[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestWstep + 1).ToString();
+                        listaNumZNazwPomoc.Remove(0);
+                        liczbaZajetychMiejscWRankWDestWstep++;
+                    }
+                }
+                else {
+                    Console.WriteLine("KONIEC BO listaNumZNazwPomoc (czyli OglZstep / OglWstep) PUSTY - brak jakiejkolwiek opcji");
+                }
+            }
         }
 
-        public void DoStepSixth(double[,] ratingMatrix, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions)
-        {
+        public void DoStepSixth(double[,] ratingMatrix, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
             
+            Console.WriteLine("Krok 6");
+            if (typeOfDistillation == true) {
+                double qualificationNajlepszejOpcji = 0;
+                qualificationNajlepszejOpcji = ratingMatrix[2, 0];
+                // znajdujemy najlepszą punktacje qualification
+                for (int kolumnaOceny = 0; kolumnaOceny < ratingMatrix.GetLength(0); kolumnaOceny++) {
+                    if (ratingMatrix[2, kolumnaOceny] > qualificationNajlepszejOpcji) {
+                        qualificationNajlepszejOpcji = ratingMatrix[2, kolumnaOceny];
+                    }
+                }
+
+                Console.WriteLine("Najlepsze quali = " + qualificationNajlepszejOpcji);
+                DoStepSeventh(ratingMatrix, qualificationNajlepszejOpcji, workingMatrix, typeOfDistillation, workingListOfNumbersOfOptions);
+            }
+            else if (typeOfDistillation == false) {
+                double qualificationNajgorszejOpcji = 0;
+                qualificationNajgorszejOpcji = ratingMatrix[2, 0];
+                // znajdujemy najgorszą punktacje qualification
+                for (int kolumnaOceny = 0; kolumnaOceny < ratingMatrix.GetLength(0); kolumnaOceny++) {
+                    if (ratingMatrix[2, kolumnaOceny] < qualificationNajgorszejOpcji) {
+                        qualificationNajgorszejOpcji = ratingMatrix[2, kolumnaOceny];
+                    }
+                }
+                Console.WriteLine("Najgorsze quali = " + qualificationNajgorszejOpcji);
+                DoStepSeventh(ratingMatrix, qualificationNajgorszejOpcji, workingMatrix, typeOfDistillation, workingListOfNumbersOfOptions);
+            }
         }
 
         public void Exchange(int max, int min)
-        {
-            
-        }
-
-        public void FindMax(string[][] rankingOfOptionsAfterDistillation)
         {
             
         }
@@ -914,14 +1489,26 @@ namespace ElectreAp
             throw new NotImplementedException();
         }
 
-        public void ShowStageSecond()
-        {
-            throw new NotImplementedException();
+        public void ShowStageSecond(Double[,] credibilityMatrix) {
+            Console.WriteLine("Credibility Matrix");
+            for (int numerWiersza = 0; numerWiersza < credibilityMatrix.GetLength(1); numerWiersza++) {
+                for (int numerKolumny = 0; numerKolumny < credibilityMatrix.GetLength(0); numerKolumny++) {
+                    Console.WriteLine(credibilityMatrix[numerWiersza, numerKolumny] + " | ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("\n\n");
+            PreparedDataTable(credibilityMatrix, "Macierz Wiar.", lul);
         }
 
-        public void ShowTableDataOfDistillation(double[,] tabDestillation)
-        {
-            
+        public void ShowTableDataOfDistillation(double[,] tabDestillation) {
+            Console.WriteLine("TAB DEST");
+            for (int i = 0; i < tabDestillation.GetLength(1); i++) {
+                for (int j = 0; j < tabDestillation.GetLength(0); j++) {
+                    Console.WriteLine(tabDestillation[i, j] + " ");
+                }
+                Console.WriteLine();
+            }
         }
 
         public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
@@ -929,14 +1516,15 @@ namespace ElectreAp
             throw new NotImplementedException();
         }
 
-        public void ShowTopDownDiistillation()
-        {
-
-        }
-
-        public void ShowUpwardDistillation()
-        {
-
+        public void ShowDistillation(string name, String[,] miejscaOpcjiPoDestylacji) {
+            Console.WriteLine("WYPISYWANIE OPCJI I ICH MIEJSC W RANKINGU DESTYLACJI {0}", name);
+            for (int j = 0; j < miejscaOpcjiPoDestylacji.GetLength(1); j++) {
+                for (int i = 0; i < miejscaOpcjiPoDestylacji.GetLength(0); i++) {
+                    Console.WriteLine(miejscaOpcjiPoDestylacji[j, i] + " | ");
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("\n\n");
         }
     }
 }
