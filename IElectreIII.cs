@@ -11,11 +11,9 @@ namespace ElectreAp
         double DoInvers(Double symbolA, Double symbolB, int numberOfSymbol);
         void CalculateThreshold(Double[,,] table, Double value, int i, int mod);
         void CreateOutrankingSets(List<Double[,]> listOfOutrankingSets);
-        void ShowOutrankingSets();
         void DoStageFirst();
-        void ShowStageFirst();
+        void ShowStage(Double[,] matrix, string name);
         void DoStageSecond();
-        void ShowStageSecond();
         double CalculateSDeltaK(double deltaLast);
         void DoStepSecond(Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
         void DoStepFourth(Double deltaLast, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);

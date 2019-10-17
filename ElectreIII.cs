@@ -18,10 +18,12 @@ namespace ElectreAp
 
         }
 
+
         public double CalculateSDeltaK(double deltaLast) {
             sDeltaK = beta - (alfa * deltaLast);
             return sDeltaK;
         }
+
 
         public void CalculateThreshold(double[,,] table, double value, int i, int mod) {
             switch (mod) {
@@ -63,6 +65,7 @@ namespace ElectreAp
             }
         }
 
+
         public void CheckingIsThereThisSameOptions(int y) {
             if (y < punktacjaOpcjiZmienna.GetLength(1) - 1) {
                 if (Int32.Parse(punktacjaOpcjiZmienna[1, y]) == Int32.Parse(punktacjaOpcjiZmienna[1, y + 1])) {
@@ -96,6 +99,7 @@ namespace ElectreAp
                 Console.WriteLine("\n\n");
             }
         }
+
 
         public void CreateConcordanceSets() {
             // var1 i var2 są to zmienne do których przypisujemy odpowiednie wartości alternatyw, a te są wykorzystywane w algorytmie
@@ -246,6 +250,7 @@ namespace ElectreAp
             }
         }
 
+
         public void CreateDiscordanceSets() {
             // var1 i var2 są to zmienne do których przypisujemy odpowiednie wartości alternatyw, a te są wykorzystywane w algorytmie
             double var2 = 0;
@@ -385,6 +390,7 @@ namespace ElectreAp
             }
         }
 
+
         //public void CreateFinalRanking(double[,] tabSum)
         public void CreateFinalRanking() {
             listaAlternatyw = new List<List<Int32>>();
@@ -430,6 +436,7 @@ namespace ElectreAp
             ChangeRankListToTable(listaRank);
         }
         
+
         public void ChangeRankListToTable(List<List<Int32>> listaRank) {
             for (int i = 0; i < listaRank.Count; i++) {
                 for (int j = 0; j < listaRank[i].Count; j++) {
@@ -437,6 +444,7 @@ namespace ElectreAp
                 }
             }
         }
+
 
         //public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
         public void CreateOutrankingSets() {
@@ -457,6 +465,7 @@ namespace ElectreAp
                 listaZbiorowPrzewyzszania.Add(matrixKryterium);
             }
         }
+
 
        // public void CreateSumTableOfDistillations(double[,] tabTopDownDistillation, double[,] tabUpwardDistillation)
         public void CreateSumTableOfDistillations() {
@@ -485,6 +494,7 @@ namespace ElectreAp
             }
         }
 
+
         public void CreateTabOfDistillation(double[,] tableOfDistillation, String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ) {
             tableOfDistillation = new double[numberOfAlternatives, numberOfAlternatives];
             for (int i = 0; i < tableOfDistillation.GetLength(1); i++) {
@@ -502,6 +512,7 @@ namespace ElectreAp
             }
         }
 
+
         public void ShowTabOfDistillation(Double[,] tab) {
             Console.WriteLine("TAB DEST");
             for (int i = 0; i < tab.GetLength(1); i++) {
@@ -511,6 +522,7 @@ namespace ElectreAp
                 Console.WriteLine();
             }
         }
+
 
         //Double[,] concordanceMatrix;
         double valueOfConcordance;
@@ -544,6 +556,7 @@ namespace ElectreAp
                 }
             }
         }
+
 
         string pathMathImg;
         public void DoCalculations() {
@@ -646,6 +659,7 @@ namespace ElectreAp
                 }
             }
         }
+
 
         public void DivideThresholdsToLists() {
             /*
@@ -779,6 +793,7 @@ namespace ElectreAp
             }
         }
 
+
         public double DoInvers(double symbolA, double symbolB, int positionOfSymbol) {
             double symbol = 0;
 
@@ -821,6 +836,7 @@ namespace ElectreAp
                 }
             }
         }
+
 
         public void DoStageSecond() {
             double iloczyn = 1;
@@ -1107,6 +1123,7 @@ namespace ElectreAp
 
         Double zmiennaPomocnicza = 0.0;
         Double wartoscMax = 0.0;
+
         public void DoStepFourth(double deltaLast, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
             Console.WriteLine("Krok 4");
             Boolean testDelta = false;
@@ -1139,6 +1156,7 @@ namespace ElectreAp
             Console.WriteLine("Krok 4");
             DoStepFifth(newDelta, workingMatrix, typeOfDistillation, workingListOfNumbersOfOptions);
         }
+
 
         public void DoStepSecond(double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
             Console.WriteLine("Krok 2");
@@ -1389,6 +1407,7 @@ namespace ElectreAp
             }
         }
 
+
         public void DoStepSixth(double[,] ratingMatrix, double[,] workingMatrix, bool typeOfDistillation, List<int> workingListOfNumbersOfOptions) {
             
             Console.WriteLine("Krok 6");
@@ -1535,11 +1554,13 @@ namespace ElectreAp
             }
         }
 
+
         public void PrepareTopDownDistillation() {
             listaNumerowZNazwOpcjiUsytWRank.Clear();
             newDelta = 0.0;
             typDestylacji = true;
         }
+
 
         public void PrepareUpwardDistillation() {
             listaNumerowZNazwOpcjiUsytWRank.Clear();
@@ -1575,23 +1596,6 @@ namespace ElectreAp
         }
 
 
-        public void ShowConcordanceMatrix() {
-            // wypisanie CorcordanceMatrix
-            Console.WriteLine("MACIERZ ZGODNOSCI");
-            for (int y = 0; y < numberOfAlternatives; y++)
-            {
-                for (int z = 0; z < numberOfAlternatives; z++)
-                {
-                    Console.Write(concordanceMatrix[y,z] + " | ");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("\n\n");
-            
-            //TabComplete(concordanceMatrix, "Macierz Zgod.");
-        }
-
-
         public void ShowStage(Double[,] matrix, string name) {
 
             Console.WriteLine("{0} Matrix", name);
@@ -1617,6 +1621,7 @@ namespace ElectreAp
             }
         }
 
+
         public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets) {
 
             Console.WriteLine("SPRAWDZAMY listaZbiorowNieZgodnosci.size() =" + listaZbiorowNieZgodnosci.Count);
@@ -1641,6 +1646,7 @@ namespace ElectreAp
                 listOfOutrankingSets.Add(matrixKryterium);
             }
         }
+
 
         public void ShowDistillation(string name, String[,] miejscaOpcjiPoDestylacji) {
             Console.WriteLine("WYPISYWANIE OPCJI I ICH MIEJSC W RANKINGU DESTYLACJI {0}", name);
