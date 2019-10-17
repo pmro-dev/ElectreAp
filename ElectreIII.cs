@@ -1419,19 +1419,120 @@ namespace ElectreAp
             }
         }
 
-        public void Exchange(int max, int min)
-        {
-            
+
+        int pomocna = 0;
+        
+        public void Exchange(int max, int min) {
+
+            Console.WriteLine("ZAMIEN WYKONANE" + min);
+
+            for (int j = 0; j < miejscaOpcjiPoDestylacjiWstepujacej.GetLength(0); j++) {
+                if (Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, j]) == min) {
+                    miejscaOpcjiPoDestylacjiWstepujacej[1, j] = "0";
+                }
+                if (Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, j]) == max) {
+                    miejscaOpcjiPoDestylacjiWstepujacej[1, j] = min.ToString();
+                }
+            }
+            for (int j = 0; j < miejscaOpcjiPoDestylacjiWstepujacej.GetLength(0); j++) {
+                if (Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, j]) == 0) {
+                    miejscaOpcjiPoDestylacjiWstepujacej[1, j] = max.ToString();
+                }
+            }
+
+            if (min < pomocna) {
+                min++;
+                max--;
+                Exchange(max, min);
+            }
         }
 
-        public void FindMax(string[,] rankingOfOptionsAfterDistillation)
-        {
-            
+
+        int maxim = 0;
+
+        public void FindMax(string[,] rankingOfOptionsAfterDistillation) {
+            for (int i = 0; i < miejscaOpcjiPoDestylacjiWstepujacej.GetLength(0); i++) {
+                if (maxim < Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, i])) {
+                    maxim = Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, i]);
+                }
+            }
+            Console.WriteLine("MAXIM = " + maxim);
+            pomocna = (maxim / 2) + 1;
+            Console.WriteLine("POMOCNA = " + pomocna);
         }
 
-        public void FindMin()
-        {
-            
+
+        int wiersz = -1;
+        Boolean tescik = false;
+        Boolean tescikBol = false;
+
+        public void FindMin() {
+
+            if (listaAltWRank.Any()) {
+                listaAltWRank.Sort();
+            }
+            listaDlaRank = new List<int>();
+            listaChwilowa = new List<int>();
+            wiersz = -1;
+
+            for (int i = 0; i < listaAlternatyw.Count; i++) {
+                if (!listaAltWRank.Any() && !listaAlternatyw[i].Any()) {
+                    listaDlaRank.Add((i + 1));
+                    wiersz = i;
+                    listaChwilowa.Add((i + 1));
+                }
+                else if (listaAlternatyw[i].Count == listaAltWRank.Count) {
+                    listaAltWRank.Sort();
+                    for (int k = 0; k < listaAlternatyw[i].Count; k++) {
+                        Console.WriteLine(listaAlternatyw[i][k] + " == " + listaAltWRank[k]);
+                        if (listaAlternatyw[i][k] == listaAltWRank[k]) { tescik = true; }
+                        else { 
+                            tescik = false; 
+                            break; 
+                        }
+                    }
+                    if (tescik) {
+                        listaDlaRank.Add((i + 1));
+                        listaChwilowa.Add((i + 1));
+                        wiersz = i;
+                    }
+                }
+                else if (listaAlternatyw[i].Count < listaAltWRankNieSort.Count && !listaAltWRankNieSort.Contains(i + 1)) {
+                    for (int f = 0; f < listaChwilowa.Count; f++) {
+                        double pomoc1 = TabSum[i, listaChwilowa[f] - 1];
+                        double pomoc2 = TabSum[listaChwilowa[f] - 1, i];
+
+                        if ((pomoc1 == 2.0 || pomoc1 == 0.0) && (pomoc2 == 2.0 || pomoc2 == 0.0)) {
+                            Console.WriteLine("DZIALA TUTAJ !!!!!");
+                            tescikBol = true;
+                        }
+                        else {
+                            tescikBol = false;
+                            break;
+                        }
+                    }
+                    if (tescikBol) {
+                        listaDlaRank.Add((i + 1));
+                        listaChwilowa.Add((i + 1));
+                        wiersz = i;
+                    }
+                }
+            }
+
+            if (listaChwilowa.Any()) {
+                for (int w = 0; w < listaChwilowa.Count; w++) {
+                    listaAltWRank.Add(listaChwilowa[w]);
+                    listaAltWRankNieSort.Add(listaChwilowa[w]);
+                }
+            }
+
+            if (listaAltWRank.Count < listaAlternatyw.Count) {
+                listaRank.Add(listaDlaRank);
+                FindMin();
+            }
+            else {
+                listaRank.Add(listaDlaRank);
+            }
         }
 
         public void PrepareTopDownDistillation() {
