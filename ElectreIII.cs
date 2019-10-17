@@ -587,7 +587,7 @@ namespace ElectreAp
             listOfPathsImages.Add(ps + "\\MathImg\\wzor_przeliczanie_wspolczynnikow.PNG");
 
             if (CboxConcordanceSetsChecked) {
-                ShowConcordanceSets();
+                ShowSets(listaZbiorowZgodnosci, "Zgodności");
                 listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_rosn.PNG");
                 listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_mal.PNG");
             }
@@ -598,7 +598,7 @@ namespace ElectreAp
             }
 
             if (CboxNonConcordanceSetsChecked) {
-                ShowDiscordanceSets();
+                ShowSets(listaZbiorowNieZgodnosci, "Niegodności");
                 listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_rosn.PNG");
                 listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_mal.PNG");
             }
@@ -609,11 +609,11 @@ namespace ElectreAp
             }
 
             if (CboxSetEqualityMatrixChecked) {
-                ShowStageFirst();
+                ShowStage(matrixRownosciZbiorowPrzewyzszania, "Równości Zbiorów Przewyższania");
             }
 
             if (CboxCredibilityMatrixChecked) {
-                ShowStageSecond();
+                ShowStage(credibilityMatrix, "Zgodności");
                 listOfPathsImages.Add(ps + "\\MathImg\\indeks_wiarygodnosci.PNG");
             }
 
@@ -1547,6 +1547,7 @@ namespace ElectreAp
             typDestylacji = false;
         }
 
+
         public void PrepareUpwardScore() {
             FindMax(miejscaOpcjiPoDestylacjiWstepujacej);
             //ZnajdzMaxim(miejscaOpcjiPoDestylacjiWstepujacej);
@@ -1554,10 +1555,25 @@ namespace ElectreAp
             //Zamien(maxim, 1);
         }
 
-        public void ShowConcordanceSets()
-        {
-            throw new NotImplementedException();
+
+        public void ShowSets(List<Double[,]> listaZbiorow, string name) {
+
+            // wypisywanie zbiorów zgodności dla każdego z kryterium do Output kompilatora i do TextArea
+            for (int a = 0; a < listaZbiorow.Count; a++) {
+
+                PreparedDataTable(listaZbiorow[a], "Zbior " + name + (a + 1), lul);
+                Console.WriteLine("Zbiór {0} kryt." + a, name);
+
+                for (int b = 0; b < numberOfAlternatives; b++) {
+                    for (int c = 0; c < numberOfAlternatives; c++) {
+                        Console.WriteLine(listaZbiorow[a][b, c] + " | ");
+                    }
+                    Console.WriteLine();
+                }
+                Console.WriteLine("\n\n");
+            }
         }
+
 
         public void ShowConcordanceMatrix() {
             // wypisanie CorcordanceMatrix
@@ -1575,32 +1591,33 @@ namespace ElectreAp
             //TabComplete(concordanceMatrix, "Macierz Zgod.");
         }
 
-        public void ShowDiscordanceSets()
-        {
-            throw new NotImplementedException();
-        }
 
         public void ShowOutrankingSets()
         {
             throw new NotImplementedException();
         }
 
+
         public void ShowStageFirst()
         {
             throw new NotImplementedException();
         }
 
-        public void ShowStageSecond(Double[,] credibilityMatrix) {
-            Console.WriteLine("Credibility Matrix");
-            for (int numerWiersza = 0; numerWiersza < credibilityMatrix.GetLength(1); numerWiersza++) {
-                for (int numerKolumny = 0; numerKolumny < credibilityMatrix.GetLength(0); numerKolumny++) {
-                    Console.WriteLine(credibilityMatrix[numerWiersza, numerKolumny] + " | ");
+
+        public void ShowStage(Double[,] matrix, string name) {
+
+            Console.WriteLine("{0} Matrix", name);
+
+            for (int numerWiersza = 0; numerWiersza < matrix.GetLength(1); numerWiersza++) {
+                for (int numerKolumny = 0; numerKolumny < matrix.GetLength(0); numerKolumny++) {
+                    Console.WriteLine(matrix[numerWiersza, numerKolumny] + " | ");
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("\n\n");
-            PreparedDataTable(credibilityMatrix, "Macierz Wiar.", lul);
+            PreparedDataTable(matrix, "Macierz " + name, lul);
         }
+
 
         public void ShowTableDataOfDistillation(double[,] tabDestillation) {
             Console.WriteLine("TAB DEST");
