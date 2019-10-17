@@ -53,7 +53,7 @@ namespace ElectreAp
         }
 
 
-        string pathMathImg = "";
+       // string pathMathImg = "";
         List<Int32> lul = new List<Int32>();
         private void Button_Calculate_Click(object sender, EventArgs e) {
             tabControl_LeaderBoards.TabPages.Clear();
@@ -74,41 +74,42 @@ namespace ElectreAp
 
             }
             catch (Exception ex) {
-                MessageBox.Show("W polach Alfa, Beta i Miejsca po przecniku można wprowadzać tylko cyfry! \n Ponadto dla Alfa i Beta używamy kropki nie przecinka", "Błąd", MessageBoxButtons.OK);
+                MessageBox.Show("W polach Alfa, Beta i Miejsca po przecinku można wprowadzać tylko cyfry! \n Ponadto dla Alfa i Beta używamy przecinka a nie kropki", "Błąd", MessageBoxButtons.OK);
                 Console.WriteLine(ex);
             }
 
-            //taskElectreIII.DoCalculations();
-            taskElectreIII.DivideThresholdsToLists();
+            taskElectreIII.DoCalculations();
+            taskElectreIII.PreparedImagesAndShowCollections();
+/*            taskElectreIII.DivideThresholdsToLists();
             taskElectreIII.CreateMatrixForAlternativeData(taskElectreIII.NumberOfAlternatives, taskElectreIII.NumberOfCriterias);
-            taskElectreIII.CreateConcordanceSets();
+            taskElectreIII.CreateConcordanceSets();*/
 
-            string ps = AppDomain.CurrentDomain.BaseDirectory;
+/*            string ps = AppDomain.CurrentDomain.BaseDirectory;
             pathMathImg = ps + "\\MathImg\\wzor_mal_direct_prog.PNG";
-            PrepareImgToShow(pathMathImg);
+            ShowMathImage(pathMathImg);
             pathMathImg = ps + "\\MathImg\\wzor_rosn_direct_prog.PNG";
-            PrepareImgToShow(pathMathImg);
+            ShowMathImage(pathMathImg);
             pathMathImg = ps + "\\MathImg\\wzor_mal_invers_prog.PNG";
-            PrepareImgToShow(pathMathImg);
+            ShowMathImage(pathMathImg);
             pathMathImg = ps + "\\MathImg\\wzor_rosn_invers_prog.PNG";
-            PrepareImgToShow(pathMathImg);
+            ShowMathImage(pathMathImg);
             pathMathImg = ps + "\\MathImg\\wzor_przeliczanie_wspolczynnikow.PNG";
-            PrepareImgToShow(pathMathImg);
+            ShowMathImage(pathMathImg);*/
 
-            if(taskElectreIII.CboxConcordanceSetsChecked) {
+/*            if(taskElectreIII.CboxConcordanceSetsChecked) {
                 taskElectreIII.ShowConcordanceSets();
                 pathMathImg = ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_rosn.PNG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
                 pathMathImg = ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_mal.PNG";
-                PrepareImgToShow(pathMathImg);
-            }
+                ShowMathImage(pathMathImg);
+            }*/
 
-            taskElectreIII.CreateConcordanceMatrix();
+/*            taskElectreIII.CreateConcordanceMatrix();*/
 
-            if (taskElectreIII.CboxConcordanceMatrixChecked) {
+/*            if (taskElectreIII.CboxConcordanceMatrixChecked) {
                 taskElectreIII.ShowConcordanceMatrix();
                 pathMathImg = ps + "\\MathImg\\indeks_zgodnosci.PNG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
             }
 
             taskElectreIII.CreateDiscordanceSets();
@@ -116,9 +117,9 @@ namespace ElectreAp
             if (taskElectreIII.CboxNonConcordanceSetsChecked) {
                 taskElectreIII.ShowDiscordanceSets();
                 pathMathImg = ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_rosn.PNG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
                 pathMathImg = ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_mal.PNG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
             }
 
             taskElectreIII.CreateOutrankingSets();
@@ -126,7 +127,7 @@ namespace ElectreAp
             if (taskElectreIII.CboxOutrankingSetsChecked) {
                 taskElectreIII.ShowOutrankingSets();
                 pathMathImg = ps + "\\MathImg\\WartoscPrzewyzszania.JPG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
             }
 
             // tworz zbiory wiarygodnosci
@@ -143,7 +144,7 @@ namespace ElectreAp
                 taskElectreIII.ShowStageSecond();
                 //WypiszEtap2(credibilityMatrix);
                 pathMathImg = ps + "\\MathImg\\indeks_wiarygodnosci.PNG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
             }
 
             taskElectreIII.PrepareTopDownDistillation();
@@ -171,19 +172,19 @@ namespace ElectreAp
 
             if (taskElectreIII.CboxUpwardDistillationChecked || taskElectreIII.CboxTopDownDistillationChecked) {
                 pathMathImg = ps + "\\MathImg\\alfa_zero.PNG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
                 pathMathImg = ps + "\\MathImg\\s_alfa.PNG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
                 pathMathImg = ps + "\\MathImg\\alfa_nplus.PNG";
-                PrepareImgToShow(pathMathImg);
+                ShowMathImage(pathMathImg);
             }
 
-            taskElectreIII.CreateTabTopDown();
+            taskElectreIII.CreateTabOfDistillation(taskElectreIII.TabZstep, taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, -1, 0, 1);
             //UtworzTabZstep();
             taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabZstep);
             //WypiszTabDest(TabZstep);
 
-            taskElectreIII.CreateTabUpward();
+            taskElectreIII.CreateTabOfDistillation(taskElectreIII.TabWstep, taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, 1, 0, -1);
             //UtworzTabWstep();
             taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabWstep);
             //WypiszTabDest(TabWstep);
@@ -194,20 +195,42 @@ namespace ElectreAp
             //WypiszTabDest(TabSum);
             
             if (taskElectreIII.CboxRankingsChecked) {
-                AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
-                AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
-                AddTabPage(taskElectreIII.TabSum, "Finalna Macierz Zależności", lul);
+                *//*                AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
+                                AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
+                                AddTabPage(taskElectreIII.TabSum, "Finalna Macierz Zależności", lul);*//*
+                taskElectreIII.PreparedDataTable(taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
+                taskElectreIII.PreparedDataTable(taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
+                taskElectreIII.PreparedDataTable(taskElectreIII.TabSum, "Finalna Macierz Zależności", lul);
             }
 
             taskElectreIII.CreateFinalRanking();
             //RankingFinalowy(TabSum);
                         
             if (checkBox_Rankings.Checked) {
-                AddTabPage(taskElectreIII.TabRank, "Rank. Final.");
+                taskElectreIII.PreparedDataTable(taskElectreIII.TabRank, "Rank. Final.");
+                //AddTabPage(taskElectreIII.TabRank, "Rank. Final.");
+            }
+
+            if (checkBox_RatingMatrix.Checked) {
+                if (taskElectreIII.TypDestylacji) {
+                    taskElectreIII.PreparedDataTable(macierzOcen, "Macierz Ocen " + listaMacierzyOcen.Count + " (D.Z.)", workingListOfNumbersOfOptions);
+                }
+                else {
+                    taskElectreIII.PreparedDataTable(macierzOcen, "Macierz Ocen " + listaMacierzyOcen.Count + " (D.W.)", workingListOfNumbersOfOptions);
+                }
+            }*/
+
+            //wyświetlamy wszystkie utworzone dataTable i umieszczone w liście ListOfDataTable
+            foreach (DataTable dataTable in taskElectreIII.ListOfDataTable) {
+                AddTabPage(dataTable, dataTable.TableName);
+            }
+
+            foreach (String pathMathImg in taskElectreIII.ListOfPathsImages) {
+                ShowMathImage(pathMathImg);
             }
         }
 
-        public void PrepareImgToShow(String pathMathImg) {
+        public void ShowMathImage(String pathMathImg) {
             try {
                 PictureBox pictureBox = new PictureBox();
                 Image img = Image.FromFile(pathMathImg);
@@ -289,18 +312,18 @@ namespace ElectreAp
             }
         }
 
-        public void AddTabPage(Object[,] matrixData, String namePage) {
-
+        //public void AddTabPage(Object[,] matrixData, String namePage) {
+        public void AddTabPage(DataTable dataTable, String namePage) {
             Console.WriteLine("LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             TabPage tabPage = new TabPage();
             tabPage.Text = namePage;
 
             DataGridView dataGridView = new DataGridView();
             dataGridView.Size = new Size(690, 350);
-            DataTable dataTable = new DataTable();
+            //DataTable dataTable = new DataTable();
 
             /* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
-            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej */
+            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej *//*
 
             for (int licz = 0; licz < (matrixData.GetLength(1) + 1); licz++) {
                 DataColumn column = new DataColumn();
@@ -339,7 +362,7 @@ namespace ElectreAp
                     }
                 }
                 dataTable.Rows.Add(row);
-            }
+            }*/
 
             dataGridView.DataSource = dataTable;
             tabPage.Controls.Add(dataGridView);
@@ -347,7 +370,7 @@ namespace ElectreAp
         }
 
 
-        Double zmiennaHelp;
+/*        Double zmiennaHelp;
         public void AddTabPage(Double[,] matrixData, string namePage, List<Int32> roboczaListaNumerowOpcji) {
             TabPage tabPage = new TabPage();
             tabPage.Text = namePage;
@@ -359,14 +382,14 @@ namespace ElectreAp
             Boolean bool1 = namePage.Contains("Ocen");
             Boolean bool2 = namePage.Contains("Finalna");
 
-            /* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
-            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej */
+            *//* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
+            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej *//*
             for (int licz = 0; licz < matrixData.GetLength(0) + 1; licz++) {
                 DataColumn column = new DataColumn();
                 if (bool1 && licz > 0 && licz < matrixData.GetLength(0) + 1) {
                     //columnNamesView.add("A" + (roboczaListaNumerowOpcji.get(licz - 1) + 1));
-/*                    int liczenie = roboczaListaNumerowOpcji[licz - 1] + 1;
-                    dataGridView.Columns.Add("","A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString());*/
+*//*                    int liczenie = roboczaListaNumerowOpcji[licz - 1] + 1;
+                    dataGridView.Columns.Add("","A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString());*//*
                     column.ColumnName = "A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString();
                     dataTable.Columns.Add(column);
                 }
@@ -436,7 +459,7 @@ namespace ElectreAp
             dataGridView.DataSource = dataTable;
             tabPage.Controls.Add(dataGridView);
             tabControl_LeaderBoards.TabPages.Add(tabPage);
-        }
+        }*/
 
 
         Match matchInt;

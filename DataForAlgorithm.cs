@@ -28,7 +28,7 @@ namespace ElectreAp
         protected List<Double[,]> listaZbiorowPrzewyzszania = new List<Double[,]>();
         protected List<Double[,]> listaMacierzyOcen = new List<Double[,]>();
         protected List<Int32> listaNumerowZNazwOpcji = new List<Int32>();
-        protected List<Int32> listaNumerowZNazwNajlepszychOpcjiWewnatrz = new List<Int32>();
+        protected List<Int32> listaNumerowZNazwNajlepszychOpcjiWewnatrz;
         protected List<Int32> listaNumerowZNazwOpcjiUsytWRank = new List<Int32>();
         protected List<Int32> listaNumerowZNazwOpcjiOgolZstep = new List<Int32>();
         public List<Int32> ListaNumerowZNazwOpcjiOgolZstep { get { return listaNumerowZNazwOpcjiOgolZstep; } }
@@ -41,6 +41,7 @@ namespace ElectreAp
         protected List<Int32> listaChwilowa = new List<Int32>();
         protected List<Int32> lul = new List<Int32>();
         protected List<Int32> listaDlaRank = new List<Int32>();
+        protected List<Int32> workingListOfNumbersOfOptions = new List<Int32>();
         protected List<String> rankingOpcjiFinalny = new List<String>();
         protected List<List<Int32>> listaRank = new List<List<Int32>>();
         protected List<List<Int32>> listaAlternatyw = new List<List<Int32>>();
@@ -67,6 +68,7 @@ namespace ElectreAp
         private String valueHelp = "";
 
         protected Double[,] concordanceMatrix;
+        protected Double[,] macierzOcen;
         protected Double[,] tabelaAlternatyw;
         protected Double[,] tabZstep;
         public Double[,] TabZstep { get { return tabZstep; } set { tabZstep = value; } }
@@ -75,10 +77,10 @@ namespace ElectreAp
         protected Double[,] tabSum;
         public Double[,] TabSum { get { return tabSum; } set { tabSum = value; } }
         // macierz wskaźników wiarygodności inaczej Credibility Matrix
-        private Double[,] credibilityMatrix;
-        private Double[,] roboczyMatrixDOgol;
+        protected Double[,] credibilityMatrix;
+        protected Double[,] roboczyMatrixDOgol;
         public Double[,] RoboczyMatrixDOgol { get { return roboczyMatrixDOgol; } }
-        private Double[,] matrixRownosciZbiorowPrzewyzszania;
+        protected Double[,] matrixRownosciZbiorowPrzewyzszania;
         private Double[,] roboczyMatrixD;
         protected Double[,] tabelaMatrix;
         public void TabelaMatrix_SetValue(int row, int col, double valueToSet) { tabelaMatrix[row, col] = valueToSet; }        
@@ -98,20 +100,20 @@ namespace ElectreAp
         protected double progV = -1;
         private double testLogiczny = 0.0;
         private double Delta0 = 0.0;
-        private double alfa = 0.15;
+        protected double alfa = 0.15;
         public double Alfa { get { return alfa; } set { alfa = value;} }
-        private double beta = 0.3;
+        protected double beta = 0.3;
         public double Beta { get { return beta; } set { beta = value; } }
         protected double newDelta = 0.0;
-        private double sDeltaK = 0.0;
+        protected double sDeltaK = 0.0;
         private double zmiennaPomocnicza = 0.0;
         private double wartoscMax = 0.0;
         private double zmiennaPomocna = 0.0;
         private double zmiennaPomocnicza1 = 0.0;
         private double zmiennaHelp;
 
-        private int liczbaZajetychMiejscWRankWDestZstep = 0;
-        private int liczbaZajetychMiejscWRankWDestWstep = 0;
+        protected int liczbaZajetychMiejscWRankWDestZstep = 0;
+        protected int liczbaZajetychMiejscWRankWDestWstep = 0;
         protected int miejscPoPrzecinku = 2;
         public int MiejscPoPrzecinku { get { return miejscPoPrzecinku; } set { miejscPoPrzecinku = value; } }
         protected int numberOfCriterias = 0;
