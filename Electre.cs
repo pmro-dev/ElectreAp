@@ -11,15 +11,17 @@ using System.Text.RegularExpressions;
 
 namespace ElectreAp
 {
-    public partial class Electre : Form
-    {
-        public Electre()
-        {
+    public partial class Electre : Form {
+
+        public Electre() {
             InitializeComponent();
+            textBox_Alfa.Text = taskElectreIII.Alfa.ToString();
+            textBox_Beta.Text = taskElectreIII.Beta.ToString();
+            textBox_DecimalPlaces.Text = taskElectreIII.MiejscPoPrzecinku.ToString();
         }
 
-        private void UserControl_Load(object sender, EventArgs e)
-        {
+
+        private void UserControl_Load(object sender, EventArgs e) {
 
         }
 
@@ -30,23 +32,50 @@ namespace ElectreAp
 
         private void Button_CreateTab_Click(object sender, EventArgs e) {
 
-            alternatives = Int32.Parse(textBox_Alternatives.Text);
             criteria = Int32.Parse(textBox_Criteria.Text);
-            
-            dataGridView_Matrix.DataSource = taskElectreIII.CreateTable(alternatives, criteria);
+            alternatives = Int32.Parse(textBox_Alternatives.Text);
+            taskElectreIII.CreateBaseMatrix(alternatives, criteria);
+            PrepareProperties(criteria, ref taskElectreIII.tabelaMatrix, 1, 0);
+        }
+
+
+        public void PrepareProperties(int criteria, ref Double[,] matrix, int colAdd, int rowAdd) {
+
+            taskElectreIII.CreateColumnNames(criteria, colAdd);
+            taskElectreIII.CreateListOfValueThresholds(criteria, ref matrix);
+            dataGridView_Matrix.DataSource = taskElectreIII.CreateDataTableBasedOnMatrix(ref matrix, colAdd, rowAdd);
             dataGridView_Matrix.Columns[0].ReadOnly = true;
-            dataGridView_Matrix.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(202,202,202);
+            dataGridView_Matrix.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(202, 202, 202);
             dataGridView_Matrix.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             dataGridView_Matrix.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            
             listBox_CriteriaToChose.Items.AddRange(taskElectreIII.ColumnNamesDoListy.ToArray());
             listBox_CriteriaToChose.Font = new Font(listBox_CriteriaToChose.Font.Name, 10);
             listBox_CriteriaToChose.HorizontalScrollbar = true;
         }
 
-        private void Button_ReadTab_Click(object sender, EventArgs e) {
 
+        private void Button_ReadTab_Click(object sender, EventArgs e) {
+            
+            string filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
+                openFileDialog.InitialDirectory = "C:\\Users\\MaRkOs\\Dokumenty";
+                openFileDialog.Filter = "Exel files (*.xls;*.xlsx)|*.xls;*.xlsx|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                    filePath = openFileDialog.FileName;
+                }
+            }
+
+            ExcelManaging exel = new ExcelManaging();
+            taskElectreIII.TabelaMatrix = exel.ReadDataFromFileToMatrix(filePath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias);
+            criteria = taskElectreIII.tabelaMatrix.GetLength(1);
+            alternatives = taskElectreIII.tabelaMatrix.GetLength(0);
+            PrepareProperties(criteria, ref taskElectreIII.tabelaMatrix, 1, 0);
         }
+
 
         private void Button_SaveTab_Click(object sender, EventArgs e) {
 
@@ -55,170 +84,38 @@ namespace ElectreAp
 
        // string pathMathImg = "";
         List<Int32> lul = new List<Int32>();
+
         private void Button_Calculate_Click(object sender, EventArgs e) {
             tabControl_LeaderBoards.TabPages.Clear();
             //Reset(2);
 
-            try {
+
+            try
+            {
                 if (textBox_Alfa.Text != taskElectreIII.Beta.ToString()) {
-                    taskElectreIII.Alfa = Double.Parse(textBox_Alfa.Text);
+            //if (TextBoxValidationDouble(textBox_Alfa, null) && textBox_Alfa.Text != taskElectreIII.Beta.ToString()) {
+                taskElectreIII.Alfa = Double.Parse(textBox_Alfa.Text);
                 }
 
                 if (textBox_Beta.Text != taskElectreIII.Alfa.ToString()) {
+                //if (TextBoxValidationDouble(textBox_Beta, null) && textBox_Beta.Text != taskElectreIII.Alfa.ToString()) {
                     taskElectreIII.Beta = Double.Parse(textBox_Beta.Text);
                 }
 
                 if (textBox_DecimalPlaces.Text != taskElectreIII.MiejscPoPrzecinku.ToString()) {
+                //if (TextBoxValidationInt(textBox_DecimalPlaces, null, 0) && textBox_DecimalPlaces.Text != taskElectreIII.MiejscPoPrzecinku.ToString()) {
                     taskElectreIII.MiejscPoPrzecinku = Int32.Parse(textBox_DecimalPlaces.Text);
                 }
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show("W polach Alfa, Beta i Miejsca po przecinku można wprowadzać tylko cyfry! \n Ponadto dla Alfa i Beta używamy przecinka a nie kropki", "Błąd", MessageBoxButtons.OK);
                 Console.WriteLine(ex);
             }
 
             taskElectreIII.DoCalculations();
             taskElectreIII.PreparedImagesAndShowCollections();
-/*            taskElectreIII.DivideThresholdsToLists();
-            taskElectreIII.CreateMatrixForAlternativeData(taskElectreIII.NumberOfAlternatives, taskElectreIII.NumberOfCriterias);
-            taskElectreIII.CreateConcordanceSets();*/
-
-/*            string ps = AppDomain.CurrentDomain.BaseDirectory;
-            pathMathImg = ps + "\\MathImg\\wzor_mal_direct_prog.PNG";
-            ShowMathImage(pathMathImg);
-            pathMathImg = ps + "\\MathImg\\wzor_rosn_direct_prog.PNG";
-            ShowMathImage(pathMathImg);
-            pathMathImg = ps + "\\MathImg\\wzor_mal_invers_prog.PNG";
-            ShowMathImage(pathMathImg);
-            pathMathImg = ps + "\\MathImg\\wzor_rosn_invers_prog.PNG";
-            ShowMathImage(pathMathImg);
-            pathMathImg = ps + "\\MathImg\\wzor_przeliczanie_wspolczynnikow.PNG";
-            ShowMathImage(pathMathImg);*/
-
-/*            if(taskElectreIII.CboxConcordanceSetsChecked) {
-                taskElectreIII.ShowConcordanceSets();
-                pathMathImg = ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_rosn.PNG";
-                ShowMathImage(pathMathImg);
-                pathMathImg = ps + "\\MathImg\\wspolczynnik_zgodnosci_kryterium_mal.PNG";
-                ShowMathImage(pathMathImg);
-            }*/
-
-/*            taskElectreIII.CreateConcordanceMatrix();*/
-
-/*            if (taskElectreIII.CboxConcordanceMatrixChecked) {
-                taskElectreIII.ShowConcordanceMatrix();
-                pathMathImg = ps + "\\MathImg\\indeks_zgodnosci.PNG";
-                ShowMathImage(pathMathImg);
-            }
-
-            taskElectreIII.CreateDiscordanceSets();
-
-            if (taskElectreIII.CboxNonConcordanceSetsChecked) {
-                taskElectreIII.ShowDiscordanceSets();
-                pathMathImg = ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_rosn.PNG";
-                ShowMathImage(pathMathImg);
-                pathMathImg = ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_mal.PNG";
-                ShowMathImage(pathMathImg);
-            }
-
-            taskElectreIII.CreateOutrankingSets();
-
-            if (taskElectreIII.CboxOutrankingSetsChecked) {
-                taskElectreIII.ShowOutrankingSets();
-                pathMathImg = ps + "\\MathImg\\WartoscPrzewyzszania.JPG";
-                ShowMathImage(pathMathImg);
-            }
-
-            // tworz zbiory wiarygodnosci
-            taskElectreIII.DoStageFirst();
-
-            if (taskElectreIII.CboxSetEqualityMatrixChecked) {
-                taskElectreIII.ShowStageFirst();
-                //WypiszEtap1(matrixRownosciZbiorowPrzewyzszania);
-            }
-
-            taskElectreIII.DoStageSecond();
-
-            if (taskElectreIII.CboxCredibilityMatrixChecked) {
-                taskElectreIII.ShowStageSecond();
-                //WypiszEtap2(credibilityMatrix);
-                pathMathImg = ps + "\\MathImg\\indeks_wiarygodnosci.PNG";
-                ShowMathImage(pathMathImg);
-            }
-
-            taskElectreIII.PrepareTopDownDistillation();
-            // wykonaj destylacje zstępującą
-            taskElectreIII.DoStepSecond(taskElectreIII.RoboczyMatrixDOgol, taskElectreIII.TypDestylacji, taskElectreIII.ListaNumerowZNazwOpcjiOgolZstep);
-            //Krok2(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolZstep);
-            
-            taskElectreIII.PrepareUpwardDistillation();
-
-            // wykonaj destylację wstępującą
-            taskElectreIII.DoStepSecond(taskElectreIII.RoboczyMatrixDOgol, taskElectreIII.TypDestylacji, taskElectreIII.ListaNumerowZNazwOpcjiOgolWstep);
-            //Krok2(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolWstep);
-
-            if (taskElectreIII.CboxTopDownDistillationChecked) {
-                taskElectreIII.ShowTopDownDiistillation();
-                //WypisywanieZstep();
-            }
-
-            taskElectreIII.PrepareUpwardScore();
-
-            if (taskElectreIII.CboxUpwardDistillationChecked) {
-                taskElectreIII.ShowUpwardDistillation();
-                //WypisywanieWstep();
-            }
-
-            if (taskElectreIII.CboxUpwardDistillationChecked || taskElectreIII.CboxTopDownDistillationChecked) {
-                pathMathImg = ps + "\\MathImg\\alfa_zero.PNG";
-                ShowMathImage(pathMathImg);
-                pathMathImg = ps + "\\MathImg\\s_alfa.PNG";
-                ShowMathImage(pathMathImg);
-                pathMathImg = ps + "\\MathImg\\alfa_nplus.PNG";
-                ShowMathImage(pathMathImg);
-            }
-
-            taskElectreIII.CreateTabOfDistillation(taskElectreIII.TabZstep, taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, -1, 0, 1);
-            //UtworzTabZstep();
-            taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabZstep);
-            //WypiszTabDest(TabZstep);
-
-            taskElectreIII.CreateTabOfDistillation(taskElectreIII.TabWstep, taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, 1, 0, -1);
-            //UtworzTabWstep();
-            taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabWstep);
-            //WypiszTabDest(TabWstep);
-
-            taskElectreIII.CreateSumTableOfDistillations();
-            //UtworzTabSum();
-            taskElectreIII.ShowTabOfDistillation(taskElectreIII.TabSum);
-            //WypiszTabDest(TabSum);
-            
-            if (taskElectreIII.CboxRankingsChecked) {
-                *//*                AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
-                                AddTabPage(taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
-                                AddTabPage(taskElectreIII.TabSum, "Finalna Macierz Zależności", lul);*//*
-                taskElectreIII.PreparedDataTable(taskElectreIII.MiejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
-                taskElectreIII.PreparedDataTable(taskElectreIII.MiejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
-                taskElectreIII.PreparedDataTable(taskElectreIII.TabSum, "Finalna Macierz Zależności", lul);
-            }
-
-            taskElectreIII.CreateFinalRanking();
-            //RankingFinalowy(TabSum);
-                        
-            if (checkBox_Rankings.Checked) {
-                taskElectreIII.PreparedDataTable(taskElectreIII.TabRank, "Rank. Final.");
-                //AddTabPage(taskElectreIII.TabRank, "Rank. Final.");
-            }
-
-            if (checkBox_RatingMatrix.Checked) {
-                if (taskElectreIII.TypDestylacji) {
-                    taskElectreIII.PreparedDataTable(macierzOcen, "Macierz Ocen " + listaMacierzyOcen.Count + " (D.Z.)", workingListOfNumbersOfOptions);
-                }
-                else {
-                    taskElectreIII.PreparedDataTable(macierzOcen, "Macierz Ocen " + listaMacierzyOcen.Count + " (D.W.)", workingListOfNumbersOfOptions);
-                }
-            }*/
 
             //wyświetlamy wszystkie utworzone dataTable i umieszczone w liście ListOfDataTable
             foreach (DataTable dataTable in taskElectreIII.ListOfDataTable) {
@@ -229,6 +126,7 @@ namespace ElectreAp
                 ShowMathImage(pathMathImg);
             }
         }
+
 
         public void ShowMathImage(String pathMathImg) {
             try {
@@ -245,24 +143,30 @@ namespace ElectreAp
             }
         }
 
+
         private void Button_SaveData_Click(object sender, EventArgs e) {
 
         }
+
 
         private void CheckBox_TurnOffVeto_Click(object sender, EventArgs e) {
             int selectedIndex = listBox_CriteriaToChose.SelectedIndex;
             try {
                 if (checkBox_TurnOffVeto.Checked) {
-                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 999999999.9);
-                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 999999999.9);
+                    /*                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 999999999.9);
+                                        taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 999999999.9);*/
+                    taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0] = 999999999.9;
+                    taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 1] = 999999999.9;
                     textBox_ProgAlfaV.Enabled = false;
                     textBox_ProgAlfaV.Clear();
                     textBox_ProgBetaV.Enabled = false;
                     textBox_ProgBetaV.Clear();
                 }
                 else {
-                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 0.0);
-                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 0.0);
+/*                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 0.0);
+                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 0.0);*/
+                    taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0] = 0.0;
+                    taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 1] = 0.0;
                     textBox_ProgAlfaV.Enabled = true;
                     textBox_ProgBetaV.Enabled = true;
                     textBox_ProgAlfaV.Text = "0,0";
@@ -278,12 +182,15 @@ namespace ElectreAp
                 else {
                     checkBox_TurnOffVeto.Checked = true;
                 }
-                taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 0.0);
-                taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 0.0);
+                /*                taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 0.0);
+                                taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 0.0);*/
+                taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0] = 0.0;
+                taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 1] = 0.0;
                 textBox_ProgAlfaV.Text = "0,0";
                 textBox_ProgBetaV.Text = "0,0";
             }
         }
+
 
         private void CheckBox_CheckAllOptions_CheckedChanged(object sender, EventArgs e) {
             if(checkBox_CheckAllOptions.Checked) {
@@ -311,6 +218,7 @@ namespace ElectreAp
                 checkBox_UpwardDistillation.Checked = false;
             }
         }
+
 
         //public void AddTabPage(Object[,] matrixData, String namePage) {
         public void AddTabPage(DataTable dataTable, String namePage) {
@@ -363,8 +271,12 @@ namespace ElectreAp
                 }
                 dataTable.Rows.Add(row);
             }*/
-
+            
             dataGridView.DataSource = dataTable;
+            dataGridView.ReadOnly = true;
+            dataGridView.DefaultCellStyle.BackColor = Color.FromArgb(202, 202, 202);
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
             tabPage.Controls.Add(dataGridView);
             tabControl_LeaderBoards.TabPages.Add(tabPage);
         }
@@ -474,16 +386,18 @@ namespace ElectreAp
                 matchDouble = Regex.Match(valueOfSelectedCell, @"^-?[0-9]+\,[0-9]+$", RegexOptions.IgnoreCase);
                 matchInt = Regex.Match(valueOfSelectedCell, @"^-?[0-9]+$", RegexOptions.IgnoreCase);
 
-                if (matchDouble.Success) {
+                if (matchDouble.Success || matchInt.Success) {
                     Console.WriteLine("wartosc rowindex = "+ dataGridEvent.RowIndex+" + 9 = "+(dataGridEvent.RowIndex+9));
                     if (dataGridEvent.RowIndex > 2) {
-                        taskElectreIII.TabelaMatrix_SetValue((dataGridEvent.RowIndex) + 6, columnIndex - 1, Double.Parse(valueOfSelectedCell));
+                        taskElectreIII.TabelaMatrix[columnIndex - 1, (dataGridEvent.RowIndex) + 6] = Double.Parse(valueOfSelectedCell);
+                        //taskElectreIII.TabelaMatrix_SetValue(columnIndex - 1, (dataGridEvent.RowIndex) + 6, Double.Parse(valueOfSelectedCell));
                     }
-                } else if (matchInt.Success) {
+                } /*else if (matchInt.Success) {
                     if (dataGridEvent.RowIndex > 2) {
-                        taskElectreIII.TabelaMatrix_SetValue((dataGridEvent.RowIndex) + 6, columnIndex - 1, Double.Parse(valueOfSelectedCell));
+                        taskElectreIII.TabelaMatrix[columnIndex - 1, (dataGridEvent.RowIndex) + 6] = Double.Parse(valueOfSelectedCell);
+                        taskElectreIII.TabelaMatrix_SetValue(columnIndex - 1, (dataGridEvent.RowIndex) + 6, Double.Parse(valueOfSelectedCell));
                     }
-                }
+                }*/
                 else {
                     valueOfSelectedCell = "0.00";
                     dataGridView_Matrix.Rows[dataGridEvent.RowIndex].Cells[columnIndex].Value = "0,00";
@@ -499,16 +413,21 @@ namespace ElectreAp
             Console.WriteLine("wybrany index = "+selectedIndex);
 
             if (selectedIndex >= 0) {
-                if (taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 0) != 999999999.9) {
+                //if (taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 0) != 999999999.9) {
+                if (taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0] != 999999999.9) {
                     checkBox_TurnOffVeto.Checked = false;
                 } else {
                     checkBox_TurnOffVeto.Checked = true;
                 }
-                textBox_ProgAlfaQ.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 0, 0).ToString();
-                textBox_ProgAlfaP.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 1, 0).ToString();
+                /*                textBox_ProgAlfaQ.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 0, 0).ToString();
+                                textBox_ProgAlfaP.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 1, 0).ToString();*/
+                textBox_ProgAlfaQ.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 0, 0].ToString();
+                textBox_ProgAlfaP.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 1, 0].ToString();
                 if (!checkBox_TurnOffVeto.Checked) {
-                    textBox_ProgAlfaV.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 0).ToString();
-                    textBox_ProgBetaV.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 1).ToString();
+                    /*                    textBox_ProgAlfaV.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 0).ToString();
+                                        textBox_ProgBetaV.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 1).ToString();*/
+                    textBox_ProgAlfaV.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0].ToString();
+                    textBox_ProgBetaV.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 1].ToString();
                     textBox_ProgAlfaV.Enabled = true;
                     textBox_ProgBetaV.Enabled = true;
                 } else {
@@ -517,8 +436,10 @@ namespace ElectreAp
                     textBox_ProgAlfaV.Clear();
                     textBox_ProgBetaV.Clear();
                 }
-                textBox_ProgBetaQ.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 0, 1).ToString();
-                textBox_ProgBetaP.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 1, 1).ToString();
+                /*                textBox_ProgBetaQ.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 0, 1).ToString();
+                                textBox_ProgBetaP.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 1, 1).ToString();*/
+                textBox_ProgBetaQ.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 0, 1].ToString();
+                textBox_ProgBetaP.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 1, 1].ToString();
             };
         }
 
@@ -612,10 +533,13 @@ namespace ElectreAp
 
         public void EventEnterForThresholds(TextBox textBox, int positionOfThreshold, int positionOfSymbol) {
             int index = listBox_CriteriaToChose.SelectedIndex;
-            taskElectreIII.ListaWartProgKryt_SetValue(index, positionOfThreshold, positionOfSymbol, Double.Parse(textBox.Text));
+            //taskElectreIII.ListaWartProgKryt_SetValue(index, positionOfThreshold, positionOfSymbol, Double.Parse(textBox.Text));
+            taskElectreIII.ListaWartProgKryt[index, positionOfThreshold, positionOfSymbol] = Double.Parse(textBox.Text);
             switch(positionOfSymbol) {
-                case 0: taskElectreIII.TabelaMatrix_SetValue(positionOfThreshold + 3, index, Double.Parse(textBox.Text)); break;     
-                case 1: taskElectreIII.TabelaMatrix_SetValue(positionOfThreshold + 6, index, Double.Parse(textBox.Text)); break;
+                /*                case 0: taskElectreIII.TabelaMatrix_SetValue(positionOfThreshold + 3, index, Double.Parse(textBox.Text)); break;     
+                                case 1: taskElectreIII.TabelaMatrix_SetValue(positionOfThreshold + 6, index, Double.Parse(textBox.Text)); break;*/
+                case 0: taskElectreIII.TabelaMatrix[positionOfThreshold + 3, index] = Double.Parse(textBox.Text); break;
+                case 1: taskElectreIII.TabelaMatrix[positionOfThreshold + 6, index] = Double.Parse(textBox.Text); break;
             }
         }
 
