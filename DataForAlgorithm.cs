@@ -26,7 +26,8 @@ namespace ElectreAp
         protected List<Double[,]> listaZbiorowZgodnosci = new List<Double[,]>();
         protected List<Double[,]> listaZbiorowNieZgodnosci = new List<Double[,]>();
         protected List<Double[,]> listaZbiorowPrzewyzszania = new List<Double[,]>();
-        protected List<Double[,]> listaMacierzyOcen = new List<Double[,]>();
+        protected List<Double[,]> listaZstepMacierzyOcen = new List<Double[,]>();
+        protected List<Double[,]> listaWstepMacierzyOcen = new List<Double[,]>();
         protected List<Int32> listaNumerowZNazwOpcji = new List<Int32>();
         protected List<Int32> listaNumerowZNazwNajlepszychOpcjiWewnatrz;
         protected List<Int32> listaNumerowZNazwOpcjiUsytWRank = new List<Int32>();
@@ -82,17 +83,19 @@ namespace ElectreAp
         public Double[,] RoboczyMatrixDOgol { get { return roboczyMatrixDOgol; } }
         protected Double[,] matrixRownosciZbiorowPrzewyzszania;
         private Double[,] roboczyMatrixD;
-        protected Double[,] tabelaMatrix;
-        public void TabelaMatrix_SetValue(int row, int col, double valueToSet) { tabelaMatrix[row, col] = valueToSet; }        
-        public Double TabelaMatrix_GetValue(int row, int col) { return tabelaMatrix[row, col]; }
+        public Double[,] tabelaMatrix;
+        public Double[,] TabelaMatrix { get { return tabelaMatrix; } set { tabelaMatrix = value; } }
+/*        public void TabelaMatrix_SetValue(int col, int row, double valueToSet) { tabelaMatrix[col, row] = valueToSet; }        
+        public Double TabelaMatrix_GetValue(int col, int row) { return tabelaMatrix[col, row]; }*/
 
         protected Double[,,] listaWartProgKryt;
-        public void ListaWartProgKryt_SetValue(int index, int positionOfThreshold, int positionOfSymbol, double valueToSet) {
+        public Double[,,] ListaWartProgKryt { get { return listaWartProgKryt; } set { listaWartProgKryt = value; } }
+/*        public void ListaWartProgKryt_SetValue(int index, int positionOfThreshold, int positionOfSymbol, double valueToSet) {
             listaWartProgKryt[index, positionOfThreshold, positionOfSymbol] = valueToSet;
         }
         public Double ListaWartProgKryt_GetValue(int index, int positionOfThreshold, int positionOfSymbol) {
             return listaWartProgKryt[index, positionOfThreshold, positionOfSymbol];
-        }
+        }*/
 
         private double wartoscZgodnosci;
         protected double progQ = -1;
@@ -116,9 +119,9 @@ namespace ElectreAp
         protected int liczbaZajetychMiejscWRankWDestWstep = 0;
         protected int miejscPoPrzecinku = 2;
         public int MiejscPoPrzecinku { get { return miejscPoPrzecinku; } set { miejscPoPrzecinku = value; } }
-        protected int numberOfCriterias = 0;
+        public int numberOfCriterias = 0;
         public int NumberOfCriterias { get { return numberOfCriterias;  } set { numberOfCriterias = value; } }
-        protected int numberOfAlternatives = 0;
+        public int numberOfAlternatives = 0;
         public int NumberOfAlternatives { get { return numberOfAlternatives; } set { numberOfAlternatives = value; } }
         private int miejsceA = 0;
         private int miejsceB = 0;
@@ -163,6 +166,11 @@ namespace ElectreAp
 
         public void CreateMatrixBasedOnTable(){ }
 
+        public void CreateTableBasedOnMatrix()
+        {
+
+        }
+
         public void CreateMatrixForAlternativeData(int numberOfAlternatives, int numberOfCriterias)
         {
             tabelaAlternatyw = new Double[numberOfAlternatives, numberOfCriterias];
@@ -175,10 +183,8 @@ namespace ElectreAp
             int licznik = 0;
             Console.WriteLine("wypisywana Tabela Matrix podczas przypisywania jej wartości do tabeliAlternatyw");
 
-            for (int y = 9; y < numberOfAlternatives + 9; y++)
-            {
-                for (int z = 0; z < numberOfCriterias; z++)
-                {
+            for (int y = 9; y < numberOfAlternatives + 9; y++) {
+                for (int z = 0; z < numberOfCriterias; z++) {
                     tabelaAlternatyw[licznik, z] = tabelaMatrix[y, z];
                     Console.Write(tabelaMatrix[y, z] + " ");
                 }
@@ -187,65 +193,30 @@ namespace ElectreAp
 
             Console.WriteLine("Tabela Alternatyw");
 
-            for (int y = 0; y < numberOfAlternatives; y++)
-            {
-                for (int z = 0; z < numberOfCriterias; z++)
-                {
+            for (int y = 0; y < numberOfAlternatives; y++) {
+                for (int z = 0; z < numberOfCriterias; z++) {
                     Console.Write(tabelaAlternatyw[y, z] + " ");
                 }
                 Console.WriteLine("\n");
             }
         }
 
-        public void CreateConcordanceMatrix(List<Double[,]> listOfConcordanceSets, int numberOfAlternatives){ }
-        public void ShowConcordanceMatrix(){ }
 
-        public DataTable CreateTable(int numberOfAlternatives, int numberOfCriterias) {
+        public void CreateColumnNames(int numberOfCriterias, int colAdd) {
+            
             columnNamesDoListy = new string[numberOfCriterias];
-            DataTable dataTab = new DataTable();
 
-            for (int i = 0; i < numberOfCriterias + 1; i++) {
-                if (i == 0) { columnNames.Add("X"); } else { columnNames.Add("F" + i); columnNamesDoListy[i-1] = columnNames[i]; }
-
-                DataColumn column = new DataColumn();
-                column.ColumnName = columnNames[i];
-                dataTab.Columns.Add(column);
-            }
-
-            int zmienna = 1;
-
-            for (int y = 0; y < numberOfAlternatives + 3; y++) {
-                
-                List<string> row = new List<string>();
-
-                for (int z = 0; z < numberOfCriterias + 1; z++) {
-                    if (z == 0) {
-                        if (y < 3) {
-                            switch (y) {
-                                case 0:
-                                    row.Add("K");
-                                    break;
-                                case 1:
-                                    row.Add("M");
-                                    break;
-                                case 2:
-                                    row.Add("W");
-                                    break;
-                            }
-                        }
-                        else { row.Add("A" + zmienna); }
-
-                        if (y >= 3) {
-                            zmienna++;
-                        }
-                    }
-                    else {
-                        row.Add("0,00");
-                    }
+            for (int i = 0; i < numberOfCriterias + colAdd; i++) {
+                if (i == 0) { columnNames.Add("X"); } 
+                else { 
+                    columnNames.Add("F" + i); 
+                    columnNamesDoListy[i - 1] = columnNames[i]; 
                 }
-
-                dataTab.Rows.Add(row.ToArray<string>());
             }
+        }
+
+
+        public void CreateBaseMatrix(int numberOfAlternatives, int numberOfCriterias) {
 
             tabelaMatrix = new Double[numberOfAlternatives + 9, numberOfCriterias];
 
@@ -255,34 +226,71 @@ namespace ElectreAp
                 }
             }
 
-            listaWartProgKryt = new Double[numberOfCriterias, 3, 2];
+            Console.WriteLine("Utworzono matrix -> wierszy = " + tabelaMatrix.GetLength(0) + " kolumny = " + tabelaMatrix.GetLength(1));
 
-            // wypełnianie zerami
-            for (int i = 0; i < numberOfCriterias; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    for (int k = 0; k < 2; k++)
-                    {
-                        listaWartProgKryt[i, j, k] = 0.0;
-                    }
-                }
-            }
-
-            return dataTab;
         }
 
-/*        public void Wyp(int numberOfAlternatives, int numberOfCriterias)
-        {
-            for (int y = 0; y < numberOfAlternatives + 9; y++)
-            {
-                for (int z = 0; z < numberOfCriterias; z++)
-                {
-                    Console.Write(tabelaMatrix[y, z]+" ");
-                }
-                Console.WriteLine();
+
+        public void CreateListOfValueThresholds(int numberOfCriterias, ref Double[,] matrix) {
+
+            listaWartProgKryt = new Double[numberOfCriterias, 3, 2];
+
+            for (int i = 0; i < matrix.GetLength(1); i++) {
+                listaWartProgKryt[i, 0, 1] = matrix[6, i];
+                listaWartProgKryt[i, 1, 1] = matrix[7, i];
+                listaWartProgKryt[i, 2, 1] = matrix[8, i];                
+                listaWartProgKryt[i, 0, 0] = matrix[3, i];
+                listaWartProgKryt[i, 1, 0] = matrix[4, i];
+                listaWartProgKryt[i, 2, 0] = matrix[5, i];
             }
-        }*/
+        }
+
+
+        public DataTable CreateDataTableBasedOnMatrix(ref Double[,] matrix, int colAdd, int rowAdd) {
+            
+            DataTable dataTab = new DataTable();
+
+            for (int i = 0; i < columnNames.Count; i++) {
+                DataColumn column = new DataColumn();
+                column.ColumnName = columnNames[i];
+                dataTab.Columns.Add(column);
+            }
+
+            int zmienna = 1;
+
+            for (int y = 0; y < matrix.GetLength(0) + rowAdd; y++) {
+                List<string> row = null;
+                if (y < 3 || y >= 9) { row = new List<string>(); }
+                if (row != null) {
+                    for (int z = 0; z < matrix.GetLength(1) + colAdd; z++) {
+                        if (z == 0) {
+                            if (y < 3) {
+                                switch (y) {
+                                    case 0:
+                                        row.Add("K");
+                                        break;
+                                    case 1:
+                                        row.Add("M");
+                                        break;
+                                    case 2:
+                                        row.Add("W");
+                                        break;
+                                }
+                            }
+                            else { row.Add("A" + zmienna); }
+                            if (y >= 3) { zmienna++; }
+                        }
+                        else {
+                            if (y < 3 || y >= 9) {
+                                row.Add(matrix[y, z - colAdd].ToString());
+                            }
+                        }
+                    }
+                    dataTab.Rows.Add(row.ToArray<string>());
+                }
+            }
+            return dataTab;
+        }
 
         public void ExchangingListOfRanksToTable(List<List<Int32>> listOfRanks) { }
         public void ShowOptionRankingOfDistillation(String[,] rankingOfOptionsAfterDistillation) { }
