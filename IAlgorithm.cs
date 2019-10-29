@@ -10,7 +10,7 @@ namespace ElectreAp
     {
 
         void CreateConcordanceSets();
-        void ShowSets(List<Double[,]> listaZbiorow, string name);
+        void ShowSets(ref List<Double[,]> listaZbiorow, string name);
         void CreateDiscordanceSets();
         void DoCalculations();
 

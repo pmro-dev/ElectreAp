@@ -10,9 +10,8 @@ namespace ElectreAp
     {
         double DoInvers(Double symbolA, Double symbolB, int numberOfSymbol);
         void CalculateThreshold(Double[,,] table, Double value, int i, int mod);
-        void CreateOutrankingSets(List<Double[,]> listOfOutrankingSets);
+        void CreateOutrankingSets(ref List<Double[,]> listOfOutrankingSets);
         void DoStageFirst();
-        void ShowStage(Double[,] matrix, string name);
         void DoStageSecond();
         double CalculateSDeltaK(double deltaLast);
         void DoStepSecond(Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
@@ -21,12 +20,13 @@ namespace ElectreAp
         void DoStepSixth(Double[,] ratingMatrix, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
         void DoStepSeventh(Double[,] ratingMatrix, double qualificationOfTheBestOption, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
         void FindMin();
-        void CreateFinalRanking();
+        void CreateFinalRanking(ref Double[,] tabSum);
         void CheckingIsThereThisSameOptions(int y);
-        void CreateTabOfDistillation(double[,] tableOfDistillation, String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ);
-        void ShowTableDataOfDistillation(Double[,] tabDistillation);
-        void CreateSumTableOfDistillations();
+        void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, ElectreIII.TestOperationDelegate testOperation);
+        void CreateSumTableOfDistillations(ref Double[,] tabSum);
         void FindMax(String[,] rankingOfOptionsAfterDistillation);
         void Exchange(int max, int min);
+        void ShowTableDataOfDistillation(ref Double[,] tabDistillation);
+        void ShowMatrix(ref Double[,] matrix, string name);
     }
 }
