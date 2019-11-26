@@ -53,11 +53,21 @@ namespace ElectreAp
             listBox_CriteriaToChose.HorizontalScrollbar = true;
         }
 
+        string dialogPath = "";
 
         private void Button_ReadTab_Click(object sender, EventArgs e) {
-            
-            string filePath = string.Empty;
 
+            dialogPath = OpenDialogGetPathFile();
+
+            ExcelManaging exel = new ExcelManaging();
+            taskElectreIII.TabelaMatrix = exel.ReadDataFromFileToMatrix(dialogPath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias);
+            criteria = taskElectreIII.tabelaMatrix.GetLength(1);
+            alternatives = taskElectreIII.tabelaMatrix.GetLength(0);
+            PrepareProperties(criteria, ref taskElectreIII.tabelaMatrix, 1, 0);
+        }
+
+
+        public string OpenDialogGetPathFile() {
             using (OpenFileDialog openFileDialog = new OpenFileDialog()) {
                 openFileDialog.InitialDirectory = "C:\\Users\\MaRkOs\\Dokumenty";
                 openFileDialog.Filter = "Exel files (*.xls;*.xlsx)|*.xls;*.xlsx|All files (*.*)|*.*";
@@ -65,20 +75,37 @@ namespace ElectreAp
                 openFileDialog.RestoreDirectory = true;
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK) {
-                    filePath = openFileDialog.FileName;
+                    string filePath = openFileDialog.FileName;
+                    return filePath;
+                }
+                else { 
+                    return string.Empty; 
                 }
             }
+        }
 
-            ExcelManaging exel = new ExcelManaging();
-            taskElectreIII.TabelaMatrix = exel.ReadDataFromFileToMatrix(filePath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias);
-            criteria = taskElectreIII.tabelaMatrix.GetLength(1);
-            alternatives = taskElectreIII.tabelaMatrix.GetLength(0);
-            PrepareProperties(criteria, ref taskElectreIII.tabelaMatrix, 1, 0);
+
+        public string OpenDialogGetPathDirectory() {
+            using (FolderBrowserDialog openBrowserDialog = new FolderBrowserDialog()) {
+                openBrowserDialog.SelectedPath = "C:\\Users\\MaRkOs\\Dokumenty";
+
+                if (openBrowserDialog.ShowDialog() == DialogResult.OK) {
+                    string path = openBrowserDialog.SelectedPath;
+                    return path;
+                }
+                else {
+                    return string.Empty;
+                }
+            }
         }
 
 
         private void Button_SaveTab_Click(object sender, EventArgs e) {
 
+            dialogPath = OpenDialogGetPathDirectory();
+            ExcelManaging exelManager = new ExcelManaging();
+
+            exelManager.SaveTableToExelFile(dialogPath + @"ElectreTab.xlsx", taskElectreIII.TabelaMatrix);
         }
 
 
