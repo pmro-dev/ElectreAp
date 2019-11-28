@@ -24,10 +24,16 @@ namespace ElectreAp
         protected List<Double> listaProguPA = new List<Double>();
         protected List<Double> listaProguVA = new List<Double>();
         protected List<Double[,]> listaZbiorowZgodnosci = new List<Double[,]>();
+        public List<Double[,]> ListaZbiorowZgodnosci { get { return listaZbiorowZgodnosci; } }
         protected List<Double[,]> listaZbiorowNieZgodnosci = new List<Double[,]>();
+        public List<Double[,]> ListaZbiorowNieZgodnosci { get { return listaZbiorowNieZgodnosci; } }
         protected List<Double[,]> listaZbiorowPrzewyzszania = new List<Double[,]>();
+        public List<Double[,]> ListaZbiorowPrzewyzszania { get { return listaZbiorowPrzewyzszania; } }
         protected List<Double[,]> listaZstepMacierzyOcen = new List<Double[,]>();
+        public List<Double[,]> ListaZstepMacierzyOcen { get { return listaZstepMacierzyOcen; } }
         protected List<Double[,]> listaWstepMacierzyOcen = new List<Double[,]>();
+        public List<Double[,]> ListaWstepMacierzyOcen { get { return listaWstepMacierzyOcen; } }
+
         protected List<Int32> listaNumerowZNazwOpcji = new List<Int32>();
         protected List<Int32> listaNumerowZNazwNajlepszychOpcjiWewnatrz;
         protected List<Int32> listaNumerowZNazwOpcjiUsytWRank = new List<Int32>();
@@ -47,6 +53,7 @@ namespace ElectreAp
         protected List<List<Int32>> listaRank = new List<List<Int32>>();
         protected List<List<Int32>> listaAlternatyw = new List<List<Int32>>();
         protected List<List<Int32>> listaNumerowOpcjiMacierzyOcen = new List<List<Int32>>();
+        public List<List<Int32>> ListaNumerowOpcjiMacierzyOcen { get { return listaNumerowOpcjiMacierzyOcen; } }
 
         protected List<String> columnNames = new List<String>();
         public List<String> ColumnNames { get { return columnNames; } set { columnNames = value; } }
@@ -69,6 +76,7 @@ namespace ElectreAp
         private String valueHelp = "";
 
         protected Double[,] concordanceMatrix;
+        public Double[,] ConcordanceMatrix { get { return concordanceMatrix; } }
         protected Double[,] macierzOcen;
         protected Double[,] tabelaAlternatyw;
         protected Double[,] tabZstep;
@@ -79,6 +87,7 @@ namespace ElectreAp
         public Double[,] TabSum { get { return tabSum; } set { tabSum = value; } }
         // macierz wskaźników wiarygodności inaczej Credibility Matrix
         protected Double[,] credibilityMatrix;
+        public Double[,] CredibilityMatrix { get { return credibilityMatrix; } }
         protected Double[,] roboczyMatrixDOgol;
         public Double[,] RoboczyMatrixDOgol { get { return roboczyMatrixDOgol; } }
         protected Double[,] matrixRownosciZbiorowPrzewyzszania;

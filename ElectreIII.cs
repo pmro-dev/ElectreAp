@@ -506,7 +506,7 @@ namespace ElectreAp
 
         private Boolean GreaterOperation(int i, int j, string[,] placesOfOptionsAfterDistillation) { return (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) > Int32.Parse(placesOfOptionsAfterDistillation[1, j])); }
         
-        public void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, TestOperationDelegate testOperation) {
+        public void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, TestOperationDelegate testOperationDelegate) {
 
             Console.WriteLine("MIEEEEEEEEEEEEEEEEEJSCA");
             for (int k = 0; k < miejscaOpcjiPoDestylacjiZstepujacej.GetLength(1); k++) {
@@ -518,7 +518,7 @@ namespace ElectreAp
             for (int i = 0; i < tableOfDistillation.GetLength(0); i++) {
                 for (int j = 0; j < tableOfDistillation.GetLength(1); j++) {
                     //if (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) < Int32.Parse(placesOfOptionsAfterDistillation[1, j])) {
-                    if (testOperation(i, j, placesOfOptionsAfterDistillation)) {
+                    if (testOperationDelegate(i, j, placesOfOptionsAfterDistillation)) {
                         tableOfDistillation[i, j] = valueX;
                     }
                     else if (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) == Int32.Parse(placesOfOptionsAfterDistillation[1, j])) {

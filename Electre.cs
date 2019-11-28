@@ -60,7 +60,7 @@ namespace ElectreAp
             dialogPath = OpenDialogGetPathFile();
 
             ExcelManaging exel = new ExcelManaging();
-            taskElectreIII.TabelaMatrix = exel.ReadDataFromFileToMatrix(dialogPath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias);
+            taskElectreIII.TabelaMatrix = exel.ReadTableFromFileToMatrix(dialogPath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias);
             criteria = taskElectreIII.tabelaMatrix.GetLength(1);
             alternatives = taskElectreIII.tabelaMatrix.GetLength(0);
             PrepareProperties(criteria, ref taskElectreIII.tabelaMatrix, 1, 0);
@@ -99,17 +99,15 @@ namespace ElectreAp
             }
         }
 
+        ExcelManaging exelManager;
 
         private void Button_SaveTab_Click(object sender, EventArgs e) {
-
             dialogPath = OpenDialogGetPathDirectory();
-            ExcelManaging exelManager = new ExcelManaging();
-
+            exelManager = new ExcelManaging();
             exelManager.SaveTableToExelFile(dialogPath + @"ElectreTab.xlsx", taskElectreIII.TabelaMatrix);
         }
 
 
-       // string pathMathImg = "";
         List<Int32> lul = new List<Int32>();
 
         private void Button_Calculate_Click(object sender, EventArgs e) {
@@ -172,7 +170,9 @@ namespace ElectreAp
 
 
         private void Button_SaveData_Click(object sender, EventArgs e) {
-
+            dialogPath = OpenDialogGetPathDirectory();
+            exelManager = new ExcelManaging();
+            exelManager.SaveDataToExelFile(dialogPath + @"ElectreData.xlsx", taskElectreIII.TabelaMatrix, taskElectreIII.ConcordanceMatrix, taskElectreIII.CredibilityMatrix, taskElectreIII.ListaZbiorowZgodnosci, taskElectreIII.ListaZbiorowNieZgodnosci, taskElectreIII.ListaZbiorowPrzewyzszania, taskElectreIII.ListaZstepMacierzyOcen, taskElectreIII.ListaWstepMacierzyOcen);
         }
 
 
@@ -180,8 +180,6 @@ namespace ElectreAp
             int selectedIndex = listBox_CriteriaToChose.SelectedIndex;
             try {
                 if (checkBox_TurnOffVeto.Checked) {
-                    /*                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 999999999.9);
-                                        taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 999999999.9);*/
                     taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0] = 999999999.9;
                     taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 1] = 999999999.9;
                     textBox_ProgAlfaV.Enabled = false;
@@ -190,8 +188,6 @@ namespace ElectreAp
                     textBox_ProgBetaV.Clear();
                 }
                 else {
-/*                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 0.0);
-                    taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 0.0);*/
                     taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0] = 0.0;
                     taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 1] = 0.0;
                     textBox_ProgAlfaV.Enabled = true;
@@ -209,8 +205,6 @@ namespace ElectreAp
                 else {
                     checkBox_TurnOffVeto.Checked = true;
                 }
-                /*                taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 0, 0.0);
-                                taskElectreIII.ListaWartProgKryt_SetValue(selectedIndex, 2, 1, 0.0);*/
                 taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0] = 0.0;
                 taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 1] = 0.0;
                 textBox_ProgAlfaV.Text = "0,0";
@@ -247,57 +241,12 @@ namespace ElectreAp
         }
 
 
-        //public void AddTabPage(Object[,] matrixData, String namePage) {
         public void AddTabPage(DataTable dataTable, String namePage) {
-            Console.WriteLine("LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             TabPage tabPage = new TabPage();
             tabPage.Text = namePage;
 
             DataGridView dataGridView = new DataGridView();
             dataGridView.Size = new Size(690, 350);
-            //DataTable dataTable = new DataTable();
-
-            /* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
-            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej *//*
-
-            for (int licz = 0; licz < (matrixData.GetLength(1) + 1); licz++) {
-                DataColumn column = new DataColumn();
-                column.ColumnName = "A" + licz;
-                dataTable.Columns.Add(column);
-            }
-
-            int x;
-            if ("Rank. Zstep.".Equals(namePage) || "Rank. Wstep.".Equals(namePage) || "Rank. Final.".Equals(namePage)) {
-                dataTable.Columns[0].ColumnName = "Wariant";
-                x = 1;
-            }
-            else {
-                dataTable.Columns[0].ColumnName = "X";
-                x = 0;
-            }
-
-            for (int y = x; y < matrixData.GetLength(0); y++) {
-                DataRow dataRow = dataTable.NewRow();
-                List<string> row = new List<string>();
-
-                for (int z = 0; z < matrixData.GetLength(1) + 1; z++) {
-                    if (z == 0) {
-                        if ("Rank. Zstep.".Equals(namePage) || "Rank. Wstep.".Equals(namePage) || "Rank. Final.".Equals(namePage)) {
-                            row.Add("Pozycja");
-                        }
-                        else
-                        {
-                            row.Add("A" + (y + 1));
-                        }
-                    }
-                    else {
-                        row.Add(matrixData[y, z - 1].ToString());
-                        Console.WriteLine("WARTOSC MATRIXA = " + matrixData[y, z - 1]);
-                        Console.WriteLine("ROW = " + row[z]);
-                    }
-                }
-                dataTable.Rows.Add(row);
-            }*/
             
             dataGridView.DataSource = dataTable;
             dataGridView.ReadOnly = true;
@@ -307,98 +256,6 @@ namespace ElectreAp
             tabPage.Controls.Add(dataGridView);
             tabControl_LeaderBoards.TabPages.Add(tabPage);
         }
-
-
-/*        Double zmiennaHelp;
-        public void AddTabPage(Double[,] matrixData, string namePage, List<Int32> roboczaListaNumerowOpcji) {
-            TabPage tabPage = new TabPage();
-            tabPage.Text = namePage;
-
-            DataGridView dataGridView = new DataGridView();
-            dataGridView.Size = new Size(690, 350);
-            DataTable dataTable = new DataTable();
-
-            Boolean bool1 = namePage.Contains("Ocen");
-            Boolean bool2 = namePage.Contains("Finalna");
-
-            *//* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
-            w tej pętli dodajemy nazwy kolumn do listy im dedykowanej *//*
-            for (int licz = 0; licz < matrixData.GetLength(0) + 1; licz++) {
-                DataColumn column = new DataColumn();
-                if (bool1 && licz > 0 && licz < matrixData.GetLength(0) + 1) {
-                    //columnNamesView.add("A" + (roboczaListaNumerowOpcji.get(licz - 1) + 1));
-*//*                    int liczenie = roboczaListaNumerowOpcji[licz - 1] + 1;
-                    dataGridView.Columns.Add("","A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString());*//*
-                    column.ColumnName = "A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString();
-                    dataTable.Columns.Add(column);
-                }
-                else {
-                    column.ColumnName = "A" + licz;
-                    dataTable.Columns.Add(column);
-                    //columnNamesView.add("A" + licz);
-                }
-            }
-
-            dataTable.Columns[0].ColumnName = "X";
-
-            for (int y = 0; y < matrixData.GetLength(1); y++) {
-
-                //ObservableList<String> row = FXCollections.observableArrayList();
-                DataRow dataRow = dataTable.NewRow();
-                List<string> row = new List<string>();
-
-                for (int z = 0; z < matrixData.GetLength(1) + 1; z++) {
-                    if (z == 0) {
-                        if (bool1) {
-                            switch (y) {
-                                case 0:
-                                    row.Add("Power");
-                                    break;
-
-                                case 1:
-                                    row.Add("Weakness");
-                                    break;
-
-                                case 2:
-                                    row.Add("Qualification");
-                                    break;
-                            }
-                        }
-                        else {
-                            row.Add("A" + (y + 1));
-                        }
-                    }
-                    else {
-                        if (bool2) {
-                            zmiennaHelp = matrixData[y, z - 1];
-                            switch (matrixData[y, z - 1]) {
-                                case -1.0:
-                                    row.Add("\u20B1");
-                                    break;
-                                case 0.0:
-                                    row.Add("I");
-                                    break;
-                                case 1.0:
-                                    row.Add("\u03A1");
-                                    break;
-                                case 2.0:
-                                    row.Add("R");
-                                    break;
-                            }
-                        }
-                        else {
-                            row.Add(matrixData[y, z - 1].ToString());
-                        }
-                    }
-                }
-
-                dataTable.Rows.Add(row);
-            }
-
-            dataGridView.DataSource = dataTable;
-            tabPage.Controls.Add(dataGridView);
-            tabControl_LeaderBoards.TabPages.Add(tabPage);
-        }*/
 
 
         Match matchInt;
@@ -417,14 +274,8 @@ namespace ElectreAp
                     Console.WriteLine("wartosc rowindex = "+ dataGridEvent.RowIndex+" + 9 = "+(dataGridEvent.RowIndex+9));
                     if (dataGridEvent.RowIndex > 2) {
                         taskElectreIII.TabelaMatrix[columnIndex - 1, (dataGridEvent.RowIndex) + 6] = Double.Parse(valueOfSelectedCell);
-                        //taskElectreIII.TabelaMatrix_SetValue(columnIndex - 1, (dataGridEvent.RowIndex) + 6, Double.Parse(valueOfSelectedCell));
                     }
-                } /*else if (matchInt.Success) {
-                    if (dataGridEvent.RowIndex > 2) {
-                        taskElectreIII.TabelaMatrix[columnIndex - 1, (dataGridEvent.RowIndex) + 6] = Double.Parse(valueOfSelectedCell);
-                        taskElectreIII.TabelaMatrix_SetValue(columnIndex - 1, (dataGridEvent.RowIndex) + 6, Double.Parse(valueOfSelectedCell));
-                    }
-                }*/
+                }
                 else {
                     valueOfSelectedCell = "0.00";
                     dataGridView_Matrix.Rows[dataGridEvent.RowIndex].Cells[columnIndex].Value = "0,00";
@@ -440,19 +291,14 @@ namespace ElectreAp
             Console.WriteLine("wybrany index = "+selectedIndex);
 
             if (selectedIndex >= 0) {
-                //if (taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 0) != 999999999.9) {
                 if (taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0] != 999999999.9) {
                     checkBox_TurnOffVeto.Checked = false;
                 } else {
                     checkBox_TurnOffVeto.Checked = true;
                 }
-                /*                textBox_ProgAlfaQ.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 0, 0).ToString();
-                                textBox_ProgAlfaP.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 1, 0).ToString();*/
                 textBox_ProgAlfaQ.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 0, 0].ToString();
                 textBox_ProgAlfaP.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 1, 0].ToString();
                 if (!checkBox_TurnOffVeto.Checked) {
-                    /*                    textBox_ProgAlfaV.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 0).ToString();
-                                        textBox_ProgBetaV.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 2, 1).ToString();*/
                     textBox_ProgAlfaV.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 0].ToString();
                     textBox_ProgBetaV.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 2, 1].ToString();
                     textBox_ProgAlfaV.Enabled = true;
@@ -463,8 +309,6 @@ namespace ElectreAp
                     textBox_ProgAlfaV.Clear();
                     textBox_ProgBetaV.Clear();
                 }
-                /*                textBox_ProgBetaQ.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 0, 1).ToString();
-                                textBox_ProgBetaP.Text = taskElectreIII.ListaWartProgKryt_GetValue(selectedIndex, 1, 1).ToString();*/
                 textBox_ProgBetaQ.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 0, 1].ToString();
                 textBox_ProgBetaP.Text = taskElectreIII.ListaWartProgKryt[selectedIndex, 1, 1].ToString();
             };
@@ -560,11 +404,8 @@ namespace ElectreAp
 
         public void EventEnterForThresholds(TextBox textBox, int positionOfThreshold, int positionOfSymbol) {
             int index = listBox_CriteriaToChose.SelectedIndex;
-            //taskElectreIII.ListaWartProgKryt_SetValue(index, positionOfThreshold, positionOfSymbol, Double.Parse(textBox.Text));
             taskElectreIII.ListaWartProgKryt[index, positionOfThreshold, positionOfSymbol] = Double.Parse(textBox.Text);
             switch(positionOfSymbol) {
-                /*                case 0: taskElectreIII.TabelaMatrix_SetValue(positionOfThreshold + 3, index, Double.Parse(textBox.Text)); break;     
-                                case 1: taskElectreIII.TabelaMatrix_SetValue(positionOfThreshold + 6, index, Double.Parse(textBox.Text)); break;*/
                 case 0: taskElectreIII.TabelaMatrix[positionOfThreshold + 3, index] = Double.Parse(textBox.Text); break;
                 case 1: taskElectreIII.TabelaMatrix[positionOfThreshold + 6, index] = Double.Parse(textBox.Text); break;
             }

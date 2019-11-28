@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -20,7 +21,7 @@ namespace ElectreAp
         int wiersze = 0;
         int sheetNum = 0;
         //WritableWorkbook workbook;
-        String rozszerzenie = "xls";
+        String rozszerzenie = "xlsx";
         Double zmiennaHelp2;
 
         public ExcelManaging()
@@ -28,7 +29,8 @@ namespace ElectreAp
 
         }
 
-        public Double[,] ReadDataFromFileToMatrix(string path, out Double[,] tabelaMatrix, ref int numberOfAlternatives, ref int numberOfCriterias)
+
+        public Double[,] ReadTableFromFileToMatrix(string path, out Double[,] tabelaMatrix, ref int numberOfAlternatives, ref int numberOfCriterias)
         {
 
             try
@@ -78,27 +80,41 @@ namespace ElectreAp
             catch (Exception ex) { Console.WriteLine(ex); MessageBox.Show("Niestety nie udało się wczytać pliku.", "Błąd pliku", MessageBoxButtons.OK); return tabelaMatrix = null; }
         }
 
-        void SaveDataToExelFile(string path) { }
+
+        Excel.Application exApp;
+        Excel.Workbook exWorkBook;
+        Excel._Worksheet exWorksheet;
+
+        public void NewExcelFile() {
+            exApp = new Excel.Application();
+            exWorkBook = exApp.Workbooks.Add(Type.Missing);
+        }
+
+
+        public void NewSheet(string nameSheet) {
+            /*exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);*/
+           // exWorkBook.Worksheets.Add();
+            exWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)exWorkBook.ActiveSheet;
+            exWorksheet = exWorkBook.Worksheets[1];
+            exWorksheet.Name = nameSheet;
+        }
+
 
         public void WriteCell(int i, int j, string value) {
             exWorksheet.Cells[i + 1, j + 1].Value2 = value;
         }
 
-        Excel.Application exApp;
-        Excel.Workbook exWorkBook;
-        private Excel._Worksheet exWorksheet;
 
-        public void SaveTableToExelFile(string path, Double[,] matrix) {
-            exApp = new Excel.Application();
-            exWorkBook = exApp.Workbooks.Add(Type.Missing);
-            exWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)exWorkBook.ActiveSheet;
-            exWorksheet = exWorkBook.Worksheets[1];
-            exWorksheet.Name = "Basic Table";
+        public void CloseAndSaveFile(string path) {
+            exWorkBook.SaveAs(path);
+            exWorkBook.Close();
+            exApp.Quit();
+        }
 
-            //try {
 
-            for (int i = 0; i < matrix.GetLength(0) + 1; i++) {
-                for (int j = 0; j < matrix.GetLength(1) + 1; j++) {
+        public void AddBasicMatrixToSheet(Double[,] basicMatrix) {
+            for (int i = 0; i < basicMatrix.GetLength(0) + 1; i++) {
+                for (int j = 0; j < basicMatrix.GetLength(1) + 1; j++) {
                     if (j == 0) {
                         switch (i) {
                             case 0:
@@ -132,26 +148,159 @@ namespace ElectreAp
                                 WriteCell(i, j, "VB");
                                 break;
                             default:
-                                WriteCell(i, j, "A"+(i-9));
+                                WriteCell(i, j, "A" + (i - 9));
                                 break;
                         }
                     }
                     else if (j > 0 && i == 0) { WriteCell(i, j, "A" + j); }
-                    else { WriteCell(i, j, matrix[i - 1, j - 1].ToString()); }
+                    else { WriteCell(i, j, basicMatrix[i - 1, j - 1].ToString()); }
                 }
             }
-
-            exApp.Visible = true;
-            exApp.UserControl = true;
-            exWorkBook.SaveAs(path);
-            exWorkBook.Close();
-            exApp.Quit();
-            /*            }
-                        catch (Exception ex)
-                        {
-
-                        }*/
         }
-        void ChoisePath() { }
+
+
+        public delegate void MatrixFuncDelegate(int x, int i, int j, Double[,] matrix);
+
+
+        private void RatingMatrixFunc(int x, int i, int j, Double[,] ratingMatrix) {
+            if (j == 0) {
+                switch (i) {
+                    case 0:
+                        WriteCell(x, j, "X");
+                        break;
+                    case 1:
+                        WriteCell(x, j, "Power");
+                        break;
+                    case 2:
+                        WriteCell(x, j, "Weakness");
+                        break;
+                    case 3:
+                        WriteCell(x, j, "Qualification");
+                        break;
+                }
+            }
+            else if (j > 0 && i == 0) {
+                switch(j){
+                    case 0:
+                        WriteCell(x, j, "X");
+                        break;
+                    default:
+                        WriteCell(x, j, "A");  //ListaNumerowOpcjiMacierzyOcen[iterator][j]);
+                        break;
+                }
+            }
+            else { WriteCell(x, j, ratingMatrix[i - 1, j - 1].ToString()); }
+        }
+
+
+        private void OtherMatrixFunc(int x, int i, int j, Double[,] otherMatrix) {
+            if (j == 0) {
+                switch (i) {
+                    case 0:
+                        WriteCell(x, j, "X");
+                        break;
+                    default:
+                        WriteCell(x, j, "A" + i);
+                        break;
+                }
+            }
+            else if (j > 0 && i == 0) { WriteCell(x, j, "A" + j); }
+            else { WriteCell(x, j, otherMatrix[i - 1, j - 1].ToString()); }
+        }
+
+
+        public void AddMatrixToSheet(Double[,] matrix, string matrixName, MatrixFuncDelegate matrixFuncDelegate)
+        {
+            WriteCell(x, 0, matrixName);
+            x++; ;
+
+            for (int i = 0; i < matrix.GetLength(0) + 1; i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1) + 1; j++)
+                {
+                    matrixFuncDelegate(x, i, j, matrix);
+/*                    if (j == 0)
+                    {
+                        switch (i)
+                        {
+                            case 0:
+                                WriteCell(x, j, "X");
+                                break;
+                            default:
+                                WriteCell(x, j, "A" + i);
+                                break;
+                        }
+                    }
+                    else if (j > 0 && i == 0) { WriteCell(x, j, "A" + j); }
+                    else { WriteCell(x, j, matrix[i - 1, j - 1].ToString()); }*/
+                }
+                x++;
+            }
+            x++; ;
+        }
+
+
+        int x = 0;
+        int iterat = 1;
+
+        public void AddSetToSheet(List<Double[,]> listOfMatrixes, string setName)
+        {
+            NewSheet(setName);
+            iterat = 1;
+            foreach (Double[,] item in listOfMatrixes) {
+                AddMatrixToSheet(item, setName+" "+ iterat, OtherMatrixFunc);
+                iterat++;
+            }
+        }
+
+
+        public void AddRatingToSheet(List<Double[,]> listOfRatings, string ratingName)
+        {
+            NewSheet(ratingName);
+            iterat = 1;
+            foreach (Double[,] item in listOfRatings) {
+                AddMatrixToSheet(item, ratingName + " " + iterat, RatingMatrixFunc);
+                iterat++;
+            }
+        }
+
+
+        public void SaveTableToExelFile(string path, Double[,] matrix) {
+            NewExcelFile();
+            NewSheet("Basic Table");
+            AddBasicMatrixToSheet(matrix);
+            CloseAndSaveFile(path);
+        }
+
+        public void SaveDataToExelFile(string path, Double[,] basicMatrix, Double[,] concordanceMatrix, Double[,] credibilityMatrix, List<Double[,]> listaZbiorowZgodnosci, List<Double[,]> listaZbiorowNieZgodnosci, List<Double[,]> listaZbiorowPrzewyzszania ,List<Double[,]> listaZstepMacierzyOcen, List<Double[,]> listaWstepMacierzyOcen) {
+            NewExcelFile();
+            NewSheet("Basic Table");
+            AddBasicMatrixToSheet(basicMatrix);
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            NewSheet("Concordance Matrix");
+            AddMatrixToSheet(concordanceMatrix, "Concordane Matrix", OtherMatrixFunc);
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            NewSheet("Credibility Matrix");
+            AddMatrixToSheet(credibilityMatrix, "Credibility Matrix", OtherMatrixFunc);
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            AddSetToSheet(listaZbiorowZgodnosci, "Concordance Set");
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            AddSetToSheet(listaZbiorowNieZgodnosci, "Discordance Set");
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            AddSetToSheet(listaZbiorowPrzewyzszania, "Outranking Set");
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            AddRatingToSheet(listaZstepMacierzyOcen, "TopDown Rating");
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            AddRatingToSheet(listaWstepMacierzyOcen, "Upward Rating");
+
+            CloseAndSaveFile(path);
+        }
     }
 }
