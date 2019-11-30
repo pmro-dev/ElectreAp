@@ -60,14 +60,14 @@ namespace ElectreAp
         public void ColumnNames_SetValue(int index, string valueToSet) { columnNames[index] = valueToSet; }
         public string ColumnNames_GetValue(int index) { return columnNames[index]; }
 
-        protected String[,] miejscaOpcjiPoDestylacjiZstepujacej;
-        public String[,] MiejscaOpcjiPoDestylacjiZstepujacej { get { return miejscaOpcjiPoDestylacjiZstepujacej; } }
-        protected String[,] miejscaOpcjiPoDestylacjiWstepujacej;
-        public String[,] MiejscaOpcjiPoDestylacjiWstepujacej { get { return miejscaOpcjiPoDestylacjiWstepujacej; } }
+        protected Double[,] topDownRanking;
+        public Double[,] TopDownRanking { get { return topDownRanking; } }
+        protected Double[,] upwardRanking;
+        public Double[,] UpwardRanking { get { return upwardRanking; } }
         protected String[,] punktacjaOpcji;
         protected String[,] punktacjaOpcjiZmienna;
-        protected String[,] tabRank;
-        public String[,] TabRank { get { return tabRank; } }
+        protected Double[,] finalRanking;
+        public Double[,] FinalRanking { get { return finalRanking; } }
         protected String[] columnNamesDoListy;
         public String[] ColumnNamesDoListy { get { return columnNamesDoListy; } set { columnNamesDoListy = value; } }
         public void ColumnNamesDoListy_SetValue(int index, string valueToSet) { columnNamesDoListy[index] = valueToSet; }
@@ -83,8 +83,8 @@ namespace ElectreAp
         public Double[,] TabZstep { get { return tabZstep; } set { tabZstep = value; } }
         protected Double[,] tabWstep;
         public Double[,] TabWstep { get { return tabWstep; } set { tabWstep = value; } }
-        protected Double[,] tabSum;
-        public Double[,] TabSum { get { return tabSum; } set { tabSum = value; } }
+        protected Double[,] finalRankingMatrix;
+        public Double[,] FinalRankingMatrix { get { return finalRankingMatrix; } set { finalRankingMatrix = value; } }
         // macierz wskaźników wiarygodności inaczej Credibility Matrix
         protected Double[,] credibilityMatrix;
         public Double[,] CredibilityMatrix { get { return credibilityMatrix; } }

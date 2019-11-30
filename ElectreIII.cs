@@ -389,7 +389,6 @@ namespace ElectreAp
         }
 
 
-        //public void CreateFinalRanking(double[,] tabSum)
         public void CreateFinalRanking(ref Double[,] tabSum) {
             listaAlternatyw = new List<List<Int32>>();
             // budowanie listy kto z kim przegrywa
@@ -437,7 +436,7 @@ namespace ElectreAp
 
             if (CboxRankingsChecked)
             {
-                PreparedDataTable(ref tabRank, "Rank. Final.");
+                PreparedDataTable(ref finalRanking, "Rank. Final.");
             }
         }
         
@@ -445,13 +444,12 @@ namespace ElectreAp
         public void ChangeRankListToTable(List<List<Int32>> listaRank) {
             for (int i = 0; i < listaRank.Count; i++) {
                 for (int j = 0; j < listaRank[i].Count; j++) {
-                    tabRank[1, listaRank[i][j] - 1] = (i + 1).ToString();
+                    finalRanking[1, listaRank[i][j] - 1] = (double)(i + 1);
                 }
             }
         }
 
 
-        //public void CreateOutrankingSets(List<double[,]> listOfOutrankingSets)
         public void CreateOutrankingSets() {
           //  Console.WriteLine("SPRAWDZAMY listaZbiorowNieZgodnosci.size() =" + listaZbiorowNieZgodnosci.Count);
             for (int numerZbioru = 0; numerZbioru < listaZbiorowNieZgodnosci.Count; numerZbioru++) {
@@ -472,7 +470,6 @@ namespace ElectreAp
         }
 
 
-       // public void CreateSumTableOfDistillations(double[,] tabTopDownDistillation, double[,] tabUpwardDistillation)
         public void CreateSumTableOfDistillations(ref Double[,] tabSum) {
             tabSum = new double[numberOfAlternatives, numberOfAlternatives];
             for (int i = 0; i < tabSum.GetLength(0); i++) {
@@ -500,17 +497,20 @@ namespace ElectreAp
         }
 
 
-        public delegate Boolean TestOperationDelegate(int i, int j, string[,] placesOfOptionsAfterDistillation);
+        public delegate Boolean TestOperationDelegate(int i, int j, double[,] placesOfOptionsAfterDistillation);
 
-        private Boolean LessOperation(int i, int j, string[,] placesOfOptionsAfterDistillation) { return (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) < Int32.Parse(placesOfOptionsAfterDistillation[1, j]));  }
 
-        private Boolean GreaterOperation(int i, int j, string[,] placesOfOptionsAfterDistillation) { return (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) > Int32.Parse(placesOfOptionsAfterDistillation[1, j])); }
+        private Boolean LessOperation(int i, int j, double[,] placesOfOptionsAfterDistillation) { return (placesOfOptionsAfterDistillation[1, i] < placesOfOptionsAfterDistillation[1, j]);  }
+
+
+        private Boolean GreaterOperation(int i, int j, double[,] placesOfOptionsAfterDistillation) { return (placesOfOptionsAfterDistillation[1, i] > placesOfOptionsAfterDistillation[1, j]); }
         
-        public void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, TestOperationDelegate testOperationDelegate) {
+
+        public void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref Double[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, TestOperationDelegate testOperationDelegate) {
 
             Console.WriteLine("MIEEEEEEEEEEEEEEEEEJSCA");
-            for (int k = 0; k < miejscaOpcjiPoDestylacjiZstepujacej.GetLength(1); k++) {
-                Console.Write(miejscaOpcjiPoDestylacjiZstepujacej[1, k] + " ");
+            for (int k = 0; k < topDownRanking.GetLength(1); k++) {
+                Console.Write(topDownRanking[1, k] + " ");
             }
             Console.WriteLine();
 
@@ -521,7 +521,7 @@ namespace ElectreAp
                     if (testOperationDelegate(i, j, placesOfOptionsAfterDistillation)) {
                         tableOfDistillation[i, j] = valueX;
                     }
-                    else if (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) == Int32.Parse(placesOfOptionsAfterDistillation[1, j])) {
+                    else if (placesOfOptionsAfterDistillation[1, i] == placesOfOptionsAfterDistillation[1, j]) {
                         tableOfDistillation[i, j] = valueY;
                     }
                     else {
@@ -543,10 +543,8 @@ namespace ElectreAp
         }
 
 
-        //Double[,] concordanceMatrix;
         double valueOfConcordance;
 
-        //public void CreateConcordanceMatrix(List<Double[,]> listaZbiorowZgodnosci, int numberOfAlternatives) {
         public void CreateConcordanceMatrix() {
             concordanceMatrix = new Double[numberOfAlternatives, numberOfAlternatives];
             double sumOfQuotients = 0;
@@ -593,7 +591,6 @@ namespace ElectreAp
             PrepareTopDownDistillation();
 
             // wykonaj destylacje zstępującą
-            // DoStepSecond(ref roboczyMatrixDOgol, typDestylacji, ref listaNumerowZNazwOpcjiOgolZstep);
             Console.WriteLine("WIERSZY W ROBOCZYMATRIXDOGOL" + roboczyMatrixDOgol.GetLength(0));
             Console.WriteLine("liczba numerow NAZWOPCJIOGOLZSTEP = " + listaNumerowZNazwOpcjiOgolZstep.Count);
             DoStepSecond(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolZstep);
@@ -603,23 +600,23 @@ namespace ElectreAp
             // wykonaj destylację wstępującą
             DoStepSecond(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolWstep);
 
-//            DoStepSecond(ref roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolWstep);
             PrepareUpwardScore();
 
             TestOperationDelegate testOperation;
             testOperation = GreaterOperation;
-            CreateTabOfDistillation(ref tabZstep, ref miejscaOpcjiPoDestylacjiZstepujacej, -1, 0, 1, testOperation);
+            CreateTabOfDistillation(ref tabZstep, ref topDownRanking, -1, 0, 1, testOperation);
             ShowTabOfDistillation(ref tabZstep);
             testOperation = LessOperation;
-            CreateTabOfDistillation(ref tabWstep, ref miejscaOpcjiPoDestylacjiWstepujacej, 1, 0, -1, testOperation);
+            CreateTabOfDistillation(ref tabWstep, ref upwardRanking, 1, 0, -1, testOperation);
             ShowTabOfDistillation(ref tabWstep);
-            CreateSumTableOfDistillations(ref tabSum);
-            ShowTabOfDistillation(ref tabSum);
-            CreateFinalRanking(ref tabSum);
+            CreateSumTableOfDistillations(ref finalRankingMatrix);
+            ShowTabOfDistillation(ref finalRankingMatrix);
+            CreateFinalRanking(ref finalRankingMatrix);
         }
 
 
         List<string> listOfPathsImages = new List<string>();
+
         public List<string> ListOfPathsImages { get { return listOfPathsImages; } }
 
         public void PreparedImagesAndShowCollections() {
@@ -663,11 +660,11 @@ namespace ElectreAp
             }
 
             if (CboxTopDownDistillationChecked) {
-                ShowDistillation("ZSTĘPUJĄCA", miejscaOpcjiPoDestylacjiZstepujacej);
+                ShowDistillation("ZSTĘPUJĄCA", topDownRanking);
             }
 
             if (CboxUpwardDistillationChecked) {
-                ShowDistillation("WSTĘPUJĄCA", miejscaOpcjiPoDestylacjiWstepujacej);
+                ShowDistillation("WSTĘPUJĄCA", upwardRanking);
             }
 
             if (CboxUpwardDistillationChecked || CboxTopDownDistillationChecked) {
@@ -677,10 +674,9 @@ namespace ElectreAp
             }
 
             if (CboxRankingsChecked) {
-                PreparedDataTable(ref miejscaOpcjiPoDestylacjiZstepujacej, "Rank. Zstep.");
-                PreparedDataTable(ref miejscaOpcjiPoDestylacjiWstepujacej, "Rank. Wstep.");
-                PreparedDataTable(tabSum, "Finalna Macierz Zależności", lul);
-                //PreparedDataTable(tabSum, "Finalna Macierz Zależności");
+                PreparedDataTable(ref topDownRanking, "Rank. Zstep.");
+                PreparedDataTable(ref upwardRanking, "Rank. Wstep.");
+                PreparedDataTable(finalRankingMatrix, "Finalna Macierz Zależności", lul);
             }
 
 /*            if (CboxRatingMatrixChecked)
@@ -805,19 +801,21 @@ namespace ElectreAp
                 listaNumerowZNazwOpcjiOgolWstep.Add(z);
             }
 
-            miejscaOpcjiPoDestylacjiZstepujacej = new String[2, numberOfAlternatives];
-            miejscaOpcjiPoDestylacjiWstepujacej = new String[2, numberOfAlternatives];
-            tabRank = new String[2, numberOfAlternatives];
+            topDownRanking = new double[2, numberOfAlternatives];
+            upwardRanking = new double[2, numberOfAlternatives];
+            finalRanking = new Double[2, numberOfAlternatives];
             punktacjaOpcji = new String[2, numberOfAlternatives];
             punktacjaOpcjiZmienna = new String[2, numberOfAlternatives];
 
             for (int z = 0; z < numberOfAlternatives; z++) {
-                miejscaOpcjiPoDestylacjiZstepujacej[0,z] = "A" + (z + 1);
-                miejscaOpcjiPoDestylacjiZstepujacej[1,z] = "0";
-                tabRank[0,z] = "A" + (z + 1); ;
-                tabRank[1,z] = "0";
-                miejscaOpcjiPoDestylacjiWstepujacej[0,z] = "A" + (z + 1);
-                miejscaOpcjiPoDestylacjiWstepujacej[1,z] = "0";
+                topDownRanking[0,z] = (z + 1);
+                topDownRanking[1,z] = 0;
+                //finalRanking[0,z] = "A" + (z + 1);
+                finalRanking[0, z] = (double)(z + 1);
+                //finalRanking[1,z] = "0";
+                finalRanking[1, z] = 0.0;
+                upwardRanking[0,z] = (z + 1);
+                upwardRanking[1,z] = 0;
                 punktacjaOpcji[0,z] = "A" + (z + 1);
                 punktacjaOpcji[1,z] = "0";
             }
@@ -844,6 +842,7 @@ namespace ElectreAp
 
         Double testLogiczny = 0.0;
         Boolean testDC = false;
+
         public void DoStageFirst() {
             // matrix -> jedna tabela do zapisu inf. czy wartosci z takiej samej komorki ale dla roznych zbiorow przewyzszania sa sobie równe
             matrixRownosciZbiorowPrzewyzszania = new double[numberOfAlternatives, numberOfAlternatives];
@@ -910,6 +909,7 @@ namespace ElectreAp
                 }
             }
         }
+
 
         int liczenieKrok2 = 0;
 
@@ -1000,7 +1000,7 @@ namespace ElectreAp
             //listaMacierzyWygranych
             List<Int32> listaNazwOpcjiMacOc = new List<Int32>();
             // macierz dla power(wiersz 0) weakness (wiersz 1) i qualification (wieresz 2)
-            Double[,] macierzOcen = new Double[3, workingMatrix.GetLength(1)];
+            Double[,] macierzOcen = new Double[4, workingMatrix.GetLength(1)];
 
             for (int numerWiersza = 0; numerWiersza < workingMatrix.GetLength(0); numerWiersza++) {
                 for (int numerKolumny = 0; numerKolumny < workingMatrix.GetLength(1); numerKolumny++) {
@@ -1009,12 +1009,13 @@ namespace ElectreAp
                 //    Console.WriteLine("zmiennaPomocnicza1 = workingMatrix[numerWiersza, numerKolumny] - CalculateSDeltaK(workingMatrix[numerWiersza, numerKolumny])");
                     Console.WriteLine("zmiennaPomocnicza1 = {0} - {1}", workingMatrix[numerWiersza, numerKolumny], CalculateSDeltaK(workingMatrix[numerWiersza, numerKolumny]));
 
-                    if (zmiennaPomocnicza1 > workingMatrix[numerKolumny, numerWiersza] && workingMatrix[numerWiersza, numerKolumny] > lastDelta) {
+                    if (zmiennaPomocnicza1 > workingMatrix[numerKolumny, numerWiersza] && workingMatrix[numerWiersza, numerKolumny] > lastDelta)
+                    {
                         macierzWygranych[numerWiersza, numerKolumny] = 1;
-                        zmiennaPomocna = macierzOcen[0, numerWiersza] + 1;
-                        macierzOcen[0, numerWiersza] = zmiennaPomocna;
-                        zmiennaPomocna = macierzOcen[1, numerKolumny] - 1;
-                        macierzOcen[1, numerKolumny] = zmiennaPomocna;
+                        zmiennaPomocna = macierzOcen[1, numerWiersza] + 1;
+                        macierzOcen[1, numerWiersza] = zmiennaPomocna;
+                        zmiennaPomocna = macierzOcen[2, numerKolumny] - 1;
+                        macierzOcen[2, numerKolumny] = zmiennaPomocna;
                     }
                     else { macierzWygranych[numerWiersza, numerKolumny] = 0; }
                 }
@@ -1024,8 +1025,9 @@ namespace ElectreAp
             double zmiennaTymczasowa;
 
             for (kolumnaOceny = 0; kolumnaOceny < macierzOcen.GetLength(1); kolumnaOceny++) {
-                zmiennaTymczasowa = macierzOcen[0, kolumnaOceny] + macierzOcen[1, kolumnaOceny];
-                macierzOcen[2, kolumnaOceny] = zmiennaTymczasowa;
+                zmiennaTymczasowa = macierzOcen[1, kolumnaOceny] + macierzOcen[2, kolumnaOceny];
+                macierzOcen[3, kolumnaOceny] = zmiennaTymczasowa;
+                macierzOcen[0, kolumnaOceny] = workingListOfNumbersOfOptions[kolumnaOceny] + 1;
             }
 
             Console.WriteLine("rozmiar macierzy ocen = " + macierzOcen.GetLength(0) + " " + macierzOcen.GetLength(1));
@@ -1089,14 +1091,14 @@ namespace ElectreAp
             if (typeOfDistillation == true)
             {
                 double qualificationNajlepszejOpcji = 0;
-                qualificationNajlepszejOpcji = ratingMatrix[2, 0];
+                qualificationNajlepszejOpcji = ratingMatrix[3, 0];
                 Console.WriteLine("Najlepsze quali od ratingMatrix = " + qualificationNajlepszejOpcji);
                 // znajdujemy najlepszą punktacje qualification
                 for (int kolumnaOceny = 0; kolumnaOceny < ratingMatrix.GetLength(1); kolumnaOceny++)
                 {
-                    if (ratingMatrix[2, kolumnaOceny] > qualificationNajlepszejOpcji)
+                    if (ratingMatrix[3, kolumnaOceny] > qualificationNajlepszejOpcji)
                     {
-                        qualificationNajlepszejOpcji = ratingMatrix[2, kolumnaOceny];
+                        qualificationNajlepszejOpcji = ratingMatrix[3, kolumnaOceny];
                     }
                 }
 
@@ -1106,13 +1108,13 @@ namespace ElectreAp
             else if (typeOfDistillation == false)
             {
                 double qualificationNajgorszejOpcji = 0;
-                qualificationNajgorszejOpcji = ratingMatrix[2, 0];
+                qualificationNajgorszejOpcji = ratingMatrix[3, 0];
                 // znajdujemy najgorszą punktacje qualification
                 for (int kolumnaOceny = 0; kolumnaOceny < ratingMatrix.GetLength(1); kolumnaOceny++)
                 {
-                    if (ratingMatrix[2, kolumnaOceny] < qualificationNajgorszejOpcji)
+                    if (ratingMatrix[3, kolumnaOceny] < qualificationNajgorszejOpcji)
                     {
-                        qualificationNajgorszejOpcji = ratingMatrix[2, kolumnaOceny];
+                        qualificationNajgorszejOpcji = ratingMatrix[3, kolumnaOceny];
                     }
                 }
                 Console.WriteLine("Najgorsze quali = " + qualificationNajgorszejOpcji);
@@ -1129,7 +1131,12 @@ namespace ElectreAp
             Console.WriteLine("Krok 7");
 
             Console.Write("workingListOfNumbersOfOptions = ");
-            foreach (int item in workingListOfNumbersOfOptions) { Console.Write(item); }
+            //int iter = 0;
+            foreach (int item in workingListOfNumbersOfOptions) { 
+                Console.Write(item);
+/*                ratingMatrix[0, iter] = workingListOfNumbersOfOptions[iter];
+                iter++;*/
+            }
             Console.WriteLine();
 
             int liczbaNajlepszychOpcji = 0;
@@ -1140,7 +1147,7 @@ namespace ElectreAp
             // liczymy ile opcji ma najlepszą (lub najgorszą) ocenę
             for (int kolumnaOceny = 0; kolumnaOceny < ratingMatrix.GetLength(1); kolumnaOceny++)
             {
-                if (qualificationOfTheBestOption == ratingMatrix[2, kolumnaOceny])
+                if (qualificationOfTheBestOption == ratingMatrix[3, kolumnaOceny])
                 {
                     liczbaNajlepszychOpcji++;
                 }
@@ -1157,14 +1164,14 @@ namespace ElectreAp
             // wszystkie opcje, które mają najlepszą (najgorszą) ocenę równą qualificationNajlepszejOpcji / najgorszej opcji dodajemy do nowego matrixa "matrixNajlepszychOpcjiWewnatrz" / "matrix.. najgorszychOpcji"
             for (int numerKolumny = 0; numerKolumny < ratingMatrix.GetLength(1); numerKolumny++)
             {
-                double wartoscKomorkiMacierzOcen = ratingMatrix[2, numerKolumny];
-                Console.WriteLine("wartoscKomorkiMacirzOcen = " + ratingMatrix[2, numerKolumny]);
+                double wartoscKomorkiMacierzOcen = ratingMatrix[3, numerKolumny];
+                Console.WriteLine("wartoscKomorkiMacirzOcen = " + ratingMatrix[3, numerKolumny]);
                 if (qualificationOfTheBestOption == wartoscKomorkiMacierzOcen)
                 {
                     Console.WriteLine("kolumna naj kwali = " + numerKolumny);
                     for (int numerWiersza = 0; numerWiersza < workingMatrix.GetLength(0); numerWiersza++)
                     {
-                        wartoscKomorkiMacierzOcen = ratingMatrix[2, numerWiersza];
+                        wartoscKomorkiMacierzOcen = ratingMatrix[3, numerWiersza];
                         if (qualificationOfTheBestOption == wartoscKomorkiMacierzOcen)
                         {
                             Console.WriteLine("wiersz naj kwali = " + numerWiersza);
@@ -1201,7 +1208,7 @@ namespace ElectreAp
                     
                     listaNumerowZNazwOpcjiUsytWRank.Sort();
                     
-                    miejscaOpcjiPoDestylacjiZstepujacej[1, workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]] = (liczbaZajetychMiejscWRankWDestZstep + 1).ToString();
+                    topDownRanking[1, workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]] = (liczbaZajetychMiejscWRankWDestZstep + 1);
 
                     Console.WriteLine("PRZED USUWANIEM");
                     foreach (int item in listaNumerowZNazwOpcjiOgolZstep) { Console.Write(item + " "); }
@@ -1223,7 +1230,7 @@ namespace ElectreAp
                 {
                     listaNumerowZNazwOpcjiUsytWRank.Add(workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]);
                     listaNumerowZNazwOpcjiUsytWRank.Sort();
-                    miejscaOpcjiPoDestylacjiWstepujacej[1, workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]] = (liczbaZajetychMiejscWRankWDestWstep + 1).ToString();
+                    upwardRanking[1, workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]] = (liczbaZajetychMiejscWRankWDestWstep + 1);
                     listaNumerowZNazwOpcjiOgolWstep.Remove(workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]);
 
                     Console.WriteLine("dla FALSE rozmiar listaNumerowZNazwOpcji PO = " + workingListOfNumbersOfOptions.Count);
@@ -1271,12 +1278,12 @@ namespace ElectreAp
                 {
                     if (typeOfDistillation == true)
                     {
-                        miejscaOpcjiPoDestylacjiZstepujacej[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestZstep + 1).ToString();
+                        topDownRanking[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestZstep + 1);
                         liczbaZajetychMiejscWRankWDestZstep++;
                     }
                     else if (typeOfDistillation == false)
                     {
-                        miejscaOpcjiPoDestylacjiWstepujacej[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestWstep + 1).ToString();
+                        upwardRanking[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestWstep + 1);
                         liczbaZajetychMiejscWRankWDestWstep++;
                     }
                     Console.WriteLine("KONIEC DEFINITYWNY");
@@ -1305,7 +1312,7 @@ namespace ElectreAp
                         listaNumerowZNazwOpcjiUsytWRank.Add(listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]);
                         listaNumerowZNazwOpcjiUsytWRank.Sort();
                         //  NAJPIERW NAJLEPSZYM OPCJOM W MATRIXIE ZAPISUJEMY JAKIE MIEJSCE W RANKINGU ZAJĘŁY
-                        miejscaOpcjiPoDestylacjiZstepujacej[1, listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]] = (liczbaZajetychMiejscWRankWDestZstep + 1).ToString();
+                        topDownRanking[1, listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]] = (liczbaZajetychMiejscWRankWDestZstep + 1);
                         Console.WriteLine("USUWANIE 2");
                         // Z listaNumerowZNazwOpcji USUWAMY NUMERY OPCJI, KTÓRE OTRZYMAŁY SWOJE MIEJSCE W RANKINGU
                         for (int j = 0; j < listaNumerowZNazwOpcjiOgolZstep.Count; j++)
@@ -1331,7 +1338,7 @@ namespace ElectreAp
                         listaNumerowZNazwOpcjiUsytWRank.Add(listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]);
                         listaNumerowZNazwOpcjiUsytWRank.Sort();
                         //  NAJPIERW NAJGORSZYM OPCJOM W MATRIXIE ZAPISUJEMY JAKIE MIEJSCE W RANKINGU ZAJĘŁY
-                        miejscaOpcjiPoDestylacjiWstepujacej[1, listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]] = (liczbaZajetychMiejscWRankWDestWstep + 1).ToString();
+                        upwardRanking[1, listaNumerowZNazwNajlepszychOpcjiWewnatrz[k]] = (liczbaZajetychMiejscWRankWDestWstep + 1);
 
                         // Z listaNumerowZNazwOpcji USUWAMY NUMERY OPCJI, KTÓRE OTRZYMAŁY SWOJE MIEJSCE W RANKINGU   
                         for (int j = 0; j < listaNumerowZNazwOpcjiOgolWstep.Count; j++)
@@ -1406,7 +1413,7 @@ namespace ElectreAp
                     {
                         listaNumerowZNazwOpcjiUsytWRank.Add(listaNumZNazwPomoc[0]);
                         listaNumerowZNazwOpcjiUsytWRank.Sort();
-                        miejscaOpcjiPoDestylacjiZstepujacej[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestZstep + 1).ToString();
+                        topDownRanking[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestZstep + 1);
                         listaNumZNazwPomoc.Remove(0);
                         liczbaZajetychMiejscWRankWDestZstep++;
                     }
@@ -1414,7 +1421,7 @@ namespace ElectreAp
                     {
                         listaNumerowZNazwOpcjiUsytWRank.Add(listaNumZNazwPomoc[0]);
                         listaNumerowZNazwOpcjiUsytWRank.Sort();
-                        miejscaOpcjiPoDestylacjiWstepujacej[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestWstep + 1).ToString();
+                        upwardRanking[1, listaNumZNazwPomoc[0]] = (liczbaZajetychMiejscWRankWDestWstep + 1);
                         listaNumZNazwPomoc.Remove(0);
                         liczbaZajetychMiejscWRankWDestWstep++;
                     }
@@ -1426,8 +1433,10 @@ namespace ElectreAp
             }
         }
 
+
         private List<DataTable> listOfDataTable = new List<DataTable>();
         public List<DataTable> ListOfDataTable { get { return listOfDataTable; } }
+
     
         public void PreparedDataTable<T>(ref T[,] matrixData, string namePage) {
             Console.WriteLine("LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -1494,7 +1503,6 @@ namespace ElectreAp
 
         Double zmiennaHelp;
 
-       // public void PreparedDataTable(Double[,] matrixData, string namePage, List<Int32> roboczaListaNumerowOpcji) {
         public void PreparedDataTable(Double[,] matrixData, string namePage, List<Int32> listaNazwOpcji) {
             TabPage tabPage = new TabPage();
             tabPage.Text = namePage;
@@ -1509,16 +1517,12 @@ namespace ElectreAp
             for (int licz = 0; licz < matrixData.GetLength(1) + 1; licz++) {
                 DataColumn column = new DataColumn();
                 if (bool1 && licz > 0 && licz < matrixData.GetLength(1) + 1) {
-                    //columnNamesView.add("A" + (roboczaListaNumerowOpcji.get(licz - 1) + 1));
-                    /*                    int liczenie = roboczaListaNumerowOpcji[licz - 1] + 1;
-                                        dataGridView.Columns.Add("","A" + (roboczaListaNumerowOpcji[licz - 1] + 1).ToString());*/
                     column.ColumnName = "A" + (listaNazwOpcji[licz-1] + 1).ToString();
                     dataTable.Columns.Add(column);
                 }
                 else {
                     column.ColumnName = "A" + licz;
                     dataTable.Columns.Add(column);
-                    //columnNamesView.add("A" + licz);
                 }
             }
 
@@ -1526,20 +1530,19 @@ namespace ElectreAp
 
             for (int y = 0; y < matrixData.GetLength(0); y++) {
                 DataRow dataRow = dataTable.NewRow();
-                List<string> row = new List<string>();
+                List<string> row;  row = new List<string>();
+                
                 for (int z = 0; z < matrixData.GetLength(1) + 1; z++) {
                     if (z == 0) {
                         if (bool1) {
                             switch (y) {
-                                case 0:
+                                case 1:
                                     row.Add("Power");
                                     break;
-
-                                case 1:
+                                case 2:
                                     row.Add("Weakness");
                                     break;
-
-                                case 2:
+                                case 3:
                                     row.Add("Qualification");
                                     break;
                             }
@@ -1571,11 +1574,15 @@ namespace ElectreAp
                         }
                     }
                 }
-                dataTable.Rows.Add(row.ToArray<string>());
-                dataTable.TableName = namePage;
+
+                if (bool1 && y != 0 || !bool1) {
+                    dataTable.Rows.Add(row.ToArray<string>());
+                    dataTable.TableName = namePage;
+                }
             }
             listOfDataTable.Add(dataTable);
         }
+
 
         int pomocna = 0;
         
@@ -1583,17 +1590,17 @@ namespace ElectreAp
 
             Console.WriteLine("ZAMIEN WYKONANE" + min);
 
-            for (int j = 0; j < miejscaOpcjiPoDestylacjiWstepujacej.GetLength(1); j++) {
-                if (Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, j]) == min) {
-                    miejscaOpcjiPoDestylacjiWstepujacej[1, j] = "0";
+            for (int j = 0; j < upwardRanking.GetLength(1); j++) {
+                if ((Int32)(upwardRanking[1, j]) == min) {
+                    upwardRanking[1, j] = 0;
                 }
-                if (Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, j]) == max) {
-                    miejscaOpcjiPoDestylacjiWstepujacej[1, j] = min.ToString();
+                if ((Int32)(upwardRanking[1, j]) == max) {
+                    upwardRanking[1, j] = min;
                 }
             }
-            for (int j = 0; j < miejscaOpcjiPoDestylacjiWstepujacej.GetLength(1); j++) {
-                if (Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, j]) == 0) {
-                    miejscaOpcjiPoDestylacjiWstepujacej[1, j] = max.ToString();
+            for (int j = 0; j < upwardRanking.GetLength(1); j++) {
+                if ((Int32)(upwardRanking[1, j]) == 0) {
+                    upwardRanking[1, j] = max;
                 }
             }
 
@@ -1607,15 +1614,13 @@ namespace ElectreAp
 
         int maxim = 0;
 
-        public void FindMax(string[,] rankingOfOptionsAfterDistillation) {
-            for (int i = 0; i < miejscaOpcjiPoDestylacjiWstepujacej.GetLength(1); i++) {
-                if (maxim < Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, i])) {
-                    maxim = Int32.Parse(miejscaOpcjiPoDestylacjiWstepujacej[1, i]);
+        public void FindMax(double[,] rankingOfOptionsAfterDistillation) {
+            for (int i = 0; i < upwardRanking.GetLength(1); i++) {
+                if (maxim < (Int32)(upwardRanking[1, i])) {
+                    maxim = (Int32)(upwardRanking[1, i]);
                 }
             }
-         //   Console.WriteLine("MAXIM = " + maxim);
             pomocna = (maxim / 2) + 1;
-          //  Console.WriteLine("POMOCNA = " + pomocna);
         }
 
 
@@ -1639,7 +1644,6 @@ namespace ElectreAp
             for (int i = 0; i < listaAlternatyw.Count; i++) {
                 if (!listaAltWRank.Any() && !listaAlternatyw[i].Any()) {
                     Console.WriteLine("PPPPPPP   1");
-                    /*Console.WriteLine("PPPPPPPPPPPPPPPPPPPPPP");*/
                     listaDlaRank.Add((i + 1));
                     wiersz = i;
                     listaChwilowa.Add((i + 1));
@@ -1648,7 +1652,6 @@ namespace ElectreAp
                     Console.WriteLine("PPPPPPP   2");
                     listaAltWRank.Sort();
                     for (int k = 0; k < listaAlternatyw[i].Count; k++) {
-                      //  Console.WriteLine(listaAlternatyw[i][k] + " == " + listaAltWRank[k]);
                         if (listaAlternatyw[i][k] == listaAltWRank[k]) { tescik = true; Console.WriteLine("PPPPPPP   3");  }
                         else {
                             Console.WriteLine("PPPPPPP   4");
@@ -1666,11 +1669,10 @@ namespace ElectreAp
                 else if (listaAlternatyw[i].Count < listaAltWRankNieSort.Count && !listaAltWRankNieSort.Contains(i + 1)) {
                     Console.WriteLine("PPPPPPP   6");
                     for (int f = 0; f < listaChwilowa.Count; f++) {
-                        double pomoc1 = TabSum[i, listaChwilowa[f] - 1];
-                        double pomoc2 = TabSum[listaChwilowa[f] - 1, i];
+                        double pomoc1 = FinalRankingMatrix[i, listaChwilowa[f] - 1];
+                        double pomoc2 = FinalRankingMatrix[listaChwilowa[f] - 1, i];
 
                         if ((pomoc1 == 2.0 || pomoc1 == 0.0) && (pomoc2 == 2.0 || pomoc2 == 0.0)) {
-                            //  Console.WriteLine("DZIALA TUTAJ !!!!!");
                             Console.WriteLine("PPPPPPP   7");
                             tescikBol = true;
                         }
@@ -1724,10 +1726,8 @@ namespace ElectreAp
 
 
         public void PrepareUpwardScore() {
-            FindMax(miejscaOpcjiPoDestylacjiWstepujacej);
-            //ZnajdzMaxim(miejscaOpcjiPoDestylacjiWstepujacej);
+            FindMax(upwardRanking);
             Exchange(maxim, 1);
-            //Zamien(maxim, 1);
         }
 
 
@@ -1735,8 +1735,6 @@ namespace ElectreAp
 
             // wypisywanie zbiorów zgodności dla każdego z kryterium do Output kompilatora i do TextArea
             for (int a = 0; a < listaZbiorow.Count; a++) {
-                /*                object[,] varHelping = listaZbiorow[a] as object[,];*/
-                // PreparedDataTable(ref varHelping, "Zbior " + name + (a + 1), lul);
                 Double[,] cos = listaZbiorow[a];
                 PreparedDataTable(ref cos, "Zbior " + name + (a + 1));
                 Console.WriteLine("Zbiór {0}" + a, name);
@@ -1804,7 +1802,7 @@ namespace ElectreAp
         }
 
 
-        public void ShowDistillation(string name, String[,] miejscaOpcjiPoDestylacji) {
+        public void ShowDistillation(string name, double[,] miejscaOpcjiPoDestylacji) {
             Console.WriteLine("WYPISYWANIE OPCJI I ICH MIEJSC W RANKINGU DESTYLACJI {0}", name);
             for (int i = 0; i < miejscaOpcjiPoDestylacji.GetLength(0); i++) {
                 for (int j = 0; j < miejscaOpcjiPoDestylacji.GetLength(1); j++) {

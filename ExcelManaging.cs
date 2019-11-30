@@ -24,10 +24,8 @@ namespace ElectreAp
         String rozszerzenie = "xlsx";
         Double zmiennaHelp2;
 
-        public ExcelManaging()
-        {
 
-        }
+        public ExcelManaging() { }
 
 
         public Double[,] ReadTableFromFileToMatrix(string path, out Double[,] tabelaMatrix, ref int numberOfAlternatives, ref int numberOfCriterias)
@@ -85,34 +83,33 @@ namespace ElectreAp
         Excel.Workbook exWorkBook;
         Excel._Worksheet exWorksheet;
 
-        public void NewExcelFile() {
+
+        private void NewExcelFile() {
             exApp = new Excel.Application();
             exWorkBook = exApp.Workbooks.Add(Type.Missing);
         }
 
 
-        public void NewSheet(string nameSheet) {
-            /*exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);*/
-           // exWorkBook.Worksheets.Add();
+        private void NewSheet(string nameSheet) {
             exWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)exWorkBook.ActiveSheet;
             exWorksheet = exWorkBook.Worksheets[1];
             exWorksheet.Name = nameSheet;
         }
 
 
-        public void WriteCell(int i, int j, string value) {
+        private void WriteCell(int i, int j, string value) {
             exWorksheet.Cells[i + 1, j + 1].Value2 = value;
         }
 
 
-        public void CloseAndSaveFile(string path) {
+        private void CloseAndSaveFile(string path) {
             exWorkBook.SaveAs(path);
             exWorkBook.Close();
             exApp.Quit();
         }
 
 
-        public void AddBasicMatrixToSheet(Double[,] basicMatrix) {
+        private void AddBasicMatrixToSheet(Double[,] basicMatrix) {
             for (int i = 0; i < basicMatrix.GetLength(0) + 1; i++) {
                 for (int j = 0; j < basicMatrix.GetLength(1) + 1; j++) {
                     if (j == 0) {
@@ -159,7 +156,7 @@ namespace ElectreAp
         }
 
 
-        public delegate void MatrixFuncDelegate(int x, int i, int j, Double[,] matrix);
+        private delegate void MatrixFuncDelegate(int x, int i, int j, Double[,] matrix);
 
 
         private void RatingMatrixFunc(int x, int i, int j, Double[,] ratingMatrix) {
@@ -185,11 +182,11 @@ namespace ElectreAp
                         WriteCell(x, j, "X");
                         break;
                     default:
-                        WriteCell(x, j, "A");  //ListaNumerowOpcjiMacierzyOcen[iterator][j]);
+                        WriteCell(x, j, "A" + ratingMatrix[0, j - 1]);
                         break;
                 }
             }
-            else { WriteCell(x, j, ratingMatrix[i - 1, j - 1].ToString()); }
+            else if (i > 1) { x--;  WriteCell(x, j, ratingMatrix[i - 1, j - 1].ToString()); }
         }
 
 
@@ -209,30 +206,66 @@ namespace ElectreAp
         }
 
 
-        public void AddMatrixToSheet(Double[,] matrix, string matrixName, MatrixFuncDelegate matrixFuncDelegate)
-        {
+        private void RankingPositionFunc(int x, int i, int j, Double[,] rankingMatrix) {
+            if (j == 0) {
+                switch (i) {
+                    case 0:
+                        WriteCell(x, j, "X");
+                        break;
+                    case 1:
+                        WriteCell(x, j, "Pozycja");
+                        break;
+                }
+            }
+            else if (j > 0 && i == 0) { WriteCell(x, j, "A" + j); }
+            else if(i > 1) { x--; WriteCell(x, j, rankingMatrix[i - 1, j - 1].ToString()); }
+        }
+
+
+        string symbol = null;
+
+        public void RankingMatrixFunc(int x, int i, int j, Double[,] rankingMatrix) {
+            if (j == 0) {
+                switch (i) {
+                    case 0:
+                        WriteCell(x, j, "X");
+                        break;
+                    default:
+                        WriteCell(x, j, "A" + i);
+                        break;
+                }
+            }
+            else if (j > 0 && i == 0) { WriteCell(x, j, "A" + j); }
+            else { 
+                switch (rankingMatrix[i - 1, j - 1]) {
+                    case -1.0:
+                        symbol = "\u20B1";
+                        break;
+                    case 0.0:
+                        symbol = "I";
+                        break;
+                    case 1.0:
+                        symbol = "\u03A1";
+                        break;
+                    case 2.0:
+                        symbol = "R";
+                        break;
+                }
+                WriteCell(x, j, symbol);
+
+                //WriteCell(x, j, rankingMatrix[i - 1, j - 1].ToString()); 
+            }
+
+        }
+
+
+        private void AddMatrixToSheet(Double[,] matrix, string matrixName, MatrixFuncDelegate matrixFuncDelegate) {
             WriteCell(x, 0, matrixName);
             x++; ;
 
-            for (int i = 0; i < matrix.GetLength(0) + 1; i++)
-            {
-                for (int j = 0; j < matrix.GetLength(1) + 1; j++)
-                {
+            for (int i = 0; i < matrix.GetLength(0) + 1; i++) {
+                for (int j = 0; j < matrix.GetLength(1) + 1; j++) {
                     matrixFuncDelegate(x, i, j, matrix);
-/*                    if (j == 0)
-                    {
-                        switch (i)
-                        {
-                            case 0:
-                                WriteCell(x, j, "X");
-                                break;
-                            default:
-                                WriteCell(x, j, "A" + i);
-                                break;
-                        }
-                    }
-                    else if (j > 0 && i == 0) { WriteCell(x, j, "A" + j); }
-                    else { WriteCell(x, j, matrix[i - 1, j - 1].ToString()); }*/
                 }
                 x++;
             }
@@ -243,7 +276,8 @@ namespace ElectreAp
         int x = 0;
         int iterat = 1;
 
-        public void AddSetToSheet(List<Double[,]> listOfMatrixes, string setName)
+
+        private void AddSetToSheet(List<Double[,]> listOfMatrixes, string setName)
         {
             NewSheet(setName);
             iterat = 1;
@@ -254,8 +288,7 @@ namespace ElectreAp
         }
 
 
-        public void AddRatingToSheet(List<Double[,]> listOfRatings, string ratingName)
-        {
+        private void AddRatingToSheet(List<Double[,]> listOfRatings, string ratingName) {
             NewSheet(ratingName);
             iterat = 1;
             foreach (Double[,] item in listOfRatings) {
@@ -272,7 +305,8 @@ namespace ElectreAp
             CloseAndSaveFile(path);
         }
 
-        public void SaveDataToExelFile(string path, Double[,] basicMatrix, Double[,] concordanceMatrix, Double[,] credibilityMatrix, List<Double[,]> listaZbiorowZgodnosci, List<Double[,]> listaZbiorowNieZgodnosci, List<Double[,]> listaZbiorowPrzewyzszania ,List<Double[,]> listaZstepMacierzyOcen, List<Double[,]> listaWstepMacierzyOcen) {
+
+        public void SaveDataToExelFile(string path, Double[,] basicMatrix, Double[,] concordanceMatrix, Double[,] credibilityMatrix, List<Double[,]> listaZbiorowZgodnosci, List<Double[,]> listaZbiorowNieZgodnosci, List<Double[,]> listaZbiorowPrzewyzszania ,List<Double[,]> listaZstepMacierzyOcen, List<Double[,]> listaWstepMacierzyOcen, Double[,] finalRanking, Double[,] topDownRanking, Double[,] upwardRanking, Double[,] finalRankingMatrix) {
             NewExcelFile();
             NewSheet("Basic Table");
             AddBasicMatrixToSheet(basicMatrix);
@@ -299,6 +333,22 @@ namespace ElectreAp
             x = 0;
             exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
             AddRatingToSheet(listaWstepMacierzyOcen, "Upward Rating");
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            NewSheet("Final Ranking");
+            AddMatrixToSheet(finalRanking, "Final Ranking", RankingPositionFunc);
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            NewSheet("TopDown Ranking");
+            AddMatrixToSheet(topDownRanking, "TopDown Ranking", RankingPositionFunc);
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            NewSheet("Upward Ranking");
+            AddMatrixToSheet(upwardRanking, "Upward Ranking", RankingPositionFunc);
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
+            NewSheet("Final Ranking Matrix");
+            AddMatrixToSheet(finalRankingMatrix, "Final Ranking Matrix", RankingMatrixFunc);
 
             CloseAndSaveFile(path);
         }

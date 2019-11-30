@@ -172,7 +172,7 @@ namespace ElectreAp
         private void Button_SaveData_Click(object sender, EventArgs e) {
             dialogPath = OpenDialogGetPathDirectory();
             exelManager = new ExcelManaging();
-            exelManager.SaveDataToExelFile(dialogPath + @"ElectreData.xlsx", taskElectreIII.TabelaMatrix, taskElectreIII.ConcordanceMatrix, taskElectreIII.CredibilityMatrix, taskElectreIII.ListaZbiorowZgodnosci, taskElectreIII.ListaZbiorowNieZgodnosci, taskElectreIII.ListaZbiorowPrzewyzszania, taskElectreIII.ListaZstepMacierzyOcen, taskElectreIII.ListaWstepMacierzyOcen);
+            exelManager.SaveDataToExelFile(dialogPath + @"ElectreData.xlsx", taskElectreIII.TabelaMatrix, taskElectreIII.ConcordanceMatrix, taskElectreIII.CredibilityMatrix, taskElectreIII.ListaZbiorowZgodnosci, taskElectreIII.ListaZbiorowNieZgodnosci, taskElectreIII.ListaZbiorowPrzewyzszania, taskElectreIII.ListaZstepMacierzyOcen, taskElectreIII.ListaWstepMacierzyOcen, taskElectreIII.FinalRanking, taskElectreIII.TopDownRanking, taskElectreIII.UpwardRanking, taskElectreIII.FinalRankingMatrix);
         }
 
 

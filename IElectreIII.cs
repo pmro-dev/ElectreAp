@@ -22,9 +22,9 @@ namespace ElectreAp
         void FindMin();
         void CreateFinalRanking(ref Double[,] tabSum);
         void CheckingIsThereThisSameOptions(int y);
-        void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref String[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, ElectreIII.TestOperationDelegate testOperation);
+        void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref double[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, ElectreIII.TestOperationDelegate testOperation);
         void CreateSumTableOfDistillations(ref Double[,] tabSum);
-        void FindMax(String[,] rankingOfOptionsAfterDistillation);
+        void FindMax(double[,] rankingOfOptionsAfterDistillation);
         void Exchange(int max, int min);
         void ShowTableDataOfDistillation(ref Double[,] tabDistillation);
         void ShowMatrix(ref Double[,] matrix, string name);
