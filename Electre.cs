@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace ElectreAp
 {
@@ -18,15 +19,22 @@ namespace ElectreAp
             textBox_Alfa.Text = taskElectreIII.Alfa.ToString();
             textBox_Beta.Text = taskElectreIII.Beta.ToString();
             textBox_DecimalPlaces.Text = taskElectreIII.MiejscPoPrzecinku.ToString();
+            
+            SavingSuccessfulDelegate successFulDelegate = new SavingSuccessfulDelegate(() => { MessageBox.Show("Saving operation got successful", "Information", MessageBoxButtons.OK) ;});
+            SavingSuccessfulEvent += successFulDelegate;
+            SavingFailedDelegate failedDelegate = new SavingFailedDelegate(() => { MessageBox.Show("Saving operation got failed! \n\nSomething gone wrong, check data and try again.\nIf something go wrong again contact with IT Specialist", "Information", MessageBoxButtons.OK); });
+            SavingFailedEvent += failedDelegate;
+
+            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            backgroundWorker1.ProgressChanged += backgroundWorker1_ProgressChanged;
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.WorkerSupportsCancellation = true;
         }
 
+        private void UserControl_Load(object sender, EventArgs e) { }
 
-        private void UserControl_Load(object sender, EventArgs e) {
-
-        }
-
-
-        ElectreIII taskElectreIII = new ElectreIII();
+        
+       static ElectreIII taskElectreIII = new ElectreIII();
         int alternatives = 0;
         int criteria = 0;
 
@@ -53,17 +61,28 @@ namespace ElectreAp
             listBox_CriteriaToChose.HorizontalScrollbar = true;
         }
 
-        string dialogPath = "";
+        static string dialogPath = "";
 
-        private void Button_ReadTab_Click(object sender, EventArgs e) {
+        private async void Button_ReadTab_Click(object sender, EventArgs e) {
 
             dialogPath = OpenDialogGetPathFile();
 
-            ExcelManaging exel = new ExcelManaging();
-            taskElectreIII.TabelaMatrix = exel.ReadTableFromFileToMatrix(dialogPath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias);
+            exelManager = new ExcelManaging();
+
+            processValue = 0;
+            processValueMax = 0;
+
+            var progress = new Progress<int>(percent => { progressBar1.Value = percent; label1.Text = (percent + "%"); });
+
+            await Task.Run(() => ReadDataFromFileProcess(progress));
+
             criteria = taskElectreIII.tabelaMatrix.GetLength(1);
             alternatives = taskElectreIII.tabelaMatrix.GetLength(0);
             PrepareProperties(criteria, ref taskElectreIII.tabelaMatrix, 1, 0);
+            
+            label1.Text = "\u2713";
+
+            progressBar1.Value = 0;
         }
 
 
@@ -78,8 +97,8 @@ namespace ElectreAp
                     string filePath = openFileDialog.FileName;
                     return filePath;
                 }
-                else { 
-                    return string.Empty; 
+                else {
+                    return string.Empty;
                 }
             }
         }
@@ -99,12 +118,23 @@ namespace ElectreAp
             }
         }
 
-        ExcelManaging exelManager;
+        static ExcelManaging exelManager;
 
-        private void Button_SaveTab_Click(object sender, EventArgs e) {
+        private async void Button_SaveTab_Click(object sender, EventArgs e) {
             dialogPath = OpenDialogGetPathDirectory();
             exelManager = new ExcelManaging();
-            exelManager.SaveTableToExelFile(dialogPath + @"ElectreTab.xlsx", taskElectreIII.TabelaMatrix);
+
+            processValueMax = taskElectreIII.TabelaMatrix.GetLength(0) * taskElectreIII.TabelaMatrix.GetLength(1);
+
+            var progress = new Progress<int>( percent => { progressBar1.Value = percent; label1.Text = (percent + "%"); });
+
+            await Task.Run(() => SaveTableToFileProcess(progress));
+
+            label1.Text = "\u2713";
+
+            progressBar1.Value = 0;
+
+            SavingSuccessfulEvent();
         }
 
 
@@ -114,21 +144,20 @@ namespace ElectreAp
             tabControl_LeaderBoards.TabPages.Clear();
             //Reset(2);
 
-
             try
             {
                 if (textBox_Alfa.Text != taskElectreIII.Beta.ToString()) {
-            //if (TextBoxValidationDouble(textBox_Alfa, null) && textBox_Alfa.Text != taskElectreIII.Beta.ToString()) {
-                taskElectreIII.Alfa = Double.Parse(textBox_Alfa.Text);
+                    //if (TextBoxValidationDouble(textBox_Alfa, null) && textBox_Alfa.Text != taskElectreIII.Beta.ToString()) {
+                    taskElectreIII.Alfa = Double.Parse(textBox_Alfa.Text);
                 }
 
                 if (textBox_Beta.Text != taskElectreIII.Alfa.ToString()) {
-                //if (TextBoxValidationDouble(textBox_Beta, null) && textBox_Beta.Text != taskElectreIII.Alfa.ToString()) {
+                    //if (TextBoxValidationDouble(textBox_Beta, null) && textBox_Beta.Text != taskElectreIII.Alfa.ToString()) {
                     taskElectreIII.Beta = Double.Parse(textBox_Beta.Text);
                 }
 
                 if (textBox_DecimalPlaces.Text != taskElectreIII.MiejscPoPrzecinku.ToString()) {
-                //if (TextBoxValidationInt(textBox_DecimalPlaces, null, 0) && textBox_DecimalPlaces.Text != taskElectreIII.MiejscPoPrzecinku.ToString()) {
+                    //if (TextBoxValidationInt(textBox_DecimalPlaces, null, 0) && textBox_DecimalPlaces.Text != taskElectreIII.MiejscPoPrzecinku.ToString()) {
                     taskElectreIII.MiejscPoPrzecinku = Int32.Parse(textBox_DecimalPlaces.Text);
                 }
 
@@ -158,7 +187,7 @@ namespace ElectreAp
                 PictureBox pictureBox = new PictureBox();
                 Image img = Image.FromFile(pathMathImg);
                 pictureBox.Image = img;
-                pictureBox.ClientSize = new Size(flowLayoutPanel_MathImg.Width-25, flowLayoutPanel_MathImg.Height);
+                pictureBox.ClientSize = new Size(flowLayoutPanel_MathImg.Width - 25, flowLayoutPanel_MathImg.Height);
                 pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 flowLayoutPanel_MathImg.Controls.Add(pictureBox);
             }
@@ -169,10 +198,59 @@ namespace ElectreAp
         }
 
 
-        private void Button_SaveData_Click(object sender, EventArgs e) {
+        private delegate void SavingSuccessfulDelegate();
+
+        private event SavingSuccessfulDelegate SavingSuccessfulEvent;
+
+        private delegate void SavingFailedDelegate();
+
+        private event SavingFailedDelegate SavingFailedEvent;
+
+        private void SaveTableToFileProcess(IProgress<int> progress) {
+            try
+            {
+                exelManager.SaveTableToExelFile(dialogPath + @"ElectreTab.xlsx", taskElectreIII.TabelaMatrix, ref processValue, ref processValueMax, progress);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                SavingFailedEvent();
+            }
+        }
+
+        private void ReadDataFromFileProcess(IProgress<int> progress) {
+            taskElectreIII.TabelaMatrix = exelManager.ReadTableFromFileToMatrix(dialogPath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias, ref processValue, ref processValueMax, progress);
+        }
+
+        private void SaveDataToFileProcess(IProgress<int> progress) {
+            exelManager.SaveDataToExelFile(dialogPath + @"ElectreData.xlsx", taskElectreIII.TabelaMatrix, taskElectreIII.ConcordanceMatrix, taskElectreIII.CredibilityMatrix, taskElectreIII.ListaZbiorowZgodnosci, taskElectreIII.ListaZbiorowNieZgodnosci, taskElectreIII.ListaZbiorowPrzewyzszania, taskElectreIII.ListaZstepMacierzyOcen, taskElectreIII.ListaWstepMacierzyOcen, taskElectreIII.FinalRanking, taskElectreIII.TopDownRanking, taskElectreIII.UpwardRanking, taskElectreIII.FinalRankingMatrix, taskElectreIII, ref processValue, ref processValueMax, progress);
+        }
+
+
+        private async void Button_SaveData_Click(object sender, EventArgs e) {
+
             dialogPath = OpenDialogGetPathDirectory();
             exelManager = new ExcelManaging();
-            exelManager.SaveDataToExelFile(dialogPath + @"ElectreData.xlsx", taskElectreIII.TabelaMatrix, taskElectreIII.ConcordanceMatrix, taskElectreIII.CredibilityMatrix, taskElectreIII.ListaZbiorowZgodnosci, taskElectreIII.ListaZbiorowNieZgodnosci, taskElectreIII.ListaZbiorowPrzewyzszania, taskElectreIII.ListaZstepMacierzyOcen, taskElectreIII.ListaWstepMacierzyOcen, taskElectreIII.FinalRanking, taskElectreIII.TopDownRanking, taskElectreIII.UpwardRanking, taskElectreIII.FinalRankingMatrix);
+
+            try {
+                processValue = 0;
+                processValueMax = 12;
+
+                var progress = new Progress<int>(percent => { progressBar1.Value = percent; label1.Text = (percent + "%"); } );
+
+                await Task.Run(() => SaveDataToFileProcess(progress));
+
+                label1.Text = "\u2713";
+
+                progressBar1.Value = 0;
+
+                SavingSuccessfulEvent();
+
+            }
+            catch (Exception ex) {
+                SavingFailedEvent();
+                Console.WriteLine(ex);
+            }
         }
 
 
@@ -501,6 +579,46 @@ namespace ElectreAp
         private void checkBox_Rankings_CheckedChanged(object sender, EventArgs e) {
             if (checkBox_Rankings.Checked) { taskElectreIII.CboxRankingsChecked = true; }
             else { taskElectreIII.CboxRankingsChecked = false; }
+        }
+
+        static int processValue = 0;
+        static int processValueMax = 12;
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {  
+            if (backgroundWorker1.CancellationPending || processValue >= processValueMax) {
+                e.Cancel = true;
+            } else {
+                //exelManager.SaveDataToExelFile(dialogPath + @"ElectreData.xlsx", taskElectreIII.TabelaMatrix, taskElectreIII.ConcordanceMatrix, taskElectreIII.CredibilityMatrix, taskElectreIII.ListaZbiorowZgodnosci, taskElectreIII.ListaZbiorowNieZgodnosci, taskElectreIII.ListaZbiorowPrzewyzszania, taskElectreIII.ListaZstepMacierzyOcen, taskElectreIII.ListaWstepMacierzyOcen, taskElectreIII.FinalRanking, taskElectreIII.TopDownRanking, taskElectreIII.UpwardRanking, taskElectreIII.FinalRankingMatrix, taskElectreIII, backgroundWorker1, ref processValue, ref processValueMax);
+            }
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                progressBar1.Value = 0;
+                label1.Text = "\u2713";
+                //processingForm.label_Information.Text = "Process was cancelled";
+            }
+            else if (e.Error != null)
+            {
+                progressBar1.Value = 0;
+                label1.Text = "X";
+                label1.ForeColor = Color.Red;
+                //processingForm.label_Information.Text = "There was an error running the process. The thread aborted";
+            }
+            else
+            {
+                progressBar1.Value = 0;
+                label1.Text = "\u2713";
+                //processingForm.label_Information.Text = "Process was completed";
+            }
         }
     }
 }

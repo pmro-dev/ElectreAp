@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -10,29 +11,21 @@ namespace ElectreAp
     {
         int liczbaKryteriowWczytywanie = 0;
         int liczbaAlternatywWczytywanie = 0;
-        //File plik;
         String path = null;
-        // WritableSheet sheet;
-        //Label label;
-        //  Number number;
         String pomoc;
 
         int kolumny = 0;
         int wiersze = 0;
         int sheetNum = 0;
-        //WritableWorkbook workbook;
         String rozszerzenie = "xlsx";
         Double zmiennaHelp2;
 
+        ElectreIII taskElectreIII;
 
         public ExcelManaging() { }
 
-
-        public Double[,] ReadTableFromFileToMatrix(string path, out Double[,] tabelaMatrix, ref int numberOfAlternatives, ref int numberOfCriterias)
-        {
-
-            try
-            {
+        public Double[,] ReadTableFromFileToMatrix(string path, out Double[,] tabelaMatrix, ref int numberOfAlternatives, ref int numberOfCriterias, ref int processValue, ref int processValueMax, IProgress<int> progress) {
+            try {
                 Excel.Application exApp = new Excel.Application();
                 Excel.Workbook exWorkbook = exApp.Workbooks.Open(@"" + path);
                 Excel._Worksheet exWorksheet = exWorkbook.Sheets[1];
@@ -41,6 +34,9 @@ namespace ElectreAp
                 int colCount = exRange.Columns.Count;
                 numberOfAlternatives = rowCount - 10;
                 numberOfCriterias = colCount - 1;
+
+                processValueMax = rowCount * colCount;
+                processValue += 9;
 
                 tabelaMatrix = new Double[rowCount - 1, colCount - 1];
                 string zzz = "";
@@ -53,8 +49,13 @@ namespace ElectreAp
                         {
                             zzz = exRange.Cells[i, j].Value2.ToString();
                             tabelaMatrix[i - 2, j - 2] = Double.Parse(zzz);
+                            
+                            processValue++;
+                            ReportActionProgress(progress, ref processValue, ref processValueMax);
                         }
                     }
+                    processValue++;
+                    ReportActionProgress(progress, ref processValue, ref processValueMax);
                 }
                 //cleanup
                 GC.Collect();
@@ -90,10 +91,15 @@ namespace ElectreAp
         }
 
 
-        private void NewSheet(string nameSheet) {
+        private void ActivateSheet(string nameSheet) {
             exWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)exWorkBook.ActiveSheet;
             exWorksheet = exWorkBook.Worksheets[1];
             exWorksheet.Name = nameSheet;
+        }
+
+        private void AddNewSheet() {
+            x = 0;
+            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
         }
 
 
@@ -252,8 +258,6 @@ namespace ElectreAp
                         break;
                 }
                 WriteCell(x, j, symbol);
-
-                //WriteCell(x, j, rankingMatrix[i - 1, j - 1].ToString()); 
             }
 
         }
@@ -279,7 +283,7 @@ namespace ElectreAp
 
         private void AddSetToSheet(List<Double[,]> listOfMatrixes, string setName)
         {
-            NewSheet(setName);
+            ActivateSheet(setName);
             iterat = 1;
             foreach (Double[,] item in listOfMatrixes) {
                 AddMatrixToSheet(item, setName+" "+ iterat, OtherMatrixFunc);
@@ -289,7 +293,7 @@ namespace ElectreAp
 
 
         private void AddRatingToSheet(List<Double[,]> listOfRatings, string ratingName) {
-            NewSheet(ratingName);
+            ActivateSheet(ratingName);
             iterat = 1;
             foreach (Double[,] item in listOfRatings) {
                 AddMatrixToSheet(item, ratingName + " " + iterat, RatingMatrixFunc);
@@ -298,59 +302,94 @@ namespace ElectreAp
         }
 
 
-        public void SaveTableToExelFile(string path, Double[,] matrix) {
+        public void SaveTableToExelFile(string path, Double[,] matrix, ref int processValue, ref int processValueMax, IProgress<int> progress) {
             NewExcelFile();
-            NewSheet("Basic Table");
+            ActivateSheet("Basic Table");
             AddBasicMatrixToSheet(matrix);
             CloseAndSaveFile(path);
         }
 
+        private void ReportActionProgress(IProgress<int> progress, ref int processValue, ref int processValueMax) { progress.Report((processValue * 100 / processValueMax)); }
 
-        public void SaveDataToExelFile(string path, Double[,] basicMatrix, Double[,] concordanceMatrix, Double[,] credibilityMatrix, List<Double[,]> listaZbiorowZgodnosci, List<Double[,]> listaZbiorowNieZgodnosci, List<Double[,]> listaZbiorowPrzewyzszania ,List<Double[,]> listaZstepMacierzyOcen, List<Double[,]> listaWstepMacierzyOcen, Double[,] finalRanking, Double[,] topDownRanking, Double[,] upwardRanking, Double[,] finalRankingMatrix) {
-            NewExcelFile();
-            NewSheet("Basic Table");
-            AddBasicMatrixToSheet(basicMatrix);
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            NewSheet("Concordance Matrix");
-            AddMatrixToSheet(concordanceMatrix, "Concordane Matrix", OtherMatrixFunc);
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            NewSheet("Credibility Matrix");
-            AddMatrixToSheet(credibilityMatrix, "Credibility Matrix", OtherMatrixFunc);
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            AddSetToSheet(listaZbiorowZgodnosci, "Concordance Set");
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            AddSetToSheet(listaZbiorowNieZgodnosci, "Discordance Set");
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            AddSetToSheet(listaZbiorowPrzewyzszania, "Outranking Set");
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            AddRatingToSheet(listaZstepMacierzyOcen, "TopDown Rating");
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            AddRatingToSheet(listaWstepMacierzyOcen, "Upward Rating");
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            NewSheet("Final Ranking");
-            AddMatrixToSheet(finalRanking, "Final Ranking", RankingPositionFunc);
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            NewSheet("TopDown Ranking");
-            AddMatrixToSheet(topDownRanking, "TopDown Ranking", RankingPositionFunc);
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            NewSheet("Upward Ranking");
-            AddMatrixToSheet(upwardRanking, "Upward Ranking", RankingPositionFunc);
-            x = 0;
-            exWorksheet = exWorkBook.Sheets.Add(Type.Missing, Type.Missing, 1, Type.Missing);
-            NewSheet("Final Ranking Matrix");
-            AddMatrixToSheet(finalRankingMatrix, "Final Ranking Matrix", RankingMatrixFunc);
+        public void SaveDataToExelFile(string path, Double[,] basicMatrix, Double[,] concordanceMatrix, Double[,] credibilityMatrix, List<Double[,]> listaZbiorowZgodnosci, List<Double[,]> listaZbiorowNieZgodnosci, List<Double[,]> listaZbiorowPrzewyzszania ,List<Double[,]> listaZstepMacierzyOcen, List<Double[,]> listaWstepMacierzyOcen, Double[,] finalRanking, Double[,] topDownRanking, Double[,] upwardRanking, Double[,] finalRankingMatrix, ElectreIII taskElectreIII, ref int processValue, ref int processValueMax, IProgress<int> progress) {
 
-            CloseAndSaveFile(path);
+            try
+            {
+                NewExcelFile();
+                ActivateSheet("Basic Table");
+                AddBasicMatrixToSheet(basicMatrix);
+                processValue++;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+                if (taskElectreIII.CboxConcordanceMatrixChecked) {
+                    AddNewSheet();
+                    ActivateSheet("Concordance Matrix");
+                    AddMatrixToSheet(concordanceMatrix, "Concordane Matrix", OtherMatrixFunc);
+                }
+                processValue++;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+
+                if (taskElectreIII.CboxCredibilityMatrixChecked) {
+                    AddNewSheet();
+                    ActivateSheet("Credibility Matrix");
+                    AddMatrixToSheet(credibilityMatrix, "Credibility Matrix", OtherMatrixFunc);
+                }
+                processValue++;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+                if (taskElectreIII.CboxConcordanceSetsChecked) {
+                    AddNewSheet();
+                    AddSetToSheet(listaZbiorowZgodnosci, "Concordance Set");
+                }
+                processValue++;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+                if (taskElectreIII.CboxNonConcordanceSetsChecked) {
+                    AddNewSheet();
+                    AddSetToSheet(listaZbiorowNieZgodnosci, "Discordance Set");
+                }
+                processValue++;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+                if (taskElectreIII.CboxOutrankingSetsChecked) {
+                    AddNewSheet();
+                    AddSetToSheet(listaZbiorowPrzewyzszania, "Outranking Set");
+                }
+                processValue++;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+                if (taskElectreIII.CboxTopDownDistillationChecked) {
+                    AddNewSheet();
+                    AddRatingToSheet(listaZstepMacierzyOcen, "TopDown Rating");
+                }
+                processValue++;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+                if (taskElectreIII.CboxUpwardDistillationChecked) {
+                    AddNewSheet();
+                    AddRatingToSheet(listaWstepMacierzyOcen, "Upward Rating");
+                }
+                processValue++;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+                if (taskElectreIII.CboxRankingsChecked) {
+                    AddNewSheet();
+                    ActivateSheet("Final Ranking");
+                    AddMatrixToSheet(finalRanking, "Final Ranking", RankingPositionFunc);
+
+                    AddNewSheet();
+                    ActivateSheet("TopDown Ranking");
+                    AddMatrixToSheet(topDownRanking, "TopDown Ranking", RankingPositionFunc);
+
+                    AddNewSheet();
+                    ActivateSheet("Upward Ranking");
+                    AddMatrixToSheet(upwardRanking, "Upward Ranking", RankingPositionFunc);
+
+                    AddNewSheet();
+                    ActivateSheet("Final Ranking Matrix");
+                    AddMatrixToSheet(finalRankingMatrix, "Final Ranking Matrix", RankingMatrixFunc);
+                }
+                processValue += 4;
+                ReportActionProgress(progress, ref processValue, ref processValueMax);
+                CloseAndSaveFile(path);
+
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }

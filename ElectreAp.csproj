@@ -39,8 +39,11 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,10 +52,17 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ElectreIII.cs" />
     <Compile Include="ExcelManaging.cs" />
+    <Compile Include="ProcessingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProcessingForm.Designer.cs">
+      <DependentUpon>ProcessingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +88,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Electre.resx">
       <DependentUpon>Electre.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcessingForm.resx">
+      <DependentUpon>ProcessingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StartingForm.resx">
       <DependentUpon>StartingForm.cs</DependentUpon>

@@ -21,7 +21,6 @@ namespace ElectreAp
         }*/
 
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
             this.button_CreateTab = new System.Windows.Forms.Button();
             this.button_ReadTab = new System.Windows.Forms.Button();
             this.button_Calculate = new System.Windows.Forms.Button();
@@ -69,8 +68,10 @@ namespace ElectreAp
             this.tabControl_LeaderBoards = new System.Windows.Forms.TabControl();
             this.dataGridView_Matrix = new System.Windows.Forms.DataGridView();
             this.listBox_CriteriaToChose = new System.Windows.Forms.ListBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.flowLayoutPanel_MathImg = new System.Windows.Forms.FlowLayoutPanel();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel_ChosingOptionsWithCheckBoxes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Matrix)).BeginInit();
             this.SuspendLayout();
@@ -80,7 +81,7 @@ namespace ElectreAp
             this.button_CreateTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
             this.button_CreateTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_CreateTab.ForeColor = System.Drawing.SystemColors.Window;
-            this.button_CreateTab.Location = new System.Drawing.Point(240, 16);
+            this.button_CreateTab.Location = new System.Drawing.Point(233, 16);
             this.button_CreateTab.Name = "button_CreateTab";
             this.button_CreateTab.Size = new System.Drawing.Size(105, 35);
             this.button_CreateTab.TabIndex = 0;
@@ -93,7 +94,7 @@ namespace ElectreAp
             this.button_ReadTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
             this.button_ReadTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_ReadTab.ForeColor = System.Drawing.SystemColors.Window;
-            this.button_ReadTab.Location = new System.Drawing.Point(352, 16);
+            this.button_ReadTab.Location = new System.Drawing.Point(345, 16);
             this.button_ReadTab.Name = "button_ReadTab";
             this.button_ReadTab.Size = new System.Drawing.Size(111, 35);
             this.button_ReadTab.TabIndex = 1;
@@ -106,7 +107,7 @@ namespace ElectreAp
             this.button_Calculate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
             this.button_Calculate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_Calculate.ForeColor = System.Drawing.SystemColors.Window;
-            this.button_Calculate.Location = new System.Drawing.Point(352, 56);
+            this.button_Calculate.Location = new System.Drawing.Point(345, 56);
             this.button_Calculate.Name = "button_Calculate";
             this.button_Calculate.Size = new System.Drawing.Size(111, 35);
             this.button_Calculate.TabIndex = 2;
@@ -119,7 +120,7 @@ namespace ElectreAp
             this.button_SaveTab.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
             this.button_SaveTab.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_SaveTab.ForeColor = System.Drawing.SystemColors.Window;
-            this.button_SaveTab.Location = new System.Drawing.Point(240, 56);
+            this.button_SaveTab.Location = new System.Drawing.Point(233, 56);
             this.button_SaveTab.Name = "button_SaveTab";
             this.button_SaveTab.Size = new System.Drawing.Size(105, 35);
             this.button_SaveTab.TabIndex = 3;
@@ -132,9 +133,9 @@ namespace ElectreAp
             this.button_SaveData.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(97)))), ((int)(((byte)(97)))));
             this.button_SaveData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button_SaveData.ForeColor = System.Drawing.SystemColors.Window;
-            this.button_SaveData.Location = new System.Drawing.Point(308, 287);
+            this.button_SaveData.Location = new System.Drawing.Point(298, 287);
             this.button_SaveData.Name = "button_SaveData";
-            this.button_SaveData.Size = new System.Drawing.Size(149, 35);
+            this.button_SaveData.Size = new System.Drawing.Size(158, 35);
             this.button_SaveData.TabIndex = 4;
             this.button_SaveData.Text = "Zapisz Dane";
             this.button_SaveData.UseVisualStyleBackColor = false;
@@ -142,7 +143,7 @@ namespace ElectreAp
             // 
             // textBox_Alternatives
             // 
-            this.textBox_Alternatives.Location = new System.Drawing.Point(67, 49);
+            this.textBox_Alternatives.Location = new System.Drawing.Point(61, 52);
             this.textBox_Alternatives.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_Alternatives.Multiline = true;
             this.textBox_Alternatives.Name = "textBox_Alternatives";
@@ -152,7 +153,7 @@ namespace ElectreAp
             // 
             // textBox_Beta
             // 
-            this.textBox_Beta.Location = new System.Drawing.Point(354, 177);
+            this.textBox_Beta.Location = new System.Drawing.Point(353, 192);
             this.textBox_Beta.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_Beta.Multiline = true;
             this.textBox_Beta.Name = "textBox_Beta";
@@ -162,7 +163,7 @@ namespace ElectreAp
             // 
             // textBox_Alfa
             // 
-            this.textBox_Alfa.Location = new System.Drawing.Point(354, 135);
+            this.textBox_Alfa.Location = new System.Drawing.Point(353, 154);
             this.textBox_Alfa.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_Alfa.Multiline = true;
             this.textBox_Alfa.Name = "textBox_Alfa";
@@ -172,7 +173,7 @@ namespace ElectreAp
             // 
             // textBox_ProgBetaV
             // 
-            this.textBox_ProgBetaV.Location = new System.Drawing.Point(160, 261);
+            this.textBox_ProgBetaV.Location = new System.Drawing.Point(154, 261);
             this.textBox_ProgBetaV.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_ProgBetaV.Multiline = true;
             this.textBox_ProgBetaV.Name = "textBox_ProgBetaV";
@@ -182,7 +183,7 @@ namespace ElectreAp
             // 
             // textBox_ProgBetaP
             // 
-            this.textBox_ProgBetaP.Location = new System.Drawing.Point(160, 214);
+            this.textBox_ProgBetaP.Location = new System.Drawing.Point(154, 214);
             this.textBox_ProgBetaP.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_ProgBetaP.Multiline = true;
             this.textBox_ProgBetaP.Name = "textBox_ProgBetaP";
@@ -192,7 +193,7 @@ namespace ElectreAp
             // 
             // textBox_ProgBetaQ
             // 
-            this.textBox_ProgBetaQ.Location = new System.Drawing.Point(160, 137);
+            this.textBox_ProgBetaQ.Location = new System.Drawing.Point(154, 137);
             this.textBox_ProgBetaQ.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_ProgBetaQ.Multiline = true;
             this.textBox_ProgBetaQ.Name = "textBox_ProgBetaQ";
@@ -202,7 +203,7 @@ namespace ElectreAp
             // 
             // textBox_ProgAlfaV
             // 
-            this.textBox_ProgAlfaV.Location = new System.Drawing.Point(67, 261);
+            this.textBox_ProgAlfaV.Location = new System.Drawing.Point(61, 261);
             this.textBox_ProgAlfaV.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_ProgAlfaV.Multiline = true;
             this.textBox_ProgAlfaV.Name = "textBox_ProgAlfaV";
@@ -212,7 +213,7 @@ namespace ElectreAp
             // 
             // textBox_ProgAlfaP
             // 
-            this.textBox_ProgAlfaP.Location = new System.Drawing.Point(67, 214);
+            this.textBox_ProgAlfaP.Location = new System.Drawing.Point(61, 214);
             this.textBox_ProgAlfaP.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_ProgAlfaP.Multiline = true;
             this.textBox_ProgAlfaP.Name = "textBox_ProgAlfaP";
@@ -222,7 +223,7 @@ namespace ElectreAp
             // 
             // textBox_ProgAlfaQ
             // 
-            this.textBox_ProgAlfaQ.Location = new System.Drawing.Point(67, 137);
+            this.textBox_ProgAlfaQ.Location = new System.Drawing.Point(61, 137);
             this.textBox_ProgAlfaQ.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_ProgAlfaQ.Multiline = true;
             this.textBox_ProgAlfaQ.Name = "textBox_ProgAlfaQ";
@@ -232,7 +233,7 @@ namespace ElectreAp
             // 
             // textBox_Criteria
             // 
-            this.textBox_Criteria.Location = new System.Drawing.Point(161, 49);
+            this.textBox_Criteria.Location = new System.Drawing.Point(155, 52);
             this.textBox_Criteria.MinimumSize = new System.Drawing.Size(45, 24);
             this.textBox_Criteria.Multiline = true;
             this.textBox_Criteria.Name = "textBox_Criteria";
@@ -244,7 +245,7 @@ namespace ElectreAp
             // 
             this.label_Alternatives.AutoSize = true;
             this.label_Alternatives.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Alternatives.Location = new System.Drawing.Point(51, 21);
+            this.label_Alternatives.Location = new System.Drawing.Point(45, 21);
             this.label_Alternatives.Name = "label_Alternatives";
             this.label_Alternatives.Size = new System.Drawing.Size(80, 17);
             this.label_Alternatives.TabIndex = 16;
@@ -254,7 +255,7 @@ namespace ElectreAp
             // 
             this.label_Criteria.AutoSize = true;
             this.label_Criteria.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Criteria.Location = new System.Drawing.Point(157, 21);
+            this.label_Criteria.Location = new System.Drawing.Point(151, 21);
             this.label_Criteria.Name = "label_Criteria";
             this.label_Criteria.Size = new System.Drawing.Size(57, 17);
             this.label_Criteria.TabIndex = 17;
@@ -264,7 +265,7 @@ namespace ElectreAp
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label3.Location = new System.Drawing.Point(20, 102);
+            this.label3.Location = new System.Drawing.Point(14, 102);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(205, 15);
             this.label3.TabIndex = 18;
@@ -274,7 +275,7 @@ namespace ElectreAp
             // 
             this.label_Alfa1.AutoSize = true;
             this.label_Alfa1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Alfa1.Location = new System.Drawing.Point(37, 139);
+            this.label_Alfa1.Location = new System.Drawing.Point(31, 139);
             this.label_Alfa1.Name = "label_Alfa1";
             this.label_Alfa1.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa1.TabIndex = 19;
@@ -284,7 +285,7 @@ namespace ElectreAp
             // 
             this.label_Alfa2.AutoSize = true;
             this.label_Alfa2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Alfa2.Location = new System.Drawing.Point(35, 217);
+            this.label_Alfa2.Location = new System.Drawing.Point(29, 217);
             this.label_Alfa2.Name = "label_Alfa2";
             this.label_Alfa2.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa2.TabIndex = 20;
@@ -294,7 +295,7 @@ namespace ElectreAp
             // 
             this.label_Alfa3.AutoSize = true;
             this.label_Alfa3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Alfa3.Location = new System.Drawing.Point(37, 266);
+            this.label_Alfa3.Location = new System.Drawing.Point(31, 266);
             this.label_Alfa3.Name = "label_Alfa3";
             this.label_Alfa3.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa3.TabIndex = 21;
@@ -304,7 +305,7 @@ namespace ElectreAp
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label7.Location = new System.Drawing.Point(305, 102);
+            this.label7.Location = new System.Drawing.Point(308, 125);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(132, 15);
             this.label7.TabIndex = 22;
@@ -314,7 +315,7 @@ namespace ElectreAp
             // 
             this.label_Beta1.AutoSize = true;
             this.label_Beta1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Beta1.Location = new System.Drawing.Point(132, 139);
+            this.label_Beta1.Location = new System.Drawing.Point(126, 139);
             this.label_Beta1.Name = "label_Beta1";
             this.label_Beta1.Size = new System.Drawing.Size(16, 18);
             this.label_Beta1.TabIndex = 24;
@@ -324,7 +325,7 @@ namespace ElectreAp
             // 
             this.label_Beta2.AutoSize = true;
             this.label_Beta2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Beta2.Location = new System.Drawing.Point(132, 217);
+            this.label_Beta2.Location = new System.Drawing.Point(126, 217);
             this.label_Beta2.Name = "label_Beta2";
             this.label_Beta2.Size = new System.Drawing.Size(16, 18);
             this.label_Beta2.TabIndex = 25;
@@ -334,7 +335,7 @@ namespace ElectreAp
             // 
             this.label_Beta3.AutoSize = true;
             this.label_Beta3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Beta3.Location = new System.Drawing.Point(132, 266);
+            this.label_Beta3.Location = new System.Drawing.Point(126, 266);
             this.label_Beta3.Name = "label_Beta3";
             this.label_Beta3.Size = new System.Drawing.Size(16, 18);
             this.label_Beta3.TabIndex = 26;
@@ -344,7 +345,7 @@ namespace ElectreAp
             // 
             this.label_Alfa4.AutoSize = true;
             this.label_Alfa4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Alfa4.Location = new System.Drawing.Point(328, 137);
+            this.label_Alfa4.Location = new System.Drawing.Point(327, 156);
             this.label_Alfa4.Name = "label_Alfa4";
             this.label_Alfa4.Size = new System.Drawing.Size(17, 18);
             this.label_Alfa4.TabIndex = 28;
@@ -354,7 +355,7 @@ namespace ElectreAp
             // 
             this.label_Beta4.AutoSize = true;
             this.label_Beta4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_Beta4.Location = new System.Drawing.Point(328, 182);
+            this.label_Beta4.Location = new System.Drawing.Point(327, 197);
             this.label_Beta4.Name = "label_Beta4";
             this.label_Beta4.Size = new System.Drawing.Size(16, 18);
             this.label_Beta4.TabIndex = 29;
@@ -364,7 +365,7 @@ namespace ElectreAp
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label11.Location = new System.Drawing.Point(317, 218);
+            this.label11.Location = new System.Drawing.Point(317, 226);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(116, 15);
             this.label11.TabIndex = 30;
@@ -372,7 +373,7 @@ namespace ElectreAp
             // 
             // textBox_DecimalPlaces
             // 
-            this.textBox_DecimalPlaces.Location = new System.Drawing.Point(354, 249);
+            this.textBox_DecimalPlaces.Location = new System.Drawing.Point(353, 256);
             this.textBox_DecimalPlaces.MinimumSize = new System.Drawing.Size(45, 25);
             this.textBox_DecimalPlaces.Multiline = true;
             this.textBox_DecimalPlaces.Name = "textBox_DecimalPlaces";
@@ -396,7 +397,7 @@ namespace ElectreAp
             this.panel_ChosingOptionsWithCheckBoxes.Controls.Add(this.label_ChosingOptionsWithCheckBoxes);
             this.panel_ChosingOptionsWithCheckBoxes.Location = new System.Drawing.Point(474, 14);
             this.panel_ChosingOptionsWithCheckBoxes.Name = "panel_ChosingOptionsWithCheckBoxes";
-            this.panel_ChosingOptionsWithCheckBoxes.Size = new System.Drawing.Size(240, 309);
+            this.panel_ChosingOptionsWithCheckBoxes.Size = new System.Drawing.Size(240, 314);
             this.panel_ChosingOptionsWithCheckBoxes.TabIndex = 32;
             // 
             // checkBox_TopDownDistillation
@@ -545,7 +546,7 @@ namespace ElectreAp
             // 
             this.checkBox_TurnOffVeto.AutoSize = true;
             this.checkBox_TurnOffVeto.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox_TurnOffVeto.Location = new System.Drawing.Point(38, 306);
+            this.checkBox_TurnOffVeto.Location = new System.Drawing.Point(32, 306);
             this.checkBox_TurnOffVeto.Name = "checkBox_TurnOffVeto";
             this.checkBox_TurnOffVeto.Size = new System.Drawing.Size(184, 17);
             this.checkBox_TurnOffVeto.TabIndex = 33;
@@ -557,7 +558,7 @@ namespace ElectreAp
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label4.Location = new System.Drawing.Point(35, 179);
+            this.label4.Location = new System.Drawing.Point(29, 179);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(178, 15);
             this.label4.TabIndex = 34;
@@ -565,7 +566,7 @@ namespace ElectreAp
             // 
             // tabControl_LeaderBoards
             // 
-            this.tabControl_LeaderBoards.Location = new System.Drawing.Point(23, 343);
+            this.tabControl_LeaderBoards.Location = new System.Drawing.Point(23, 334);
             this.tabControl_LeaderBoards.Name = "tabControl_LeaderBoards";
             this.tabControl_LeaderBoards.SelectedIndex = 0;
             this.tabControl_LeaderBoards.Size = new System.Drawing.Size(691, 352);
@@ -576,41 +577,60 @@ namespace ElectreAp
             this.dataGridView_Matrix.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Matrix.Location = new System.Drawing.Point(720, 16);
             this.dataGridView_Matrix.Name = "dataGridView_Matrix";
-            this.dataGridView_Matrix.Size = new System.Drawing.Size(507, 321);
+            this.dataGridView_Matrix.Size = new System.Drawing.Size(507, 307);
             this.dataGridView_Matrix.TabIndex = 38;
             this.dataGridView_Matrix.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_Matrix_CellEndEdit);
             // 
             // listBox_CriteriaToChose
             // 
             this.listBox_CriteriaToChose.FormattingEnabled = true;
-            this.listBox_CriteriaToChose.Location = new System.Drawing.Point(240, 106);
+            this.listBox_CriteriaToChose.Location = new System.Drawing.Point(233, 106);
             this.listBox_CriteriaToChose.Name = "listBox_CriteriaToChose";
-            this.listBox_CriteriaToChose.Size = new System.Drawing.Size(48, 212);
+            this.listBox_CriteriaToChose.Size = new System.Drawing.Size(54, 212);
             this.listBox_CriteriaToChose.TabIndex = 39;
             this.listBox_CriteriaToChose.SelectedIndexChanged += new System.EventHandler(this.listBox_CriteriaToChose_SelectedIndexChanged);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
             // flowLayoutPanel_MathImg
             // 
-            this.flowLayoutPanel_MathImg.Location = new System.Drawing.Point(720, 343);
+            this.flowLayoutPanel_MathImg.AutoScroll = true;
+            this.flowLayoutPanel_MathImg.BackColor = System.Drawing.Color.White;
+            this.flowLayoutPanel_MathImg.Location = new System.Drawing.Point(720, 334);
             this.flowLayoutPanel_MathImg.Name = "flowLayoutPanel_MathImg";
             this.flowLayoutPanel_MathImg.Size = new System.Drawing.Size(507, 352);
             this.flowLayoutPanel_MathImg.TabIndex = 41;
-            this.flowLayoutPanel_MathImg.BackColor = System.Drawing.Color.White;
-            this.flowLayoutPanel_MathImg.AutoScroll = true;
-            this.flowLayoutPanel_MathImg.HorizontalScroll.Visible = true;
-            this.flowLayoutPanel_MathImg.HorizontalScroll.Enabled = true;
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(298, 106);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(149, 12);
+            this.progressBar1.TabIndex = 42;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label1.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label1.Location = new System.Drawing.Point(452, 104);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(15, 15);
+            this.label1.TabIndex = 43;
+            this.label1.Text = "?";
             // 
             // Electre
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1232, 698);
+            this.ClientSize = new System.Drawing.Size(1232, 695);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.flowLayoutPanel_MathImg);
             this.Controls.Add(this.listBox_CriteriaToChose);
             this.Controls.Add(this.dataGridView_Matrix);
@@ -711,8 +731,10 @@ namespace ElectreAp
 
         private DataGridView dataGridView_Matrix;
         private ListBox listBox_CriteriaToChose;
-        private ContextMenuStrip contextMenuStrip1;
         private System.ComponentModel.IContainer components;
         private FlowLayoutPanel flowLayoutPanel_MathImg;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private ProgressBar progressBar1;
+        private Label label1;
     }
 }
