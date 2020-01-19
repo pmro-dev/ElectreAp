@@ -252,18 +252,31 @@ namespace ElectreAp
         }
 
 
-        public async Task<DataTable> CreateDataTableBasedOnMatrixAsync(Double[,] matrix, int colAdd, int rowAdd) {
-       // public DataTable CreateDataTableBasedOnMatrix(Double[,] matrix, int colAdd, int rowAdd) {
-
+        protected DataTable CreateDataTab()
+        {
             DataTable dataTab = new DataTable();
 
-            for (int i = 0; i < columnNames.Count; i++) {
+            for (int i = 0; i < columnNames.Count; i++)
+            {
                 DataColumn column = new DataColumn();
                 column.ColumnName = columnNames[i];
                 dataTab.Columns.Add(column);
             }
 
-            int zmienna = 1;
+            return dataTab;
+        }
+
+        protected delegate void CreateDataTableBasedOnMatrixDelegate(int colAdd, int rowAdd, DataTable dataTab);
+
+        //public async Task<DataTable> CreateDataTableBasedOnMatrixAsync(Double[,] matrix, int colAdd, int rowAdd, CreateDataTableBasedOnMatrixDelegate algorithmDelegate) {
+        //protected DataTable CreateDataTableBasedOnMatrix(Double[,] matrix, int colAdd, int rowAdd, CreateDataTableBasedOnMatrixDelegate algorithmDelegate) {
+        protected DataTable CreateDataTableBasedOnMatrix(int colAdd, int rowAdd, CreateDataTableBasedOnMatrixDelegate algorithmDelegate) {
+
+            DataTable dataTab = CreateDataTab();
+
+            algorithmDelegate(colAdd, rowAdd, dataTab);
+
+/*            int zmienna = 1;
 
             for (int y = 0; y < matrix.GetLength(0) + rowAdd; y++) {
                 List<string> row = null;
@@ -295,7 +308,7 @@ namespace ElectreAp
                     }
                     dataTab.Rows.Add(row.ToArray<string>());
                 }
-            }
+            }*/
             return dataTab;
         }
 

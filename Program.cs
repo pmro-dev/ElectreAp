@@ -15,8 +15,8 @@ namespace ElectreAp
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new StartingForm());
-            Application.Run(new Electre());
+            Application.Run(new StartingForm());
+            //Application.Run(new Electre());
             
         }
     }

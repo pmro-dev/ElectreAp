@@ -39,23 +39,23 @@ namespace ElectreAp
             criteria = Int32.Parse(textBox_Criteria.Text);
             alternatives = Int32.Parse(textBox_Alternatives.Text);
 
-            Task task = new Task(() => CreateUserTab());
+            Task<DataTable> taskCreateUserTab = new Task<DataTable>( () => CreateUserTab());
             // await Task.Run(() => CreateTab());
-            task.Start();
+            taskCreateUserTab.Start();
 
-/*            await Task.Run(() => taskElectreIII.CreateBaseMatrix(alternatives, criteria));
-            await Task.Run(() => PrepareProperties(criteria, taskElectreIII.tabelaMatrix, 1, 0));*/
+            dataGridView_Matrix.DataSource = await taskCreateUserTab;
+            EstablishDataSourceAndBasicSettings();
 
-                dataGridView_Matrix.DataSource = await task;
+           // dataTableBasedOnMatrix = await taskCreateUserTab;
                // dataGridView_Matrix.DataSource = dataTableBasedOnMatrix;
-                dataGridView_Matrix.Columns[0].ReadOnly = true;
+/*                dataGridView_Matrix.Columns[0].ReadOnly = true;
                 dataGridView_Matrix.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(202, 202, 202);
                 dataGridView_Matrix.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                 dataGridView_Matrix.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
 
                 listBox_CriteriaToChose.Items.AddRange(taskElectreIII.ColumnNamesDoListy.ToArray());
                 listBox_CriteriaToChose.Font = new Font(listBox_CriteriaToChose.Font.Name, 10);
-            listBox_CriteriaToChose.HorizontalScrollbar = true;
+            listBox_CriteriaToChose.HorizontalScrollbar = true;*/
         }
 
 /*        private DataTable LoloAsync()
@@ -70,16 +70,23 @@ namespace ElectreAp
             return "Done";
         }*/
 
-        private async Task<Boolean> CreateUserTab()
+
+
+        private DataTable CreateUserTab()
         {
 
             taskElectreIII.CreateBaseMatrix(alternatives, criteria);
 
-            PreparePropertiesAsync(criteria, taskElectreIII.tabelaMatrix, 1, 0);
+            PreparePropertiesAsync(criteria, taskElectreIII.TabelaMatrix, 1, 0);
 
-            dataTableBasedOnMatrix = await taskElectreIII.CreateDataTableBasedOnMatrixAsync(matrix, colAdd, rowAdd);
+           // Task<DataTable> taskCreateDataTable = taskElectreIII.CreateDataTableAsync(1, 0);
+           // taskCreateDataTable.Start();
 
-            return true;
+            // dataTableBasedOnMatrix = await taskCreateDataTable;
+            //dataTableBasedOnMatrix = await taskElectreIII.CreateDataTableBasedOnMatrixAsync(matrix, colAdd, rowAdd, algorithmDelegate);
+
+            //return taskCreateDataTable;
+            return taskElectreIII.CreateDataTableAsync(1, 0);
 
             //dataGridView_Matrix.DataSource = await taskElectreIII.CreateDataTableBasedOnMatrixAsync(taskElectreIII.tabelaMatrix, 1, 0); //dataTableBasedOnMatrix;
             //Task<string> task = new Task<string>(cosik);
@@ -110,7 +117,7 @@ namespace ElectreAp
 
         private async Task EstablishDataSourceAndBasicSettings()
         {
-            dataGridView_Matrix.DataSource = dataTableBasedOnMatrix;
+           // dataGridView_Matrix.DataSource = dataTableBasedOnMatrix;
             dataGridView_Matrix.Columns[0].ReadOnly = true;
             dataGridView_Matrix.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(202, 202, 202);
             dataGridView_Matrix.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
@@ -136,12 +143,23 @@ namespace ElectreAp
 
             var progress = new Progress<int>(percent => { progressBar1.Value = percent; label1.Text = (percent + "%"); });
 
-            await Task.Run(() => ReadDataFromFileProcess(progress));
+            await Task.Run(() => { ReadDataFromFileProcess(progress); PreparePropertiesAsync(criteria, taskElectreIII.TabelaMatrix, 1, 0); taskElectreIII.CreateDataTableAsync(1, 0); });
+            //await ReadDataFromFileProcess(progress);
 
-/*            criteria = taskElectreIII.tabelaMatrix.GetLength(1);
-            alternatives = taskElectreIII.tabelaMatrix.GetLength(0);*/
-            await Task.Run( () => PreparePropertiesAsync(criteria, taskElectreIII.tabelaMatrix, 1, 0));
-            
+            /*            criteria = taskElectreIII.tabelaMatrix.GetLength(1);
+                        alternatives = taskElectreIII.tabelaMatrix.GetLength(0);*/
+            //  await Task.Run( () => PreparePropertiesAsync(criteria, taskElectreIII.tabelaMatrix, 1, 0));
+            // await PreparePropertiesAsync(criteria, taskElectreIII.TabelaMatrix, 1, 0);
+
+            //await Task.Run(() => taskElectreIII.CreateDataTableAsync(1, 0));
+
+            Task<DataTable> taskReadMatrixToDataTable = new Task<DataTable>(() => taskElectreIII.CreateDataTableAsync(1, 0));
+            // await Task.Run(() => CreateTab());
+            taskReadMatrixToDataTable.Start();
+
+            dataGridView_Matrix.DataSource = await taskReadMatrixToDataTable;
+            EstablishDataSourceAndBasicSettings();
+
             label1.Text = "\u2713";
 
             progressBar1.Value = 0;
@@ -280,7 +298,7 @@ namespace ElectreAp
             }
         }
 
-        private void ReadDataFromFileProcess(IProgress<int> progress) {
+        private async Task ReadDataFromFileProcess(IProgress<int> progress) {
             taskElectreIII.TabelaMatrix = exelManager.ReadTableFromFileToMatrix(dialogPath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias, ref processValue, ref processValueMax, progress);
             criteria = taskElectreIII.tabelaMatrix.GetLength(1);
             alternatives = taskElectreIII.tabelaMatrix.GetLength(0);

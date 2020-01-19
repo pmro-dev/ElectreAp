@@ -16,6 +16,57 @@ namespace ElectreAp
 
         public ElectreIII() {}
 
+        public DataTable CreateDataTableAsync(int colAdd, int rowAdd)
+        {
+            CreateDataTableBasedOnMatrixDelegate algorithmDelegate = AlgorithmForDelegate;
+
+            return CreateDataTableBasedOnMatrix(colAdd, rowAdd, algorithmDelegate);
+        }
+
+        protected void AlgorithmForDelegate(int colAdd, int rowAdd, DataTable dataTab)
+        {
+            int zmienna = 1;
+
+            for (int y = 0; y < TabelaMatrix.GetLength(0) + rowAdd; y++)
+            {
+                List<string> row = null;
+                if (y < 3 || y >= 9) { row = new List<string>(); }
+                if (row != null)
+                {
+                    for (int z = 0; z < TabelaMatrix.GetLength(1) + colAdd; z++)
+                    {
+                        if (z == 0)
+                        {
+                            if (y < 3)
+                            {
+                                switch (y)
+                                {
+                                    case 0:
+                                        row.Add("K");
+                                        break;
+                                    case 1:
+                                        row.Add("M");
+                                        break;
+                                    case 2:
+                                        row.Add("W");
+                                        break;
+                                }
+                            }
+                            else { row.Add("A" + zmienna); }
+                            if (y >= 3) { zmienna++; }
+                        }
+                        else
+                        {
+                            if (y < 3 || y >= 9)
+                            {
+                                row.Add(TabelaMatrix[y, z - colAdd].ToString());
+                            }
+                        }
+                    }
+                    dataTab.Rows.Add(row.ToArray<string>());
+                }
+            }
+        }
 
         public double CalculateSDeltaK(double deltaLast) {
             sDeltaK = beta - (alfa * deltaLast);
