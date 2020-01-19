@@ -93,6 +93,7 @@ namespace ElectreAp
         protected Double[,] matrixRownosciZbiorowPrzewyzszania;
         private Double[,] roboczyMatrixD;
         public Double[,] tabelaMatrix;
+
         public Double[,] TabelaMatrix { get { return tabelaMatrix; } set { tabelaMatrix = value; } }
 /*        public void TabelaMatrix_SetValue(int col, int row, double valueToSet) { tabelaMatrix[col, row] = valueToSet; }        
         public Double TabelaMatrix_GetValue(int col, int row) { return tabelaMatrix[col, row]; }*/
@@ -173,13 +174,6 @@ namespace ElectreAp
         public Boolean CboxRankingsChecked { get { return cboxRankingsChecked; } set { cboxRankingsChecked = value; } }
         #endregion
 
-        public void CreateMatrixBasedOnTable(){ }
-
-        public void CreateTableBasedOnMatrix()
-        {
-
-        }
-
         public void CreateMatrixForAlternativeData(int numberOfAlternatives, int numberOfCriterias)
         {
             tabelaAlternatyw = new Double[numberOfAlternatives, numberOfCriterias];
@@ -211,7 +205,7 @@ namespace ElectreAp
         }
 
 
-        public void CreateColumnNames(int numberOfCriterias, int colAdd) {
+        public async Task<string[]> CreateColumnNamesAsync(int numberOfCriterias, int colAdd) {
             
             columnNamesDoListy = new string[numberOfCriterias];
 
@@ -222,10 +216,12 @@ namespace ElectreAp
                     columnNamesDoListy[i - 1] = columnNames[i]; 
                 }
             }
+
+            return columnNamesDoListy;
         }
 
 
-        public void CreateBaseMatrix(int numberOfAlternatives, int numberOfCriterias) {
+        public async Task CreateBaseMatrix(int numberOfAlternatives, int numberOfCriterias) {
 
             tabelaMatrix = new Double[numberOfAlternatives + 9, numberOfCriterias];
 
@@ -236,11 +232,10 @@ namespace ElectreAp
             }
 
             Console.WriteLine("Utworzono matrix -> wierszy = " + tabelaMatrix.GetLength(0) + " kolumny = " + tabelaMatrix.GetLength(1));
-
         }
 
 
-        public void CreateListOfValueThresholds(int numberOfCriterias, ref Double[,] matrix) {
+        public async Task<double[,,]> CreateListOfValueThresholdsAsync(int numberOfCriterias, Double[,] matrix) {
 
             listaWartProgKryt = new Double[numberOfCriterias, 3, 2];
 
@@ -252,11 +247,14 @@ namespace ElectreAp
                 listaWartProgKryt[i, 1, 0] = matrix[4, i];
                 listaWartProgKryt[i, 2, 0] = matrix[5, i];
             }
+
+            return listaWartProgKryt;
         }
 
 
-        public DataTable CreateDataTableBasedOnMatrix(ref Double[,] matrix, int colAdd, int rowAdd) {
-            
+        public async Task<DataTable> CreateDataTableBasedOnMatrixAsync(Double[,] matrix, int colAdd, int rowAdd) {
+       // public DataTable CreateDataTableBasedOnMatrix(Double[,] matrix, int colAdd, int rowAdd) {
+
             DataTable dataTab = new DataTable();
 
             for (int i = 0; i < columnNames.Count; i++) {

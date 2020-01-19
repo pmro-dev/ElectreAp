@@ -69,7 +69,6 @@ namespace ElectreAp
             this.dataGridView_Matrix = new System.Windows.Forms.DataGridView();
             this.listBox_CriteriaToChose = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel_MathImg = new System.Windows.Forms.FlowLayoutPanel();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
             this.panel_ChosingOptionsWithCheckBoxes.SuspendLayout();
@@ -599,12 +598,6 @@ namespace ElectreAp
             this.flowLayoutPanel_MathImg.Size = new System.Drawing.Size(507, 352);
             this.flowLayoutPanel_MathImg.TabIndex = 41;
             // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
-            // 
             // progressBar1
             // 
             this.progressBar1.Location = new System.Drawing.Point(298, 106);
@@ -733,7 +726,6 @@ namespace ElectreAp
         private ListBox listBox_CriteriaToChose;
         private System.ComponentModel.IContainer components;
         private FlowLayoutPanel flowLayoutPanel_MathImg;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private ProgressBar progressBar1;
         private Label label1;
     }

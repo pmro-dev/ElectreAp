@@ -19,44 +19,106 @@ namespace ElectreAp
             textBox_Alfa.Text = taskElectreIII.Alfa.ToString();
             textBox_Beta.Text = taskElectreIII.Beta.ToString();
             textBox_DecimalPlaces.Text = taskElectreIII.MiejscPoPrzecinku.ToString();
-            
-            SavingSuccessfulDelegate successFulDelegate = new SavingSuccessfulDelegate(() => { MessageBox.Show("Saving operation got successful", "Information", MessageBoxButtons.OK) ;});
+
+            SavingSuccessfulDelegate successFulDelegate = new SavingSuccessfulDelegate(() => { MessageBox.Show("Saving operation got successful", "Information", MessageBoxButtons.OK); });
             SavingSuccessfulEvent += successFulDelegate;
             SavingFailedDelegate failedDelegate = new SavingFailedDelegate(() => { MessageBox.Show("Saving operation got failed! \n\nSomething gone wrong, check data and try again.\nIf something go wrong again contact with IT Specialist", "Information", MessageBoxButtons.OK); });
             SavingFailedEvent += failedDelegate;
-
-            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
-            backgroundWorker1.ProgressChanged += backgroundWorker1_ProgressChanged;
-            backgroundWorker1.WorkerReportsProgress = true;
-            backgroundWorker1.WorkerSupportsCancellation = true;
         }
 
         private void UserControl_Load(object sender, EventArgs e) { }
 
-        
-       static ElectreIII taskElectreIII = new ElectreIII();
+
+        static ElectreIII taskElectreIII = new ElectreIII();
         int alternatives = 0;
         int criteria = 0;
 
-        private void Button_CreateTab_Click(object sender, EventArgs e) {
+
+        private async void Button_CreateTab_Click(object sender, EventArgs e) {
 
             criteria = Int32.Parse(textBox_Criteria.Text);
             alternatives = Int32.Parse(textBox_Alternatives.Text);
-            taskElectreIII.CreateBaseMatrix(alternatives, criteria);
-            PrepareProperties(criteria, ref taskElectreIII.tabelaMatrix, 1, 0);
+
+            Task task = new Task(() => CreateUserTab());
+            // await Task.Run(() => CreateTab());
+            task.Start();
+
+/*            await Task.Run(() => taskElectreIII.CreateBaseMatrix(alternatives, criteria));
+            await Task.Run(() => PrepareProperties(criteria, taskElectreIII.tabelaMatrix, 1, 0));*/
+
+                dataGridView_Matrix.DataSource = await task;
+               // dataGridView_Matrix.DataSource = dataTableBasedOnMatrix;
+                dataGridView_Matrix.Columns[0].ReadOnly = true;
+                dataGridView_Matrix.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(202, 202, 202);
+                dataGridView_Matrix.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+                dataGridView_Matrix.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+
+                listBox_CriteriaToChose.Items.AddRange(taskElectreIII.ColumnNamesDoListy.ToArray());
+                listBox_CriteriaToChose.Font = new Font(listBox_CriteriaToChose.Font.Name, 10);
+            listBox_CriteriaToChose.HorizontalScrollbar = true;
         }
 
+/*        private DataTable LoloAsync()
+        {
+            return taskElectreIII.CreateDataTableBasedOnMatrix(taskElectreIII.tabelaMatrix, 1, 0);
+        }*/
 
-        public void PrepareProperties(int criteria, ref Double[,] matrix, int colAdd, int rowAdd) {
 
-            taskElectreIII.CreateColumnNames(criteria, colAdd);
-            taskElectreIII.CreateListOfValueThresholds(criteria, ref matrix);
-            dataGridView_Matrix.DataSource = taskElectreIII.CreateDataTableBasedOnMatrix(ref matrix, colAdd, rowAdd);
+/*        private string cosik()
+        {
+            Thread.Sleep(3000);
+            return "Done";
+        }*/
+
+        private async Task<Boolean> CreateUserTab()
+        {
+
+            taskElectreIII.CreateBaseMatrix(alternatives, criteria);
+
+            PreparePropertiesAsync(criteria, taskElectreIII.tabelaMatrix, 1, 0);
+
+            dataTableBasedOnMatrix = await taskElectreIII.CreateDataTableBasedOnMatrixAsync(matrix, colAdd, rowAdd);
+
+            return true;
+
+            //dataGridView_Matrix.DataSource = await taskElectreIII.CreateDataTableBasedOnMatrixAsync(taskElectreIII.tabelaMatrix, 1, 0); //dataTableBasedOnMatrix;
+            //Task<string> task = new Task<string>(cosik);
+            //task.Start();
+            //label_Criteria.Text = await task;
+
+           // dataGridView_Matrix.DataSource = await task;
+/*            dataGridView_Matrix.Columns[0].ReadOnly = true;
+            dataGridView_Matrix.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(202, 202, 202);
+            dataGridView_Matrix.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            dataGridView_Matrix.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;*/
+
+            listBox_CriteriaToChose.Items.AddRange(taskElectreIII.ColumnNamesDoListy.ToArray());
+            listBox_CriteriaToChose.Font = new Font(listBox_CriteriaToChose.Font.Name, 10);
+            listBox_CriteriaToChose.HorizontalScrollbar = true;
+        }
+
+        DataTable dataTableBasedOnMatrix;
+
+        public async Task PreparePropertiesAsync(int criteria, Double[,] matrix, int colAdd, int rowAdd) {
+            //Task task = taskElectreIII.CreateColumnNames(criteria, colAdd);
+
+            taskElectreIII.ColumnNamesDoListy = await taskElectreIII.CreateColumnNamesAsync(criteria, colAdd);
+            taskElectreIII.ListaWartProgKryt = await taskElectreIII.CreateListOfValueThresholdsAsync(criteria, matrix);
+            //taskElectreIII.CreateListOfValueThresholds(criteria, matrix);
+            //dataTableBasedOnMatrix = await taskElectreIII.CreateDataTableBasedOnMatrixAsync(matrix, colAdd, rowAdd);
+        }
+
+        private async Task EstablishDataSourceAndBasicSettings()
+        {
+            dataGridView_Matrix.DataSource = dataTableBasedOnMatrix;
             dataGridView_Matrix.Columns[0].ReadOnly = true;
             dataGridView_Matrix.Columns[0].DefaultCellStyle.BackColor = Color.FromArgb(202, 202, 202);
             dataGridView_Matrix.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             dataGridView_Matrix.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            listBox_CriteriaToChose.Items.AddRange(taskElectreIII.ColumnNamesDoListy.ToArray());
+
+            listBox_CriteriaToChose.Items.AddRange(await Task.Run(() => taskElectreIII.ColumnNamesDoListy.ToArray()));
+
+            //listBox_CriteriaToChose.Items.AddRange(taskElectreIII.ColumnNamesDoListy.ToArray());
             listBox_CriteriaToChose.Font = new Font(listBox_CriteriaToChose.Font.Name, 10);
             listBox_CriteriaToChose.HorizontalScrollbar = true;
         }
@@ -76,9 +138,9 @@ namespace ElectreAp
 
             await Task.Run(() => ReadDataFromFileProcess(progress));
 
-            criteria = taskElectreIII.tabelaMatrix.GetLength(1);
-            alternatives = taskElectreIII.tabelaMatrix.GetLength(0);
-            PrepareProperties(criteria, ref taskElectreIII.tabelaMatrix, 1, 0);
+/*            criteria = taskElectreIII.tabelaMatrix.GetLength(1);
+            alternatives = taskElectreIII.tabelaMatrix.GetLength(0);*/
+            await Task.Run( () => PreparePropertiesAsync(criteria, taskElectreIII.tabelaMatrix, 1, 0));
             
             label1.Text = "\u2713";
 
@@ -220,12 +282,13 @@ namespace ElectreAp
 
         private void ReadDataFromFileProcess(IProgress<int> progress) {
             taskElectreIII.TabelaMatrix = exelManager.ReadTableFromFileToMatrix(dialogPath, out taskElectreIII.tabelaMatrix, ref taskElectreIII.numberOfAlternatives, ref taskElectreIII.numberOfCriterias, ref processValue, ref processValueMax, progress);
+            criteria = taskElectreIII.tabelaMatrix.GetLength(1);
+            alternatives = taskElectreIII.tabelaMatrix.GetLength(0);
         }
 
         private void SaveDataToFileProcess(IProgress<int> progress) {
             exelManager.SaveDataToExelFile(dialogPath + @"ElectreData.xlsx", taskElectreIII.TabelaMatrix, taskElectreIII.ConcordanceMatrix, taskElectreIII.CredibilityMatrix, taskElectreIII.ListaZbiorowZgodnosci, taskElectreIII.ListaZbiorowNieZgodnosci, taskElectreIII.ListaZbiorowPrzewyzszania, taskElectreIII.ListaZstepMacierzyOcen, taskElectreIII.ListaWstepMacierzyOcen, taskElectreIII.FinalRanking, taskElectreIII.TopDownRanking, taskElectreIII.UpwardRanking, taskElectreIII.FinalRankingMatrix, taskElectreIII, ref processValue, ref processValueMax, progress);
         }
-
 
         private async void Button_SaveData_Click(object sender, EventArgs e) {
 
@@ -583,42 +646,5 @@ namespace ElectreAp
 
         static int processValue = 0;
         static int processValueMax = 12;
-
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {  
-            if (backgroundWorker1.CancellationPending || processValue >= processValueMax) {
-                e.Cancel = true;
-            } else {
-                //exelManager.SaveDataToExelFile(dialogPath + @"ElectreData.xlsx", taskElectreIII.TabelaMatrix, taskElectreIII.ConcordanceMatrix, taskElectreIII.CredibilityMatrix, taskElectreIII.ListaZbiorowZgodnosci, taskElectreIII.ListaZbiorowNieZgodnosci, taskElectreIII.ListaZbiorowPrzewyzszania, taskElectreIII.ListaZstepMacierzyOcen, taskElectreIII.ListaWstepMacierzyOcen, taskElectreIII.FinalRanking, taskElectreIII.TopDownRanking, taskElectreIII.UpwardRanking, taskElectreIII.FinalRankingMatrix, taskElectreIII, backgroundWorker1, ref processValue, ref processValueMax);
-            }
-        }
-
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            progressBar1.Value = e.ProgressPercentage;
-        }
-
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                progressBar1.Value = 0;
-                label1.Text = "\u2713";
-                //processingForm.label_Information.Text = "Process was cancelled";
-            }
-            else if (e.Error != null)
-            {
-                progressBar1.Value = 0;
-                label1.Text = "X";
-                label1.ForeColor = Color.Red;
-                //processingForm.label_Information.Text = "There was an error running the process. The thread aborted";
-            }
-            else
-            {
-                progressBar1.Value = 0;
-                label1.Text = "\u2713";
-                //processingForm.label_Information.Text = "Process was completed";
-            }
-        }
     }
 }

@@ -14,9 +14,7 @@ namespace ElectreAp
     class ElectreIII : DataForAlgorithm, IAlgorithm, IElectreIII
     {
 
-        public ElectreIII() {
-
-        }
+        public ElectreIII() {}
 
 
         public double CalculateSDeltaK(double deltaLast) {
@@ -577,6 +575,7 @@ namespace ElectreAp
 
 
         string pathMathImg;
+
         public void DoCalculations() {
 
             DivideThresholdsToLists();
@@ -707,21 +706,36 @@ namespace ElectreAp
 
             for (int z = 0; z < numberOfCriterias; z++) {
                 listaKierunkow.Add(tabelaMatrix[0, z]);
+                listaModow.Add((Int32)(tabelaMatrix[1, z]));
+                // uzupełnianie listy Wag W -> pobieranie wartości z matrixa tabeli
+                listaWagW.Add(tabelaMatrix[2, z]);
+                // uzupełnianie listy Progu Q -> pobieranie wartości z matrixa tabeli
+                listaProguQA.Add(tabelaMatrix[3, z]);
+                // uzupełnianie listy Progu P -> pobieranie wartości z matrixa tabeli        
+                listaProguPA.Add(tabelaMatrix[4, z]);
+                // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
+                listaProguVA.Add(tabelaMatrix[5, z]);
+                // uzupełnianie listy Progu Q -> pobieranie wartości z matrixa tabeli        
+                listaProguQB.Add(tabelaMatrix[6, z]);
+                // uzupełnianie listy Progu P -> pobieranie wartości z matrixa tabeli        
+                listaProguPB.Add(tabelaMatrix[7, z]);
+                // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
+                listaProguVB.Add(tabelaMatrix[8, z]);
             }
 
             // ShowList(listaKierunkow, "K");
 
 
-            for (int z = 0; z < numberOfCriterias; z++) {
-                listaModow.Add((Int32)(tabelaMatrix[1, z]));
-            }
+/*            for (int z = 0; z < numberOfCriterias; z++) {
+                
+            }*/
 
             // ShowList(listaModow, "M");
 
             // uzupełnianie listy Wag W -> pobieranie wartości z matrixa tabeli
-            for (int z = 0; z < numberOfCriterias; z++) {
-                listaWagW.Add(tabelaMatrix[2, z]);
-            }
+/*            for (int z = 0; z < numberOfCriterias; z++) {
+                
+            }*/
 
             //ShowList(listaWagW, "W");
 
@@ -729,21 +743,21 @@ namespace ElectreAp
 
 
             // uzupełnianie listy Progu Q -> pobieranie wartości z matrixa tabeli        
-            for (int z = 0; z < numberOfCriterias; z++) {
+/*            for (int z = 0; z < numberOfCriterias; z++) {
                 listaProguQA.Add(tabelaMatrix[3, z]);
-            }
+            }*/
 
            // ShowList(listaProguQA, "QA");
 
             // uzupełnianie listy Progu P -> pobieranie wartości z matrixa tabeli        
-            for (int z = 0; z < numberOfCriterias; z++) {
+/*            for (int z = 0; z < numberOfCriterias; z++) {
                 listaProguPA.Add(tabelaMatrix[4, z]);
-            }
+            }*/
 
           //  ShowList(listaProguPA, "PA");
 
 
-            // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
+/*            // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
             for (int z = 0; z < numberOfCriterias; z++) {
                 listaProguVA.Add(tabelaMatrix[5, z]);
             }
@@ -769,15 +783,11 @@ namespace ElectreAp
             // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
             for (int z = 0; z < numberOfCriterias; z++) {
                 listaProguVB.Add(tabelaMatrix[8, z]);
-            }
+            }*/
 
            // ShowList(listaProguVB, "VB");
 
-            for (int z = 0; z < numberOfAlternatives; z++) {
-                listaNumerowZNazwOpcji.Add(z);
-                listaNumerowZNazwOpcjiOgolZstep.Add(z);
-                listaNumerowZNazwOpcjiOgolWstep.Add(z);
-            }
+
 
             topDownRanking = new double[2, numberOfAlternatives];
             upwardRanking = new double[2, numberOfAlternatives];
@@ -785,7 +795,25 @@ namespace ElectreAp
             punktacjaOpcji = new String[2, numberOfAlternatives];
             punktacjaOpcjiZmienna = new String[2, numberOfAlternatives];
 
-            for (int z = 0; z < numberOfAlternatives; z++) {
+            for (int z = 0; z < numberOfAlternatives; z++)
+            {
+                listaNumerowZNazwOpcji.Add(z);
+                listaNumerowZNazwOpcjiOgolZstep.Add(z);
+                listaNumerowZNazwOpcjiOgolWstep.Add(z);
+
+                topDownRanking[0, z] = (z + 1);
+                topDownRanking[1, z] = 0;
+                //finalRanking[0,z] = "A" + (z + 1);
+                finalRanking[0, z] = (double)(z + 1);
+                //finalRanking[1,z] = "0";
+                finalRanking[1, z] = 0.0;
+                upwardRanking[0, z] = (z + 1);
+                upwardRanking[1, z] = 0;
+                punktacjaOpcji[0, z] = "A" + (z + 1);
+                punktacjaOpcji[1, z] = "0";
+            }
+
+/*            for (int z = 0; z < numberOfAlternatives; z++) {
                 topDownRanking[0,z] = (z + 1);
                 topDownRanking[1,z] = 0;
                 //finalRanking[0,z] = "A" + (z + 1);
@@ -796,7 +824,7 @@ namespace ElectreAp
                 upwardRanking[1,z] = 0;
                 punktacjaOpcji[0,z] = "A" + (z + 1);
                 punktacjaOpcji[1,z] = "0";
-            }
+            }*/
         }
 
 
