@@ -450,6 +450,7 @@ namespace ElectreAp
                 }
                 listaAlternatyw.Add(listaKtoZKimPrzegral);
             }
+
             // wypisywanie powyższej listy
 /*            for (int i = 1; i < listaAlternatyw.Count + 1; i++) {
                 Console.WriteLine("A" + i + " ");
@@ -661,7 +662,9 @@ namespace ElectreAp
             //ShowTabOfDistillation(ref tabWstep);
             CreateSumTableOfDistillations(ref finalRankingMatrix);
             //ShowTabOfDistillation(ref finalRankingMatrix);
-            CreateFinalRanking(ref finalRankingMatrix);
+
+            // zakomentowalem wyywołanie poniższego bo FindMin wywala błąd
+            //CreateFinalRanking(ref finalRankingMatrix);
         }
 
 
@@ -726,7 +729,8 @@ namespace ElectreAp
             if (CboxRankingsChecked) {
                 PreparedDataTable(ref topDownRanking, "Rank. Zstep.");
                 PreparedDataTable(ref upwardRanking, "Rank. Wstep.");
-                PreparedDataTable(finalRankingMatrix, "Finalna Macierz Zależności", lul);
+                // zakomentowuje bo naprawiam blad z FindMini
+                //PreparedDataTable(finalRankingMatrix, "Finalna Macierz Zależności", lul);
             }
 
 /*            if (CboxRatingMatrixChecked)

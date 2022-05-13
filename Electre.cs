@@ -432,7 +432,10 @@ namespace ElectreAp
                 if (matchDouble.Success || matchInt.Success) {
                     Console.WriteLine("wartosc rowindex = "+ dataGridEvent.RowIndex+" + 9 = "+(dataGridEvent.RowIndex+9));
                     if (dataGridEvent.RowIndex > 2) {
-                        taskElectreIII.TabelaMatrix[columnIndex - 1, (dataGridEvent.RowIndex) + 6] = Double.Parse(valueOfSelectedCell);
+                        Console.WriteLine(taskElectreIII.TabelaMatrix.GetLength(0) + ","+ taskElectreIII.TabelaMatrix.GetLength(1));
+
+                        // STARE taskElectreIII.TabelaMatrix[columnIndex - 1, (dataGridEvent.RowIndex) + 6] = Double.Parse(valueOfSelectedCell);
+                        taskElectreIII.TabelaMatrix[(dataGridEvent.RowIndex) + 6, columnIndex - 1] = Double.Parse(valueOfSelectedCell);
                     }
                 }
                 else {
