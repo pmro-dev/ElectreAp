@@ -192,8 +192,9 @@ namespace ElectreAp
                     Console.Write(tabelaMatrix[y, z] + " ");
                 }
                 licznik++;
+                Console.WriteLine();
             }
-
+            Console.WriteLine();
             Console.WriteLine("Tabela Alternatyw");
 
             for (int y = 0; y < numberOfAlternatives; y++) {
@@ -233,16 +234,17 @@ namespace ElectreAp
 
             Console.WriteLine("Utworzono matrix -> wierszy = " + tabelaMatrix.GetLength(0) + " kolumny = " + tabelaMatrix.GetLength(1));
         }
-
-
-        public async Task<double[,,]> CreateListOfValueThresholdsAsync(int numberOfCriterias, Double[,] matrix) {
+        
+        public async Task<double[,,]> CreateListOfValueThresholdsAsync(int numberOfCriterias, Double[,] matrix)
+        {
 
             listaWartProgKryt = new Double[numberOfCriterias, 3, 2];
 
-            for (int i = 0; i < matrix.GetLength(1); i++) {
+            for (int i = 0; i < matrix.GetLength(1); i++)
+            {
                 listaWartProgKryt[i, 0, 1] = matrix[6, i];
                 listaWartProgKryt[i, 1, 1] = matrix[7, i];
-                listaWartProgKryt[i, 2, 1] = matrix[8, i];                
+                listaWartProgKryt[i, 2, 1] = matrix[8, i];
                 listaWartProgKryt[i, 0, 0] = matrix[3, i];
                 listaWartProgKryt[i, 1, 0] = matrix[4, i];
                 listaWartProgKryt[i, 2, 0] = matrix[5, i];
