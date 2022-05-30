@@ -661,7 +661,6 @@ namespace ElectreAp
                     // dopisane
                     Console.WriteLine($"wartość concordance[{k},{j}] = {concordanceMatrix[k, j]}");
                     Console.WriteLine();
-
                 }
             }
         }
@@ -669,10 +668,8 @@ namespace ElectreAp
 
         public void DoCalculations()
         {
-
             DivideThresholdsToLists();
             CreateMatrixForAlternativeData(numberOfAlternatives, numberOfCriterias);
-
             CreateConcordanceSets();
             CreateConcordanceMatrix();
             CreateDiscordanceSets();
@@ -682,17 +679,11 @@ namespace ElectreAp
             PrepareTopDownDistillation();
 
             // wykonaj destylacje zstępującą
-            //Console.WriteLine("WIERSZY W ROBOCZYMATRIXDOGOL" + roboczyMatrixDOgol.GetLength(0));
-            //Console.WriteLine("liczba numerow NAZWOPCJIOGOLZSTEP = " + listaNumerowZNazwOpcjiOgolZstep.Count);
             DoStepSecond(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolZstep);
-
             PrepareUpwardDistillation();
-
             // wykonaj destylację wstępującą
             DoStepSecond(roboczyMatrixDOgol, typDestylacji, listaNumerowZNazwOpcjiOgolWstep);
-
             PrepareUpwardScore();
-
             TestOperationDelegate testOperation;
             testOperation = GreaterOperation;
             CreateTabOfDistillation(ref tabZstep, ref topDownRanking, -1, 0, 1, testOperation);
@@ -702,7 +693,6 @@ namespace ElectreAp
             //ShowTabOfDistillation(ref tabWstep);
             CreateSumTableOfDistillations(ref finalRankingMatrix);
             //ShowTabOfDistillation(ref finalRankingMatrix);
-
             CreateFinalRanking(ref finalRankingMatrix);
         }
 
@@ -713,7 +703,6 @@ namespace ElectreAp
 
         public void PreparedImagesAndShowCollections()
         {
-
             string ps = AppDomain.CurrentDomain.BaseDirectory;
             listOfPathsImages.Add(ps + "\\MathImg\\wzor_mal_direct_prog.PNG");
             listOfPathsImages.Add(ps + "\\MathImg\\wzor_rosn_direct_prog.PNG");
@@ -779,14 +768,16 @@ namespace ElectreAp
             {
                 PreparedDataTable(ref topDownRanking, "Rank. Zstep.");
                 PreparedDataTable(ref upwardRanking, "Rank. Wstep.");
-                // zakomentowuje bo naprawiam blad z FindMini
                 PreparedDataTable(finalRankingMatrix, "Finalna Macierz Zależności", lul);
             }
 
             //if (CboxRatingMatrixChecked)
             //{ // , workingListOfNumbersOfOptions
-            //    foreach (Double[,] macierz in listaZstepMacierzyOcen) { PreparedDataTable(macierz, "Macierz Ocen " + listaZstepMacierzyOcen.Count + " (D.Z.)"); }
-            //    foreach (Double[,] macierz in listaWstepMacierzyOcen) { PreparedDataTable(macierz, "Macierz Ocen " + listaWstepMacierzyOcen.Count + " (D.W.)"); }
+            //    foreach (Double[,] macierz in listaZstepMacierzyOcen) { 
+            //        PreparedDataTable(ref macierz, "Macierz Ocen " + listaZstepMacierzyOcen.Count + " (D.Z.)"); 
+            //    }
+
+            //    foreach (Double[,] macierz in listaWstepMacierzyOcen) { PreparedDataTable(ref macierz, "Macierz Ocen " + listaWstepMacierzyOcen.Count + " (D.W.)"); }
             //}
         }
 
@@ -1634,16 +1625,6 @@ namespace ElectreAp
 
             dataTable.TableName = namePage;
             listOfDataTable.Add(dataTable);
-            /*            DataPage dataPage = new DataPage();
-                        dataPage.Data = dataTable;
-                        dataPage.PageName = namePage;
-                        listOfDataPage.Add(dataPage);*/
-            //dataTableDictionary.Add(namePage, dataTable);
-            //listOfDataTables.Add(dataTable);
-
-            /*            dataGridView.DataSource = dataTable;
-                        tabPage.Controls.Add(dataGridView);
-                        tabControl_LeaderBoards.TabPages.Add(tabPage);*/
         }
 
 
@@ -1678,7 +1659,6 @@ namespace ElectreAp
 
             for (int y = 0; y < matrixData.GetLength(0); y++)
             {
-                DataRow dataRow = dataTable.NewRow();
                 List<string> row; row = new List<string>();
 
                 for (int z = 0; z < matrixData.GetLength(1) + 1; z++)
@@ -1937,14 +1917,14 @@ namespace ElectreAp
         }
 
 
-        public void ShowTableDataOfDistillation(ref double[,] tabDestillation)
+        public void ShowTableDataOfDistillation(ref double[,] tabDistillation)
         {
             Console.WriteLine("TAB DEST");
-            for (int i = 0; i < tabDestillation.GetLength(0); i++)
+            for (int i = 0; i < tabDistillation.GetLength(0); i++)
             {
-                for (int j = 0; j < tabDestillation.GetLength(1); j++)
+                for (int j = 0; j < tabDistillation.GetLength(1); j++)
                 {
-                    Console.WriteLine(tabDestillation[i, j] + " ");
+                    Console.WriteLine(tabDistillation[i, j] + " ");
                 }
                 Console.WriteLine();
             }

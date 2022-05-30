@@ -9,19 +9,6 @@ namespace ElectreAp
 {
     class ExcelManaging
     {
-        int liczbaKryteriowWczytywanie = 0;
-        int liczbaAlternatywWczytywanie = 0;
-        String path = null;
-        String pomoc;
-
-        int kolumny = 0;
-        int wiersze = 0;
-        int sheetNum = 0;
-        String rozszerzenie = "xlsx";
-        Double zmiennaHelp2;
-
-        ElectreIII taskElectreIII;
-
         public ExcelManaging() { }
 
         public Double[,] ReadTableFromFileToMatrix(string path, out Double[,] tabelaMatrix, ref int numberOfAlternatives, ref int numberOfCriterias, ref int processValue, ref int processValueMax, IProgress<int> progress) {
@@ -74,7 +61,6 @@ namespace ElectreAp
                 Marshal.ReleaseComObject(exApp);
                 Console.WriteLine("END TESTOWANKO");
                 return tabelaMatrix;
-
             }
             catch (Exception ex) { Console.WriteLine(ex); MessageBox.Show("Niestety nie udało się wczytać pliku.", "Błąd pliku", MessageBoxButtons.OK); return tabelaMatrix = null; }
         }
