@@ -15,7 +15,7 @@ namespace ElectreAp
         // deklaracje zmiennych
         #region
         protected List<Double> listOfDirections = new List<Double>();
-        protected List<Int32> listaModow = new List<Int32>();
+        protected List<Int32> modsList = new List<Int32>();
         protected List<Double> listaWagW = new List<Double>();
         protected List<Double> listaProguQB = new List<Double>();
         protected List<Double> listaProguPB = new List<Double>();

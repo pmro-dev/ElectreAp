@@ -142,7 +142,7 @@ namespace ElectreAp
             {
                 // dopisane
                 //Console.WriteLine($"### Kierunek -> {listOfDirections[columnAndCriteriaIterator]}");
-                Console.WriteLine($"### Mody -> {listaModow[columnAndCriteriaIterator]}");
+                Console.WriteLine($"### Mody -> {modsList[columnAndCriteriaIterator]}");
                 
                 /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości dla zbioru zgodnosci */
                 Double[,] compatibilitySet = new Double[numberOfAlternatives, numberOfAlternatives];
@@ -175,7 +175,7 @@ namespace ElectreAp
                                     // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 alternativesColumnIterator kolumny LICZ1
                                     var2 = tabelaAlternatyw[rowIterator, columnAndCriteriaIterator];
                                 }
-                                switch (listaModow[columnAndCriteriaIterator])
+                                switch (modsList[columnAndCriteriaIterator])
                                 {
                                     // stałe - bez wzoru
                                     case -1:
@@ -243,7 +243,7 @@ namespace ElectreAp
                                     // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 alternativesColumnIterator kolumny LICZ1
                                     var2 = tabelaAlternatyw[rowIterator, columnAndCriteriaIterator];
                                 }
-                                switch (listaModow[columnAndCriteriaIterator])
+                                switch (modsList[columnAndCriteriaIterator])
                                 {
                                     case -1:
                                         threshold_Q = listaProguQB[columnAndCriteriaIterator];
@@ -344,7 +344,7 @@ namespace ElectreAp
                                 var2 = tabelaAlternatyw[licz2, licz1];
                             }
 
-                            switch (listaModow[licz1])
+                            switch (modsList[licz1])
                             {
                                 case -1:
                                     threshold_Q = listaProguQB[licz1];
@@ -415,7 +415,7 @@ namespace ElectreAp
                                 var2 = tabelaAlternatyw[licz2, licz1];
                             }
 
-                            switch (listaModow[licz1])
+                            switch (modsList[licz1])
                             {
                                 case -1:
                                     threshold_Q = listaProguQB[licz1];
@@ -814,7 +814,7 @@ namespace ElectreAp
             for (int z = 0; z < numberOfCriterias; z++)
             {
                 listOfDirections.Add(tabelaMatrix[0, z]);
-                listaModow.Add((Int32)(tabelaMatrix[1, z]));
+                modsList.Add((Int32)(tabelaMatrix[1, z]));
                 // uzupełnianie listy Wag W -> pobieranie wartości colPointer matrixa tabeli
                 listaWagW.Add(tabelaMatrix[2, z]);
                 // uzupełnianie listy Progu Q -> pobieranie wartości colPointer matrixa tabeli
@@ -838,7 +838,7 @@ namespace ElectreAp
 
                         }*/
 
-            // ShowList(listaModow, "M");
+            // ShowList(modsList, "M");
 
             // uzupełnianie listy Wag W -> pobieranie wartości colPointer matrixa tabeli
             /*            for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
