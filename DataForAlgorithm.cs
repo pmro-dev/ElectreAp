@@ -73,8 +73,6 @@ namespace ElectreAp
         public void ColumnNamesDoListy_SetValue(int index, string valueToSet) { columnNamesDoListy[index] = valueToSet; }
         public string ColumnNamesDoListy_GetValue(int index) { return columnNamesDoListy[index]; }
 
-        private String valueHelp = "";
-
         protected Double[,] concordanceMatrix;
         public Double[,] ConcordanceMatrix { get { return concordanceMatrix; } }
         protected Double[,] macierzOcen;
@@ -91,41 +89,23 @@ namespace ElectreAp
         protected Double[,] roboczyMatrixDOgol;
         public Double[,] RoboczyMatrixDOgol { get { return roboczyMatrixDOgol; } }
         protected Double[,] matrixRownosciZbiorowPrzewyzszania;
-        private Double[,] roboczyMatrixD;
         public Double[,] tabelaMatrix;
 
         public Double[,] TabelaMatrix { get { return tabelaMatrix; } set { tabelaMatrix = value; } }
-/*        public void TabelaMatrix_SetValue(int col, int row, double valueToSet) { tabelaMatrix[col, row] = valueToSet; }        
-        public Double TabelaMatrix_GetValue(int col, int row) { return tabelaMatrix[col, row]; }*/
 
         protected Double[,,] listaWartProgKryt;
         public Double[,,] ListaWartProgKryt { get { return listaWartProgKryt; } set { listaWartProgKryt = value; } }
-/*        public void ListaWartProgKryt_SetValue(int index, int positionOfThreshold, int positionOfSymbol, double valueToSet) {
-            listaWartProgKryt[index, positionOfThreshold, positionOfSymbol] = valueToSet;
-        }
-        public Double ListaWartProgKryt_GetValue(int index, int positionOfThreshold, int positionOfSymbol) {
-            return listaWartProgKryt[index, positionOfThreshold, positionOfSymbol];
-        }*/
 
-        private double wartoscZgodnosci;
         protected double progQ = -1;
         protected double progP = -1;
         protected double progV = -1;
-        private double testLogiczny = 0.0;
-        private double Delta0 = 0.0;
         protected double alfa = 0.15;
         public double Alfa { get { return alfa; } set { alfa = value;} }
         protected double beta = 0.3;
         public double Beta { get { return beta; } set { beta = value; } }
         protected double newDelta = 0.0;
         protected double sDeltaK = 0.0;
-        private double zmiennaPomocnicza = 0.0;
-        private double wartoscMax = 0.0;
-        private double zmiennaPomocna = 0.0;
-        private double zmiennaPomocnicza1 = 0.0;
-        private double zmiennaHelp;
-
-        protected int liczbaZajetychMiejscWRankWDestZstep = 0;
+                protected int liczbaZajetychMiejscWRankWDestZstep = 0;
         protected int liczbaZajetychMiejscWRankWDestWstep = 0;
         protected int miejscPoPrzecinku = 2;
         public int MiejscPoPrzecinku { get { return miejscPoPrzecinku; } set { miejscPoPrzecinku = value; } }
@@ -133,24 +113,12 @@ namespace ElectreAp
         public int NumberOfCriterias { get { return numberOfCriterias;  } set { numberOfCriterias = value; } }
         public int numberOfAlternatives = 0;
         public int NumberOfAlternatives { get { return numberOfAlternatives; } set { numberOfAlternatives = value; } }
-        private int miejsceA = 0;
-        private int miejsceB = 0;
-        private int min = 0;
-        private int rank = 0;
-        // wiersz wskazuje na wariant do rozpatrzenia
-        private int wiersz = -1;
-        private int numerNiepasujacego = -1;
-        protected int maxim = 0;
-        private int pomocna = 0;
-        private int licz = 0;
 
-        private Boolean testDC = false;
-        private Boolean testDelta = false;
+        protected int maxim = 0;
+
         // destylacja zstępująca == true, destylacja wstępująca == false
         protected Boolean typDestylacji = true;
         public Boolean TypDestylacji { get { return typDestylacji; } set { typDestylacji = value; } }
-        private Boolean tescik = false;
-        private Boolean tescikBol = false;
 
         private Boolean cboxConcordanceSetsChecked = false;
         public Boolean CboxConcordanceSetsChecked { get { return cboxConcordanceSetsChecked; } set { cboxConcordanceSetsChecked = value; } }
@@ -173,6 +141,7 @@ namespace ElectreAp
         private Boolean cboxRankingsChecked = false;
         public Boolean CboxRankingsChecked { get { return cboxRankingsChecked; } set { cboxRankingsChecked = value; } }
         #endregion
+
 
         public void CreateMatrixForAlternativeData(int numberOfAlternatives, int numberOfCriterias)
         {
@@ -235,6 +204,7 @@ namespace ElectreAp
             Console.WriteLine("Utworzono matrix -> wierszy = " + tabelaMatrix.GetLength(0) + " kolumny = " + tabelaMatrix.GetLength(1));
         }
         
+
         public async Task<double[,,]> CreateListOfValueThresholdsAsync(int numberOfCriterias, Double[,] matrix)
         {
 
@@ -268,49 +238,15 @@ namespace ElectreAp
             return dataTab;
         }
 
+
         protected delegate void CreateDataTableBasedOnMatrixDelegate(int colAdd, int rowAdd, DataTable dataTab);
 
-        //public async Task<DataTable> CreateDataTableBasedOnMatrixAsync(Double[,] matrix, int colAdd, int rowAdd, CreateDataTableBasedOnMatrixDelegate algorithmDelegate) {
-        //protected DataTable CreateDataTableBasedOnMatrix(Double[,] matrix, int colAdd, int rowAdd, CreateDataTableBasedOnMatrixDelegate algorithmDelegate) {
         protected DataTable CreateDataTableBasedOnMatrix(int colAdd, int rowAdd, CreateDataTableBasedOnMatrixDelegate algorithmDelegate) {
 
             DataTable dataTab = CreateDataTab();
 
             algorithmDelegate(colAdd, rowAdd, dataTab);
 
-/*            int zmienna = 1;
-
-            for (int y = 0; y < matrix.GetLength(0) + rowAdd; y++) {
-                List<string> row = null;
-                if (y < 3 || y >= 9) { row = new List<string>(); }
-                if (row != null) {
-                    for (int z = 0; z < matrix.GetLength(1) + colAdd; z++) {
-                        if (z == 0) {
-                            if (y < 3) {
-                                switch (y) {
-                                    case 0:
-                                        row.Add("K");
-                                        break;
-                                    case 1:
-                                        row.Add("M");
-                                        break;
-                                    case 2:
-                                        row.Add("W");
-                                        break;
-                                }
-                            }
-                            else { row.Add("A" + zmienna); }
-                            if (y >= 3) { zmienna++; }
-                        }
-                        else {
-                            if (y < 3 || y >= 9) {
-                                row.Add(matrix[y, z - colAdd].ToString());
-                            }
-                        }
-                    }
-                    dataTab.Rows.Add(row.ToArray<string>());
-                }
-            }*/
             return dataTab;
         }
 
