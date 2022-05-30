@@ -14,7 +14,7 @@ namespace ElectreAp
 
         // deklaracje zmiennych
         #region
-        protected List<Double> listaKierunkow = new List<Double>();
+        protected List<Double> listOfDirections = new List<Double>();
         protected List<Int32> listaModow = new List<Int32>();
         protected List<Double> listaWagW = new List<Double>();
         protected List<Double> listaProguQB = new List<Double>();
@@ -96,9 +96,9 @@ namespace ElectreAp
         protected Double[,,] listaWartProgKryt;
         public Double[,,] ListaWartProgKryt { get { return listaWartProgKryt; } set { listaWartProgKryt = value; } }
 
-        protected double progQ = -1;
-        protected double progP = -1;
-        protected double progV = -1;
+        protected double threshold_Q = -1;
+        protected double threshold_P = -1;
+        protected double threshold_V = -1;
         protected double alfa = 0.15;
         public double Alfa { get { return alfa; } set { alfa = value;} }
         protected double beta = 0.3;
@@ -107,14 +107,12 @@ namespace ElectreAp
         protected double sDeltaK = 0.0;
                 protected int liczbaZajetychMiejscWRankWDestZstep = 0;
         protected int liczbaZajetychMiejscWRankWDestWstep = 0;
-        protected int miejscPoPrzecinku = 2;
-        public int MiejscPoPrzecinku { get { return miejscPoPrzecinku; } set { miejscPoPrzecinku = value; } }
+        protected int decimalPlacesValue = 2;
+        public int MiejscPoPrzecinku { get { return decimalPlacesValue; } set { decimalPlacesValue = value; } }
         public int numberOfCriterias = 0;
         public int NumberOfCriterias { get { return numberOfCriterias;  } set { numberOfCriterias = value; } }
         public int numberOfAlternatives = 0;
         public int NumberOfAlternatives { get { return numberOfAlternatives; } set { numberOfAlternatives = value; } }
-
-        protected int maxim = 0;
 
         // destylacja zstępująca == true, destylacja wstępująca == false
         protected Boolean typDestylacji = true;

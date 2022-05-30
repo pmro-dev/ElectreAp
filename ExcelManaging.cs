@@ -264,26 +264,24 @@ namespace ElectreAp
 
 
         int x = 0;
-        int iterat = 1;
-
 
         private void AddSetToSheet(List<Double[,]> listOfMatrixes, string setName)
         {
             ActivateSheet(setName);
-            iterat = 1;
+            int iterateLocalTemp = 1;
             foreach (Double[,] item in listOfMatrixes) {
-                AddMatrixToSheet(item, setName+" "+ iterat, OtherMatrixFunc);
-                iterat++;
+                AddMatrixToSheet(item, setName+" "+ iterateLocalTemp, OtherMatrixFunc);
+                iterateLocalTemp++;
             }
         }
 
 
         private void AddRatingToSheet(List<Double[,]> listOfRatings, string ratingName) {
             ActivateSheet(ratingName);
-            iterat = 1;
+            int iterateLocalTemp = 1;
             foreach (Double[,] item in listOfRatings) {
-                AddMatrixToSheet(item, ratingName + " " + iterat, RatingMatrixFunc);
-                iterat++;
+                AddMatrixToSheet(item, ratingName + " " + iterateLocalTemp, RatingMatrixFunc);
+                iterateLocalTemp++;
             }
         }
 

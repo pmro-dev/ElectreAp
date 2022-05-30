@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ElectreAp;
 
 namespace ElectreAp
 {
@@ -24,21 +23,26 @@ namespace ElectreAp
 
         protected void AlgorithmForDelegate(int colAdd, int rowAdd, DataTable dataTab)
         {
-            int zmienna = 1;
+            int variantIterator = 1;
 
-            for (int y = 0; y < TabelaMatrix.GetLength(0) + rowAdd; y++)
+            for (int rowIterator = 0; rowIterator < TabelaMatrix.GetLength(0) + rowAdd; rowIterator++)
             {
                 List<string> row = null;
-                if (y < 3 || y >= 9) { row = new List<string>(); }
+
+                if (rowIterator < 3 || rowIterator >= 9) 
+                { 
+                    row = new List<string>(); 
+                }
+
                 if (row != null)
                 {
                     for (int z = 0; z < TabelaMatrix.GetLength(1) + colAdd; z++)
                     {
                         if (z == 0)
                         {
-                            if (y < 3)
+                            if (rowIterator < 3)
                             {
-                                switch (y)
+                                switch (rowIterator)
                                 {
                                     case 0:
                                         row.Add("K");
@@ -51,14 +55,21 @@ namespace ElectreAp
                                         break;
                                 }
                             }
-                            else { row.Add("A" + zmienna); }
-                            if (y >= 3) { zmienna++; }
+                            else 
+                            { 
+                                row.Add("A" + variantIterator); 
+                            }
+
+                            if (rowIterator >= 3) 
+                            { 
+                                variantIterator++; 
+                            }
                         }
                         else
                         {
-                            if (y < 3 || y >= 9)
+                            if (rowIterator < 3 || rowIterator >= 9)
                             {
-                                row.Add(TabelaMatrix[y, z - colAdd].ToString());
+                                row.Add(TabelaMatrix[rowIterator, z - colAdd].ToString());
                             }
                         }
                     }
@@ -78,39 +89,38 @@ namespace ElectreAp
         {
             switch (mod)
             {
-
                 // mod invers
                 case 0:
                     //Console.WriteLine("CASE 0");
                     //Console.WriteLine("Q PRZEL. ALFA * var + PRZEL. BETA");
-                    progQ = Math.Round((DoInvers(table[i, 0, 0], table[i, 0, 1], 0) * value + DoInvers(table[i, 0, 0], table[i, 0, 1], 1)), miejscPoPrzecinku);
+                    threshold_Q = Math.Round((DoInvers(table[i, 0, 0], table[i, 0, 1], 0) * value + DoInvers(table[i, 0, 0], table[i, 0, 1], 1)), decimalPlacesValue);
                     //Console.WriteLine(DoInvers(table[i,0,0], table[i,0,1], 0) + " * " + value + " + " + DoInvers(table[i,0,0], table[i,0,1], 1));
-                    //Console.WriteLine("PROG Q = " + progQ);
+                    //Console.WriteLine("PROG Q = " + threshold_Q);
                     //Console.WriteLine();
 
                     //Console.WriteLine("P PRZEL. ALFA * var + PRZEL. BETA");
-                    progP = Math.Round((DoInvers(table[i, 1, 0], table[i, 1, 1], 0) * value + DoInvers(table[i, 1, 0], table[i, 1, 1], 1)), miejscPoPrzecinku);
+                    threshold_P = Math.Round((DoInvers(table[i, 1, 0], table[i, 1, 1], 0) * value + DoInvers(table[i, 1, 0], table[i, 1, 1], 1)), decimalPlacesValue);
                     //Console.WriteLine(DoInvers(table[i,1,0], table[i,1,1], 0) + " * " + value + " + " + DoInvers(table[i,1,0], table[i,1,1], 1));
-                    //Console.WriteLine("PROG P = " + progP);
+                    //Console.WriteLine("PROG P = " + threshold_P);
                     //Console.WriteLine();
 
                     //Console.WriteLine("V PRZEL. ALFA * var + PRZEL. BETA");
-                    progV = Math.Round((DoInvers(table[i, 2, 0], table[i, 2, 1], 0) * value + DoInvers(table[i, 2, 0], table[i, 2, 1], 1)), miejscPoPrzecinku);
+                    threshold_V = Math.Round((DoInvers(table[i, 2, 0], table[i, 2, 1], 0) * value + DoInvers(table[i, 2, 0], table[i, 2, 1], 1)), decimalPlacesValue);
                     //  Console.WriteLine(DoInvers(table[i,2,0], table[i,2,1], 0) + " * " + value + " + " + DoInvers(table[i,2,0], table[i,2,1], 1));
-                    //  Console.WriteLine("PROG V = " + progV);
+                    //  Console.WriteLine("PROG V = " + threshold_V);
                     //  Console.WriteLine();
                     break;
 
                 // mod direct
                 case 1:
                     //  Console.WriteLine("CASE 1");
-                    progQ = Math.Round((table[i, 0, 0] * value + table[i, 0, 1]), miejscPoPrzecinku);
+                    threshold_Q = Math.Round((table[i, 0, 0] * value + table[i, 0, 1]), decimalPlacesValue);
                     //   Console.WriteLine(table[i,0,0] + " * " + value + " + " + table[i,0,1]);
 
-                    progP = Math.Round((table[i, 1, 0] * value + table[i, 1, 1]), miejscPoPrzecinku);
+                    threshold_P = Math.Round((table[i, 1, 0] * value + table[i, 1, 1]), decimalPlacesValue);
                     //  Console.WriteLine(table[i,1,0] + " * " + value + " + " + table[i,1,1]);
 
-                    progV = Math.Round((table[i, 2, 0] * value + table[i, 2, 1]), miejscPoPrzecinku);
+                    threshold_V = Math.Round((table[i, 2, 0] * value + table[i, 2, 1]), decimalPlacesValue);
                     // Console.WriteLine(table[i,2,0] + " * " + value + " + " + table[i,2,1]);
                     break;
             }
@@ -120,169 +130,164 @@ namespace ElectreAp
         public void CreateConcordanceSets()
         {
             // var1 i var2 są to zmienne do których przypisujemy odpowiednie wartości alternatyw, a te są wykorzystywane w algorytmie
-            double var2 = 0;
+            double var2;
             double var1 = 0;
-            // y1 i z1 są to współrzędne odpowiednio wiersza i kolumny zmiennej var1
-            int y1 = 0;
-            int z1 = 0;
+            // rowIteratorOfVar1 i columnIteratorOfVar1 są to współrzędne odpowiednio wiersza i kolumny zmiennej var1
+            int rowIteratorOfVar1 = 0;
+            int columnIteratorOfVar1 = 0;
 
             // TABELA ALTERNATYW INACZEJ MACIERZ -> WYCIETA TABELA Z INTERFEJSU CZYLI KOLUMNY TO KRYTERIA A WIERSZE TO ALTERNATYWY
-            /* licz1 (poruszanie się po kolumnach(kryteriach) tabeliAlternatyw)*/
-            for (int licz1 = 0; licz1 < numberOfCriterias; licz1++)
+            /* columnIterator (poruszanie się po kolumnach(kryteriach) tabeliAlternatyw)*/
+            for (int columnIterator = 0; columnIterator < numberOfCriterias; columnIterator++)
             {
                 // dopisane
-                //Console.WriteLine($"### Kierunek -> {listaKierunkow[licz1]}");
-                Console.WriteLine($"### Mody -> {listaModow[licz1]}");
+                //Console.WriteLine($"### Kierunek -> {listOfDirections[columnIterator]}");
+                Console.WriteLine($"### Mody -> {listaModow[columnIterator]}");
                 
                 /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości */
                 Double[,] matrixKryterium = new Double[numberOfAlternatives, numberOfAlternatives];
 
                 // sprawdzamy czy kierunek rosnący
-                if (listaKierunkow[licz1] == 1)
+                if (listOfDirections[columnIterator] == 1)
                 {
-
                     // poruszanie się po kolumnach alternatyw
                     for (int i = 0; i < numberOfAlternatives; i++)
                     {
-
-                        /* licz2 (poruszanie się po wierszach) */
-                        for (int licz2 = 0; licz2 < numberOfAlternatives; licz2++)
+                        /* rowIterator (poruszanie się po wierszach) */
+                        for (int rowIterator = 0; rowIterator < numberOfAlternatives; rowIterator++)
                         {
-                            if (i == 0 && licz2 == 0)
+                            if (i == 0 && rowIterator == 0)
                             {
                                 // na początku obydwie porównywalne wartości są takie same
-                                var1 = tabelaAlternatyw[licz2, licz1];
-                                y1 = licz2;
-                                z1 = licz1;
+                                var1 = tabelaAlternatyw[rowIterator, columnIterator];
+                                rowIteratorOfVar1 = rowIterator;
+                                columnIteratorOfVar1 = columnIterator;
 
-                                var2 = tabelaAlternatyw[licz2, licz1];
+                                var2 = tabelaAlternatyw[rowIterator, columnIterator];
                             }
                             else
                             {
-                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli licz1
+                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli columnIterator
                                 // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
-                                // dla danej tabeli będzie to wartość z wiersza LICZ2 i kolumny LICZ1
-                                var2 = tabelaAlternatyw[licz2, licz1];
+                                // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 i kolumny LICZ1
+                                var2 = tabelaAlternatyw[rowIterator, columnIterator];
                             }
-                            switch (listaModow[licz1])
+                            switch (listaModow[columnIterator])
                             {
                                 // stałe - bez wzoru
                                 case -1:
-                                    progQ = listaProguQB[licz1];
-                                    progP = listaProguPB[licz1];
-                                    progV = listaProguVB[licz1];
+                                    threshold_Q = listaProguQB[columnIterator];
+                                    threshold_P = listaProguPB[columnIterator];
+                                    threshold_V = listaProguVB[columnIterator];
                                     break;
                                 // inverse    
                                 case 0:
-                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var1, licz1, 0); }
-                                    else { CalculateThreshold(listaWartProgKryt, var2, licz1, 0); }
+                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var1, columnIterator, 0); }
+                                    else { CalculateThreshold(listaWartProgKryt, var2, columnIterator, 0); }
                                     break;
                                 // direct    
                                 case 1:
-                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, licz1, 1); }
-                                    else { CalculateThreshold(listaWartProgKryt, var1, licz1, 1); }
+                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, columnIterator, 1); }
+                                    else { CalculateThreshold(listaWartProgKryt, var1, columnIterator, 1); }
                                     break;
                             }
                             //                      WEDŁUG ELECTRE III-IV ROYA #1
-                            if (var2 >= (var1 + progP))
+                            if (var2 >= (var1 + threshold_P))
                             {
-                                /* TO ZWRÓĆ WARTOŚĆ 0 */
-                                matrixKryterium[i, licz2] = 0;
+                                matrixKryterium[i, rowIterator] = 0;
                             }
-                            if ((var1 + progQ) < var2 && var2 < (var1 + progP))
+                            if ((var1 + threshold_Q) < var2 && var2 < (var1 + threshold_P))
                             {
-                                double suma = (progP - var2 + var1) / (progP - progQ);
-                                matrixKryterium[i, licz2] = Math.Round(suma, miejscPoPrzecinku);
-                                suma = 0;
+                                double suma = (threshold_P - var2 + var1) / (threshold_P - threshold_Q);
+                                matrixKryterium[i, rowIterator] = Math.Round(suma, decimalPlacesValue);
                             }
-                            if (var2 <= (var1 + progQ))
+                            if (var2 <= (var1 + threshold_Q))
                             {
-                                /* TO ZWRÓĆ WARTOŚĆ 1 */
-                                matrixKryterium[i, licz2] = 1;
+                                matrixKryterium[i, rowIterator] = 1;
                             }
                         }
-                        if (y1 + 1 < numberOfAlternatives)
+                        if (rowIteratorOfVar1 + 1 < numberOfAlternatives)
                         {
-                            y1 = y1 + 1;
-                            var1 = tabelaAlternatyw[y1, z1];
+                            rowIteratorOfVar1 = rowIteratorOfVar1 + 1;
+                            var1 = tabelaAlternatyw[rowIteratorOfVar1, columnIteratorOfVar1];
                         }
                     }
                 }
                 // sprawdzamy czy kierunek malejący
-                else if (listaKierunkow[licz1] == 0)
+                else if (listOfDirections[columnIterator] == 0)
                 {
                     for (int i = 0; i < numberOfAlternatives; i++)
                     {
 
-                        /* licz2 (poruszanie się po wierszach) */
+                        /* rowIterator (poruszanie się po wierszach) */
                         for (int licz2 = 0; licz2 < numberOfAlternatives; licz2++)
                         {
                             if (i == 0 && licz2 == 0)
                             {
                                 // na początku obydwie porównywalne wartości są takie same
-                                var1 = tabelaAlternatyw[licz2, licz1];
-                                y1 = licz2;
-                                z1 = licz1;
+                                var1 = tabelaAlternatyw[licz2, columnIterator];
+                                rowIteratorOfVar1 = licz2;
+                                columnIteratorOfVar1 = columnIterator;
 
-                                var2 = tabelaAlternatyw[licz2, licz1];
+                                var2 = tabelaAlternatyw[licz2, columnIterator];
                             }
                             else
                             {
-                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli licz1
+                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli columnIterator
                                 // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
-                                // dla danej tabeli będzie to wartość z wiersza LICZ2 i kolumny LICZ1
-                                var2 = tabelaAlternatyw[licz2, licz1];
+                                // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 i kolumny LICZ1
+                                var2 = tabelaAlternatyw[licz2, columnIterator];
                             }
-                            switch (listaModow[licz1])
+                            switch (listaModow[columnIterator])
                             {
                                 case -1:
-                                    progQ = listaProguQB[licz1];
-                                    progP = listaProguPB[licz1];
-                                    progV = listaProguVB[licz1];
+                                    threshold_Q = listaProguQB[columnIterator];
+                                    threshold_P = listaProguPB[columnIterator];
+                                    threshold_V = listaProguVB[columnIterator];
                                     break;
                                 case 0:
                                     if (var1 < var2)
                                     {
-                                        CalculateThreshold(listaWartProgKryt, var2, licz1, 0);
+                                        CalculateThreshold(listaWartProgKryt, var2, columnIterator, 0);
                                     }
                                     else
                                     {
-                                        CalculateThreshold(listaWartProgKryt, var1, licz1, 0);
+                                        CalculateThreshold(listaWartProgKryt, var1, columnIterator, 0);
                                     }
                                     break;
                                 case 1:
                                     if (var1 < var2)
                                     {
-                                        CalculateThreshold(listaWartProgKryt, var1, licz1, 1);
+                                        CalculateThreshold(listaWartProgKryt, var1, columnIterator, 1);
                                     }
                                     else
                                     {
-                                        CalculateThreshold(listaWartProgKryt, var2, licz1, 1);
+                                        CalculateThreshold(listaWartProgKryt, var2, columnIterator, 1);
                                     }
                                     break;
                             }
                             //                      WEDŁUG ELECTRE III-IV ROYA
-                            if (var1 - progP > var2)
+                            if (var1 - threshold_P > var2)
                             {
                                 /* TO ZWRÓĆ WARTOŚĆ 0 */
                                 matrixKryterium[i, licz2] = 0;
                             }
-                            if (progQ < (var1 - var2) && (var1 - var2) < progP)
+                            if (threshold_Q < (var1 - var2) && (var1 - var2) < threshold_P)
                             {
-                                double suma = (progP - var1 + var2) / (progP - progQ);
-                                matrixKryterium[i, licz2] = Math.Round(suma, miejscPoPrzecinku);
+                                double suma = (threshold_P - var1 + var2) / (threshold_P - threshold_Q);
+                                matrixKryterium[i, licz2] = Math.Round(suma, decimalPlacesValue);
                                 suma = 0;
                             }
-                            if (var1 - var2 <= progQ)
+                            if (var1 - var2 <= threshold_Q)
                             {
                                 /* TO ZWRÓĆ WARTOŚĆ 1 */
                                 matrixKryterium[i, licz2] = 1;
                             }
                         }
-                        if (y1 + 1 < numberOfAlternatives)
+                        if (rowIteratorOfVar1 + 1 < numberOfAlternatives)
                         {
-                            y1 = y1 + 1;
-                            var1 = tabelaAlternatyw[y1, z1];
+                            rowIteratorOfVar1 = rowIteratorOfVar1 + 1;
+                            var1 = tabelaAlternatyw[rowIteratorOfVar1, columnIteratorOfVar1];
                         }
                     }
                 }
@@ -300,22 +305,22 @@ namespace ElectreAp
             // var1 i var2 są to zmienne do których przypisujemy odpowiednie wartości alternatyw, a te są wykorzystywane w algorytmie
             double var2 = 0;
             double var1 = 0;
-            // y1 i z1 są to współrzędne odpowiednio wiersza i kolumny zmiennej var1
+            // rowIteratorOfVar1 i columnIteratorOfVar1 są to współrzędne odpowiednio wiersza i kolumny zmiennej var1
             int y1 = 0;
             int z1 = 0;
 
-            /* licz1 (poruszanie się po kolumnach / kryteriach)*/
+            /* columnIterator (poruszanie się po kolumnach / kryteriach)*/
             for (int licz1 = 0; licz1 < numberOfCriterias; licz1++)
             {
                 /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości */
                 Double[,] matrixKryterium = new double[numberOfAlternatives, numberOfAlternatives];
                 // sprawdzamy czy kierunek rosnący
-                if (listaKierunkow[licz1] == 1)
+                if (listOfDirections[licz1] == 1)
                 {
                     // poruszanie się po kolumnach alternatyw
                     for (int i = 0; i < numberOfAlternatives; i++)
                     {
-                        /* licz2 (poruszanie się po wierszach) */
+                        /* rowIterator (poruszanie się po wierszach) */
                         for (int licz2 = 0; licz2 < numberOfAlternatives; licz2++)
                         {
                             if (i == 0 && licz2 == 0)
@@ -328,18 +333,18 @@ namespace ElectreAp
                             }
                             else
                             {
-                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli licz1
+                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli columnIterator
                                 // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
-                                // dla danej tabeli będzie to wartość z wiersza LICZ2 i kolumny LICZ1
+                                // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 i kolumny LICZ1
                                 var2 = tabelaAlternatyw[licz2, licz1];
                             }
 
                             switch (listaModow[licz1])
                             {
                                 case -1:
-                                    progQ = listaProguQB[licz1];
-                                    progP = listaProguPB[licz1];
-                                    progV = listaProguVB[licz1];
+                                    threshold_Q = listaProguQB[licz1];
+                                    threshold_P = listaProguPB[licz1];
+                                    threshold_V = listaProguVB[licz1];
                                     break;
                                 case 0:
                                     if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var1, licz1, 0); }
@@ -356,19 +361,19 @@ namespace ElectreAp
                                 matrixKryterium[i, licz2] = 0;
                             }
                             //                  WEDŁUG ROYA
-                            else if (var2 <= var1 + progP)
+                            else if (var2 <= var1 + threshold_P)
                             {
                                 matrixKryterium[i, licz2] = 0;
                             }
-                            else if (progP < var2 - var1 && var2 - var1 < progV)
+                            else if (threshold_P < var2 - var1 && var2 - var1 < threshold_V)
                             {
-                                //  Console.WriteLine("var2 - var1 - progP / progV - progP");
-                                //  Console.WriteLine(var2 + " - " + var1 + " - " + progP + " / " + progV + " - " + progP);
-                                double suma = ((var2 - var1 - progP) / (progV - progP));
-                                matrixKryterium[i, licz2] = Math.Round(suma, miejscPoPrzecinku);
+                                //  Console.WriteLine("var2 - var1 - threshold_P / threshold_V - threshold_P");
+                                //  Console.WriteLine(var2 + " - " + var1 + " - " + threshold_P + " / " + threshold_V + " - " + threshold_P);
+                                double suma = ((var2 - var1 - threshold_P) / (threshold_V - threshold_P));
+                                matrixKryterium[i, licz2] = Math.Round(suma, decimalPlacesValue);
                                 //suma = 0;
                             }
-                            else if (var2 >= var1 + progV)
+                            else if (var2 >= var1 + threshold_V)
                             {
                                 matrixKryterium[i, licz2] = 1;
                             }
@@ -382,11 +387,11 @@ namespace ElectreAp
                     }
                 }
                 // sprawdzamy czy kierunek malejący
-                else if (listaKierunkow[licz1] == 0)
+                else if (listOfDirections[licz1] == 0)
                 {
                     for (int i = 0; i < numberOfAlternatives; i++)
                     {
-                        /* licz2 (poruszanie się po wierszach) */
+                        /* rowIterator (poruszanie się po wierszach) */
                         for (int licz2 = 0; licz2 < numberOfAlternatives; licz2++)
                         {
                             if (i == 0 && licz2 == 0)
@@ -399,18 +404,18 @@ namespace ElectreAp
                             }
                             else
                             {
-                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli licz1
+                                // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli columnIterator
                                 // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
-                                // dla danej tabeli będzie to wartość z wiersza LICZ2 i kolumny LICZ1
+                                // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 i kolumny LICZ1
                                 var2 = tabelaAlternatyw[licz2, licz1];
                             }
 
                             switch (listaModow[licz1])
                             {
                                 case -1:
-                                    progQ = listaProguQB[licz1];
-                                    progP = listaProguPB[licz1];
-                                    progV = listaProguVB[licz1];
+                                    threshold_Q = listaProguQB[licz1];
+                                    threshold_P = listaProguPB[licz1];
+                                    threshold_V = listaProguVB[licz1];
                                     break;
                                 case 0:
                                     if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, licz1, 0); }
@@ -427,20 +432,20 @@ namespace ElectreAp
                                 matrixKryterium[i, licz2] = 0;
                             }
                             //                  WEDŁUG ROYA
-                            else if ((var1 - var2) <= progP)
+                            else if ((var1 - var2) <= threshold_P)
                             {
-                                // Console.WriteLine(var1 + " - " + var2 + " <= " + progP);
+                                // Console.WriteLine(var1 + " - " + var2 + " <= " + threshold_P);
                                 matrixKryterium[i, licz2] = 0;
                             }
-                            else if (var1 - progV < var2 && var2 < var1 - progP)
+                            else if (var1 - threshold_V < var2 && var2 < var1 - threshold_P)
                             {
-                                //  Console.WriteLine("progP < var1 - var2 && var1 - var2 < progV");
-                                //  Console.WriteLine(progP + " < " + var1 + " - " + var2 + " && " + var1 + " - " + var2 + " < " + progV);
-                                double suma = ((var1 - var2 - progP) / (progV - progP));
-                                matrixKryterium[i, licz2] = Math.Round(suma, miejscPoPrzecinku);
+                                //  Console.WriteLine("threshold_P < var1 - var2 && var1 - var2 < threshold_V");
+                                //  Console.WriteLine(threshold_P + " < " + var1 + " - " + var2 + " && " + var1 + " - " + var2 + " < " + threshold_V);
+                                double suma = ((var1 - var2 - threshold_P) / (threshold_V - threshold_P));
+                                matrixKryterium[i, licz2] = Math.Round(suma, decimalPlacesValue);
                                 suma = 0;
                             }
-                            else if ((var1 - var2) >= progV)
+                            else if ((var1 - var2) >= threshold_V)
                             {
                                 matrixKryterium[i, licz2] = 1;
                             }
@@ -462,7 +467,7 @@ namespace ElectreAp
         public void CreateFinalRanking(ref Double[,] tabSum)
         {
             listaAlternatyw = new List<List<Int32>>();
-            // budowanie listy kto z kim przegrywa
+            // budowanie listy kto colPointer kim przegrywa
             for (int i = 0; i < tabSum.GetLength(0); i++)
             {
                 listaKtoZKimPrzegral = new List<Int32>();
@@ -656,7 +661,7 @@ namespace ElectreAp
                         valueOfConcordance = (sumOfQuotients / sumOfWeights);
                     }
 
-                    concordanceMatrix[k, j] = Math.Round(valueOfConcordance, miejscPoPrzecinku);
+                    concordanceMatrix[k, j] = Math.Round(valueOfConcordance, decimalPlacesValue);
                     
                     // dopisane
                     Console.WriteLine($"wartość concordance[{k},{j}] = {concordanceMatrix[k, j]}");
@@ -794,7 +799,7 @@ namespace ElectreAp
         public void DivideThresholdsToLists()
         {
             /*
-                uzupełnianie listy kierunków -> pobieranie wartości z matrixa tabeli
+                uzupełnianie listy kierunków -> pobieranie wartości colPointer matrixa tabeli
                 wartość kierunku ( 0 lub 1 ) mówi nam czy wartości ujemne ( 0 ) czy wartości dodatnie ( 1 ) 
                 dla danego kryterium są lepsze od tych drugich
                 np. kryterium pojemność silnika im większa wartość ( wartość kierunku 1 ) tym lepiej dla danej alternatywy (motoru)
@@ -803,35 +808,35 @@ namespace ElectreAp
 
             for (int z = 0; z < numberOfCriterias; z++)
             {
-                listaKierunkow.Add(tabelaMatrix[0, z]);
+                listOfDirections.Add(tabelaMatrix[0, z]);
                 listaModow.Add((Int32)(tabelaMatrix[1, z]));
-                // uzupełnianie listy Wag W -> pobieranie wartości z matrixa tabeli
+                // uzupełnianie listy Wag W -> pobieranie wartości colPointer matrixa tabeli
                 listaWagW.Add(tabelaMatrix[2, z]);
-                // uzupełnianie listy Progu Q -> pobieranie wartości z matrixa tabeli
+                // uzupełnianie listy Progu Q -> pobieranie wartości colPointer matrixa tabeli
                 listaProguQA.Add(tabelaMatrix[3, z]);
-                // uzupełnianie listy Progu P -> pobieranie wartości z matrixa tabeli        
+                // uzupełnianie listy Progu P -> pobieranie wartości colPointer matrixa tabeli        
                 listaProguPA.Add(tabelaMatrix[4, z]);
-                // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
+                // uzupełnianie listy Progu V -> pobieranie wartości colPointer matrixa tabeli        
                 listaProguVA.Add(tabelaMatrix[5, z]);
-                // uzupełnianie listy Progu Q -> pobieranie wartości z matrixa tabeli        
+                // uzupełnianie listy Progu Q -> pobieranie wartości colPointer matrixa tabeli        
                 listaProguQB.Add(tabelaMatrix[6, z]);
-                // uzupełnianie listy Progu P -> pobieranie wartości z matrixa tabeli        
+                // uzupełnianie listy Progu P -> pobieranie wartości colPointer matrixa tabeli        
                 listaProguPB.Add(tabelaMatrix[7, z]);
-                // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
+                // uzupełnianie listy Progu V -> pobieranie wartości colPointer matrixa tabeli        
                 listaProguVB.Add(tabelaMatrix[8, z]);
             }
 
-            // ShowList(listaKierunkow, "K");
+            // ShowList(listOfDirections, "K");
 
 
-            /*            for (int z = 0; z < numberOfCriterias; z++) {
+            /*            for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
 
                         }*/
 
             // ShowList(listaModow, "M");
 
-            // uzupełnianie listy Wag W -> pobieranie wartości z matrixa tabeli
-            /*            for (int z = 0; z < numberOfCriterias; z++) {
+            // uzupełnianie listy Wag W -> pobieranie wartości colPointer matrixa tabeli
+            /*            for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
 
                         }*/
 
@@ -840,47 +845,47 @@ namespace ElectreAp
             //Console.WriteLine();
 
 
-            // uzupełnianie listy Progu Q -> pobieranie wartości z matrixa tabeli        
-            /*            for (int z = 0; z < numberOfCriterias; z++) {
-                            listaProguQA.Add(tabelaMatrix[3, z]);
+            // uzupełnianie listy Progu Q -> pobieranie wartości colPointer matrixa tabeli        
+            /*            for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
+                            listaProguQA.Add(tabelaMatrix[3, colPointer]);
                         }*/
 
             // ShowList(listaProguQA, "QA");
 
-            // uzupełnianie listy Progu P -> pobieranie wartości z matrixa tabeli        
-            /*            for (int z = 0; z < numberOfCriterias; z++) {
-                            listaProguPA.Add(tabelaMatrix[4, z]);
+            // uzupełnianie listy Progu P -> pobieranie wartości colPointer matrixa tabeli        
+            /*            for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
+                            listaProguPA.Add(tabelaMatrix[4, colPointer]);
                         }*/
 
             //  ShowList(listaProguPA, "PA");
 
 
-            /*            // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
-                        for (int z = 0; z < numberOfCriterias; z++) {
-                            listaProguVA.Add(tabelaMatrix[5, z]);
+            /*            // uzupełnianie listy Progu V -> pobieranie wartości colPointer matrixa tabeli        
+                        for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
+                            listaProguVA.Add(tabelaMatrix[5, colPointer]);
                         }
 
                      //   ShowList(listaProguVA, "VA");
 
-                        // uzupełnianie listy Progu Q -> pobieranie wartości z matrixa tabeli        
-                        for (int z = 0; z < numberOfCriterias; z++) {
-                            listaProguQB.Add(tabelaMatrix[6, z]);
+                        // uzupełnianie listy Progu Q -> pobieranie wartości colPointer matrixa tabeli        
+                        for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
+                            listaProguQB.Add(tabelaMatrix[6, colPointer]);
                         }
 
                      //   ShowList(listaProguQB, "QB");
 
 
-                        // uzupełnianie listy Progu P -> pobieranie wartości z matrixa tabeli        
-                        for (int z = 0; z < numberOfCriterias; z++) {
-                            listaProguPB.Add(tabelaMatrix[7, z]);
+                        // uzupełnianie listy Progu P -> pobieranie wartości colPointer matrixa tabeli        
+                        for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
+                            listaProguPB.Add(tabelaMatrix[7, colPointer]);
                         }
 
                        // ShowList(listaProguPB, "PB");
 
 
-                        // uzupełnianie listy Progu V -> pobieranie wartości z matrixa tabeli        
-                        for (int z = 0; z < numberOfCriterias; z++) {
-                            listaProguVB.Add(tabelaMatrix[8, z]);
+                        // uzupełnianie listy Progu V -> pobieranie wartości colPointer matrixa tabeli        
+                        for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
+                            listaProguVB.Add(tabelaMatrix[8, colPointer]);
                         }*/
 
             // ShowList(listaProguVB, "VB");
@@ -901,9 +906,9 @@ namespace ElectreAp
 
                 topDownRanking[0, z] = (z + 1);
                 topDownRanking[1, z] = 0;
-                //finalRanking[0,z] = "A" + (z + 1);
+                //finalRanking[0,colPointer] = "A" + (colPointer + 1);
                 finalRanking[0, z] = (double)(z + 1);
-                //finalRanking[1,z] = "0";
+                //finalRanking[1,colPointer] = "0";
                 finalRanking[1, z] = 0.0;
                 upwardRanking[0, z] = (z + 1);
                 upwardRanking[1, z] = 0;
@@ -911,17 +916,17 @@ namespace ElectreAp
                 punktacjaOpcji[1, z] = "0";
             }
 
-            /*            for (int z = 0; z < numberOfAlternatives; z++) {
-                            topDownRanking[0,z] = (z + 1);
-                            topDownRanking[1,z] = 0;
-                            //finalRanking[0,z] = "A" + (z + 1);
-                            finalRanking[0, z] = (double)(z + 1);
-                            //finalRanking[1,z] = "0";
-                            finalRanking[1, z] = 0.0;
-                            upwardRanking[0,z] = (z + 1);
-                            upwardRanking[1,z] = 0;
-                            punktacjaOpcji[0,z] = "A" + (z + 1);
-                            punktacjaOpcji[1,z] = "0";
+            /*            for (int colPointer = 0; colPointer < numberOfAlternatives; colPointer++) {
+                            topDownRanking[0,colPointer] = (colPointer + 1);
+                            topDownRanking[1,colPointer] = 0;
+                            //finalRanking[0,colPointer] = "A" + (colPointer + 1);
+                            finalRanking[0, colPointer] = (double)(colPointer + 1);
+                            //finalRanking[1,colPointer] = "0";
+                            finalRanking[1, colPointer] = 0.0;
+                            upwardRanking[0,colPointer] = (colPointer + 1);
+                            upwardRanking[1,colPointer] = 0;
+                            punktacjaOpcji[0,colPointer] = "A" + (colPointer + 1);
+                            punktacjaOpcji[1,colPointer] = "0";
                         }*/
         }
 
@@ -942,7 +947,7 @@ namespace ElectreAp
                     break;
             }
 
-            return Math.Round(symbol, miejscPoPrzecinku);
+            return Math.Round(symbol, decimalPlacesValue);
         }
 
 
@@ -951,7 +956,7 @@ namespace ElectreAp
 
         public void DoStageFirst()
         {
-            // matrix -> jedna tabela do zapisu inf. czy wartosci z takiej samej komorki ale dla roznych zbiorow przewyzszania sa sobie równe
+            // matrix -> jedna tabela do zapisu inf. czy wartosci colPointer takiej samej komorki ale dla roznych zbiorow przewyzszania sa sobie równe
             matrixRownosciZbiorowPrzewyzszania = new double[numberOfAlternatives, numberOfAlternatives];
             //  Console.WriteLine("alternatywy wartosc: " + numberOfAlternatives);
             for (int numerWiersza = 0; numerWiersza < matrixRownosciZbiorowPrzewyzszania.GetLength(0); numerWiersza++)
@@ -1021,7 +1026,7 @@ namespace ElectreAp
                         else
                         {
                             iloczyn = concordanceMatrix[numerWiersza, numerKolumny] * iloczyn;
-                            iloczyn = Math.Round(iloczyn, miejscPoPrzecinku);
+                            iloczyn = Math.Round(iloczyn, decimalPlacesValue);
                             credibilityMatrix[numerWiersza, numerKolumny] = iloczyn;
                             roboczyMatrixDOgol[numerWiersza, numerKolumny] = iloczyn;
                         }
@@ -1328,7 +1333,7 @@ namespace ElectreAp
 
             ////////////// SYTUACJA 1
 
-            // sytuacja gdy jest jedna opcja z najlepszym qualification
+            // sytuacja gdy jest jedna opcja colPointer najlepszym qualification
             if (matrixNajlepszychOpcjiWewnatrz.GetLength(1) == 1)
             {
                 if (typeOfDistillation == true)
@@ -1585,19 +1590,19 @@ namespace ElectreAp
                 dataTable.Columns.Add(column);
             }
 
-            int x;
+            int localColumnPointer;
 
             if ("Rank. Zstep.".Equals(namePage) || "Rank. Wstep.".Equals(namePage) || "Rank. Final.".Equals(namePage))
             {
                 dataTable.Columns[0].ColumnName = "Wariant";
-                x = 1;
+                localColumnPointer = 1;
             }
             else
             {
                 dataTable.Columns[0].ColumnName = "X";
-                x = 0;
+                localColumnPointer = 0;
             }
-            for (int y = x; y < matrixData.GetLength(0); y++)
+            for (int y = localColumnPointer; y < matrixData.GetLength(0); y++)
             {
                 List<string> row = new List<string>();
                 for (int z = 0; z < matrixData.GetLength(1) + 1; z++)
@@ -1635,39 +1640,39 @@ namespace ElectreAp
             DataGridView dataGridView = new DataGridView();
             dataGridView.Size = new Size(690, 350);
             DataTable dataTable = new DataTable();
-            Boolean bool1 = namePage.Contains("Ocen");
-            Boolean bool2 = namePage.Contains("Finalna");
+            Boolean namePageIsOcena = namePage.Contains("Ocen");
+            Boolean namePageIsFinalna = namePage.Contains("Finalna");
 
             /* tu mamy liczbaKryteriow+1 to +1 jest dlatego, że pierwsza kolumna (o indeksie 0) jest kolumną nazw 
             w tej pętli dodajemy nazwy kolumn do listy im dedykowanej */
-            for (int licz = 0; licz < matrixData.GetLength(1) + 1; licz++)
+            for (int columnAndVariantPointer = 0; columnAndVariantPointer < matrixData.GetLength(1) + 1; columnAndVariantPointer++)
             {
                 DataColumn column = new DataColumn();
-                if (bool1 && licz > 0 && licz < matrixData.GetLength(1) + 1)
+                if (namePageIsOcena && columnAndVariantPointer > 0 && columnAndVariantPointer < matrixData.GetLength(1) + 1)
                 {
-                    column.ColumnName = "A" + (listaNazwOpcji[licz - 1] + 1).ToString();
+                    column.ColumnName = "A" + (listaNazwOpcji[columnAndVariantPointer - 1] + 1).ToString();
                     dataTable.Columns.Add(column);
                 }
                 else
                 {
-                    column.ColumnName = "A" + licz;
+                    column.ColumnName = "A" + columnAndVariantPointer;
                     dataTable.Columns.Add(column);
                 }
             }
 
             dataTable.Columns[0].ColumnName = "X";
 
-            for (int y = 0; y < matrixData.GetLength(0); y++)
+            for (int rowPointer = 0; rowPointer < matrixData.GetLength(0); rowPointer++)
             {
                 List<string> row; row = new List<string>();
 
-                for (int z = 0; z < matrixData.GetLength(1) + 1; z++)
+                for (int colPointer = 0; colPointer < matrixData.GetLength(1) + 1; colPointer++)
                 {
-                    if (z == 0)
+                    if (colPointer == 0)
                     {
-                        if (bool1)
+                        if (namePageIsOcena)
                         {
-                            switch (y)
+                            switch (rowPointer)
                             {
                                 case 1:
                                     row.Add("Power");
@@ -1682,14 +1687,14 @@ namespace ElectreAp
                         }
                         else
                         {
-                            row.Add("A" + (y + 1));
+                            row.Add("A" + (rowPointer + 1));
                         }
                     }
                     else
                     {
-                        if (bool2)
+                        if (namePageIsFinalna)
                         {
-                            switch (matrixData[y, z - 1])
+                            switch (matrixData[rowPointer, colPointer - 1])
                             {
                                 case -1.0:
                                     row.Add("\u20B1");
@@ -1707,12 +1712,12 @@ namespace ElectreAp
                         }
                         else
                         {
-                            row.Add(matrixData[y, z - 1].ToString());
+                            row.Add(matrixData[rowPointer, colPointer - 1].ToString());
                         }
                     }
                 }
 
-                if (bool1 && y != 0 || !bool1)
+                if (namePageIsOcena && rowPointer != 0 || !namePageIsOcena)
                 {
                     dataTable.Rows.Add(row.ToArray<string>());
                     dataTable.TableName = namePage;
@@ -1722,65 +1727,62 @@ namespace ElectreAp
         }
 
 
-        int pomocna = 0;
+        int pointerToMiddleRank = 0;
 
-        public void Exchange(int max, int min)
+        public void ChangeRankingPlacesToUpwardStyle(int actualHighestRank, int actualLowestRank)
         {
-
-            Console.WriteLine("ZAMIEN WYKONANE" + min);
-
             for (int j = 0; j < upwardRanking.GetLength(1); j++)
             {
-                if ((Int32)(upwardRanking[1, j]) == min)
+                if ((Int32)(upwardRanking[1, j]) == actualLowestRank)
                 {
                     upwardRanking[1, j] = 0;
                 }
-                if ((Int32)(upwardRanking[1, j]) == max)
+                if ((Int32)(upwardRanking[1, j]) == actualHighestRank)
                 {
-                    upwardRanking[1, j] = min;
+                    upwardRanking[1, j] = actualLowestRank;
                 }
             }
             for (int j = 0; j < upwardRanking.GetLength(1); j++)
             {
                 if ((Int32)(upwardRanking[1, j]) == 0)
                 {
-                    upwardRanking[1, j] = max;
+                    upwardRanking[1, j] = actualHighestRank;
                 }
             }
 
-            if (min < pomocna)
+            if (actualLowestRank < pointerToMiddleRank)
             {
-                min++;
-                max--;
-                Exchange(max, min);
+                actualLowestRank++;
+                actualHighestRank--;
+                ChangeRankingPlacesToUpwardStyle(actualHighestRank, actualLowestRank);
             }
         }
 
 
-        int maxim = 0;
+        int highestRank = 0;
 
-        public void FindMax(double[,] rankingOfOptionsAfterDistillation)
+        public void FindHighestRankAndSetPointerValueToMiddleRank(double[,] rankingOfOptionsAfterDistillation)
         {
             for (int i = 0; i < upwardRanking.GetLength(1); i++)
             {
-                if (maxim < (Int32)(upwardRanking[1, i]))
+                if (highestRank < (Int32)(upwardRanking[1, i]))
                 {
-                    maxim = (Int32)(upwardRanking[1, i]);
+                    highestRank = (Int32)(upwardRanking[1, i]);
                 }
             }
-            pomocna = (maxim / 2) + 1;
+            pointerToMiddleRank = (highestRank / 2) + 1;
         }
 
 
         int wiersz = -1;
-        Boolean tescik = false;
+        Boolean isTheSameValue = false;
         Boolean tescikBol = false;
         int liczenie = 0;
 
         public void FindMin()
         {
             liczenie++;
-            Console.WriteLine("PPPPPPPPPPPPP = {0}", liczenie);
+            Console.WriteLine($"PPPPPPPPPPPPP = {0}", liczenie);
 
             if (listaAltWRank.Any())
             {
@@ -1806,15 +1808,19 @@ namespace ElectreAp
                     listaAltWRank.Sort();
                     for (int k = 0; k < listaAlternatyw[i].Count; k++)
                     {
-                        if (listaAlternatyw[i][k] == listaAltWRank[k]) { tescik = true; Console.WriteLine("PPPPPPP   3"); }
+                        if (listaAlternatyw[i][k] == listaAltWRank[k]) 
+                        { 
+                            isTheSameValue = true;
+                            Console.WriteLine("PPPPPPP   3"); 
+                        }
                         else
                         {
                             Console.WriteLine("PPPPPPP   4");
-                            tescik = false;
+                            isTheSameValue = false;
                             break;
                         }
                     }
-                    if (tescik)
+                    if (isTheSameValue)
                     {
                         Console.WriteLine("PPPPPPP   5");
                         listaDlaRank.Add((i + 1));
@@ -1894,15 +1900,15 @@ namespace ElectreAp
 
         public void PrepareUpwardScore()
         {
-            FindMax(upwardRanking);
-            Exchange(maxim, 1);
+            FindHighestRankAndSetPointerValueToMiddleRank(upwardRanking);
+            ChangeRankingPlacesToUpwardStyle(highestRank, 1);
         }
 
 
         public void ShowSets(ref List<Double[,]> listaZbiorow, string name)
         {
 
-            // wypisywanie zbiorów zgodności dla każdego z kryterium do Output kompilatora i do TextArea
+            // wypisywanie zbiorów zgodności dla każdego colPointer kryterium do Output kompilatora i do TextArea
             for (int a = 0; a < listaZbiorow.Count; a++)
             {
                 Double[,] cos = listaZbiorow[a];
