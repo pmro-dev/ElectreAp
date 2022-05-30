@@ -162,36 +162,36 @@ namespace ElectreAp
                                 if (alternativesColumnIterator == 0 && rowIterator == 0)
                                 {
                                     // na początku obydwie porównywalne wartości są takie same
-                                    var1 = tabelaAlternatyw[rowIterator, columnAndCriteriaIterator];
+                                    var1 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                                     rowIteratorOfVar1 = rowIterator;
                                     columnIteratorOfVar1 = columnAndCriteriaIterator;
 
-                                    var2 = tabelaAlternatyw[rowIterator, columnAndCriteriaIterator];
+                                    var2 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                                 }
                                 else
                                 {
                                     // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli columnAndCriteriaIterator
-                                    // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
+                                    // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tableOfAlternatives[][]
                                     // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 alternativesColumnIterator kolumny LICZ1
-                                    var2 = tabelaAlternatyw[rowIterator, columnAndCriteriaIterator];
+                                    var2 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                                 }
                                 switch (modsList[columnAndCriteriaIterator])
                                 {
                                     // stałe - bez wzoru
                                     case -1:
-                                        threshold_Q = listaProguQB[columnAndCriteriaIterator];
-                                        threshold_P = listaProguPB[columnAndCriteriaIterator];
-                                        threshold_V = listaProguVB[columnAndCriteriaIterator];
+                                        threshold_Q = thresholdDataSet_QB[columnAndCriteriaIterator];
+                                        threshold_P = thresholdDataSet_PB[columnAndCriteriaIterator];
+                                        threshold_V = thresholdDataSet_VB[columnAndCriteriaIterator];
                                         break;
                                     // inverse    
                                     case 0:
-                                        if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var1, columnAndCriteriaIterator, 0); }
-                                        else { CalculateThreshold(listaWartProgKryt, var2, columnAndCriteriaIterator, 0); }
+                                        if (var1 < var2) { CalculateThreshold(criteriaThresholdValueDataSet, var1, columnAndCriteriaIterator, 0); }
+                                        else { CalculateThreshold(criteriaThresholdValueDataSet, var2, columnAndCriteriaIterator, 0); }
                                         break;
                                     // direct    
                                     case 1:
-                                        if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, columnAndCriteriaIterator, 1); }
-                                        else { CalculateThreshold(listaWartProgKryt, var1, columnAndCriteriaIterator, 1); }
+                                        if (var1 < var2) { CalculateThreshold(criteriaThresholdValueDataSet, var2, columnAndCriteriaIterator, 1); }
+                                        else { CalculateThreshold(criteriaThresholdValueDataSet, var1, columnAndCriteriaIterator, 1); }
                                         break;
                                 }
                                 //                      WEDŁUG ELECTRE III-IV ROYA #1
@@ -212,7 +212,7 @@ namespace ElectreAp
                             if (rowIteratorOfVar1 + 1 < numberOfAlternatives)
                             {
                                 rowIteratorOfVar1 = rowIteratorOfVar1 + 1;
-                                var1 = tabelaAlternatyw[rowIteratorOfVar1, columnIteratorOfVar1];
+                                var1 = tableOfAlternatives[rowIteratorOfVar1, columnIteratorOfVar1];
                             }
                         }
                         break;
@@ -230,44 +230,44 @@ namespace ElectreAp
                                 if (i == 0 && rowIterator == 0)
                                 {
                                     // na początku obydwie porównywalne wartości są takie same
-                                    var1 = tabelaAlternatyw[rowIterator, columnAndCriteriaIterator];
+                                    var1 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                                     rowIteratorOfVar1 = rowIterator;
                                     columnIteratorOfVar1 = columnAndCriteriaIterator;
 
-                                    var2 = tabelaAlternatyw[rowIterator, columnAndCriteriaIterator];
+                                    var2 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                                 }
                                 else
                                 {
                                     // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli columnAndCriteriaIterator
-                                    // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
+                                    // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tableOfAlternatives[][]
                                     // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 alternativesColumnIterator kolumny LICZ1
-                                    var2 = tabelaAlternatyw[rowIterator, columnAndCriteriaIterator];
+                                    var2 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                                 }
                                 switch (modsList[columnAndCriteriaIterator])
                                 {
                                     case -1:
-                                        threshold_Q = listaProguQB[columnAndCriteriaIterator];
-                                        threshold_P = listaProguPB[columnAndCriteriaIterator];
-                                        threshold_V = listaProguVB[columnAndCriteriaIterator];
+                                        threshold_Q = thresholdDataSet_QB[columnAndCriteriaIterator];
+                                        threshold_P = thresholdDataSet_PB[columnAndCriteriaIterator];
+                                        threshold_V = thresholdDataSet_VB[columnAndCriteriaIterator];
                                         break;
                                     case 0:
                                         if (var1 < var2)
                                         {
-                                            CalculateThreshold(listaWartProgKryt, var2, columnAndCriteriaIterator, 0);
+                                            CalculateThreshold(criteriaThresholdValueDataSet, var2, columnAndCriteriaIterator, 0);
                                         }
                                         else
                                         {
-                                            CalculateThreshold(listaWartProgKryt, var1, columnAndCriteriaIterator, 0);
+                                            CalculateThreshold(criteriaThresholdValueDataSet, var1, columnAndCriteriaIterator, 0);
                                         }
                                         break;
                                     case 1:
                                         if (var1 < var2)
                                         {
-                                            CalculateThreshold(listaWartProgKryt, var1, columnAndCriteriaIterator, 1);
+                                            CalculateThreshold(criteriaThresholdValueDataSet, var1, columnAndCriteriaIterator, 1);
                                         }
                                         else
                                         {
-                                            CalculateThreshold(listaWartProgKryt, var2, columnAndCriteriaIterator, 1);
+                                            CalculateThreshold(criteriaThresholdValueDataSet, var2, columnAndCriteriaIterator, 1);
                                         }
                                         break;
                                 }
@@ -291,7 +291,7 @@ namespace ElectreAp
                             if (rowIteratorOfVar1 + 1 < numberOfAlternatives)
                             {
                                 rowIteratorOfVar1 = rowIteratorOfVar1 + 1;
-                                var1 = tabelaAlternatyw[rowIteratorOfVar1, columnIteratorOfVar1];
+                                var1 = tableOfAlternatives[rowIteratorOfVar1, columnIteratorOfVar1];
                             }
                         }
                         break;
@@ -311,160 +311,154 @@ namespace ElectreAp
             double var2 = 0;
             double var1 = 0;
             // rowIteratorOfVar1 alternativesColumnIterator columnIteratorOfVar1 są to współrzędne odpowiednio wiersza alternativesColumnIterator kolumny zmiennej var1
-            int y1 = 0;
-            int z1 = 0;
+            int rowIteratorOfVar1 = 0;
+            int columnIteratorOfVar1 = 0;
 
             /* columnAndCriteriaIterator (poruszanie się po kolumnach / kryteriach)*/
-            for (int licz1 = 0; licz1 < numberOfCriterias; licz1++)
+            for (int columnAndCriteriaIterator = 0; columnAndCriteriaIterator < numberOfCriterias; columnAndCriteriaIterator++)
             {
                 /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości */
-                Double[,] matrixKryterium = new double[numberOfAlternatives, numberOfAlternatives];
+                Double[,] discordanceSet = new double[numberOfAlternatives, numberOfAlternatives];
                 // sprawdzamy czy kierunek rosnący
-                if (listOfDirections[licz1] == 1)
+                if (listOfDirections[columnAndCriteriaIterator] == 1)
                 {
                     // poruszanie się po kolumnach alternatyw
                     for (int i = 0; i < numberOfAlternatives; i++)
                     {
                         /* rowIterator (poruszanie się po wierszach) */
-                        for (int licz2 = 0; licz2 < numberOfAlternatives; licz2++)
+                        for (int rowIterator = 0; rowIterator < numberOfAlternatives; rowIterator++)
                         {
-                            if (i == 0 && licz2 == 0)
+                            if (i == 0 && rowIterator == 0)
                             {
                                 // na początku obydwie porównywalne wartości są takie same
-                                var1 = tabelaAlternatyw[licz2, licz1];
-                                y1 = licz2;
-                                z1 = licz1;
-                                var2 = tabelaAlternatyw[licz2, licz1];
+                                var1 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
+                                rowIteratorOfVar1 = rowIterator;
+                                columnIteratorOfVar1 = columnAndCriteriaIterator;
+                                var2 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                             }
                             else
                             {
                                 // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli columnAndCriteriaIterator
-                                // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
+                                // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tableOfAlternatives[][]
                                 // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 alternativesColumnIterator kolumny LICZ1
-                                var2 = tabelaAlternatyw[licz2, licz1];
+                                var2 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                             }
 
-                            switch (modsList[licz1])
+                            switch (modsList[columnAndCriteriaIterator])
                             {
                                 case -1:
-                                    threshold_Q = listaProguQB[licz1];
-                                    threshold_P = listaProguPB[licz1];
-                                    threshold_V = listaProguVB[licz1];
+                                    threshold_Q = thresholdDataSet_QB[columnAndCriteriaIterator];
+                                    threshold_P = thresholdDataSet_PB[columnAndCriteriaIterator];
+                                    threshold_V = thresholdDataSet_VB[columnAndCriteriaIterator];
                                     break;
                                 case 0:
-                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var1, licz1, 0); }
-                                    else { CalculateThreshold(listaWartProgKryt, var2, licz1, 0); }
+                                    if (var1 < var2) { CalculateThreshold(criteriaThresholdValueDataSet, var1, columnAndCriteriaIterator, 0); }
+                                    else { CalculateThreshold(criteriaThresholdValueDataSet, var2, columnAndCriteriaIterator, 0); }
                                     break;
                                 case 1:
-                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, licz1, 1); }
-                                    else { CalculateThreshold(listaWartProgKryt, var1, licz1, 1); }
+                                    if (var1 < var2) { CalculateThreshold(criteriaThresholdValueDataSet, var2, columnAndCriteriaIterator, 1); }
+                                    else { CalculateThreshold(criteriaThresholdValueDataSet, var1, columnAndCriteriaIterator, 1); }
                                     break;
                             }
 
-                            if (listaWartProgKryt[licz1, 2, 0] == 999999999.9)
+                            if (criteriaThresholdValueDataSet[columnAndCriteriaIterator, 2, 0] == 999999999.9)
                             {
-                                matrixKryterium[i, licz2] = 0;
+                                discordanceSet[i, rowIterator] = 0;
                             }
                             //                  WEDŁUG ROYA
                             else if (var2 <= var1 + threshold_P)
                             {
-                                matrixKryterium[i, licz2] = 0;
+                                discordanceSet[i, rowIterator] = 0;
                             }
                             else if (threshold_P < var2 - var1 && var2 - var1 < threshold_V)
                             {
-                                //  Console.WriteLine("var2 - var1 - threshold_P / threshold_V - threshold_P");
-                                //  Console.WriteLine(var2 + " - " + var1 + " - " + threshold_P + " / " + threshold_V + " - " + threshold_P);
-                                double suma = ((var2 - var1 - threshold_P) / (threshold_V - threshold_P));
-                                matrixKryterium[i, licz2] = Math.Round(suma, decimalPlacesValue);
-                                //suma = 0;
+                                double sumTemp = ((var2 - var1 - threshold_P) / (threshold_V - threshold_P));
+                                discordanceSet[i, rowIterator] = Math.Round(sumTemp, decimalPlacesValue);
                             }
                             else if (var2 >= var1 + threshold_V)
                             {
-                                matrixKryterium[i, licz2] = 1;
+                                discordanceSet[i, rowIterator] = 1;
                             }
                         }
 
-                        if (y1 + 1 < numberOfAlternatives)
+                        if (rowIteratorOfVar1 + 1 < numberOfAlternatives)
                         {
-                            y1 = y1 + 1;
-                            var1 = tabelaAlternatyw[y1, z1];
+                            rowIteratorOfVar1 = rowIteratorOfVar1 + 1;
+                            var1 = tableOfAlternatives[rowIteratorOfVar1, columnIteratorOfVar1];
                         }
                     }
                 }
                 // sprawdzamy czy kierunek malejący
-                else if (listOfDirections[licz1] == 0)
+                else if (listOfDirections[columnAndCriteriaIterator] == 0)
                 {
                     for (int i = 0; i < numberOfAlternatives; i++)
                     {
                         /* rowIterator (poruszanie się po wierszach) */
-                        for (int licz2 = 0; licz2 < numberOfAlternatives; licz2++)
+                        for (int rowIterator = 0; rowIterator < numberOfAlternatives; rowIterator++)
                         {
-                            if (i == 0 && licz2 == 0)
+                            if (i == 0 && rowIterator == 0)
                             {
                                 // na początku obydwie porównywalne wartości są takie same
-                                var1 = tabelaAlternatyw[licz2, licz1];
-                                y1 = licz2;
-                                z1 = licz1;
-                                var2 = tabelaAlternatyw[licz2, licz1];
+                                var1 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
+                                rowIteratorOfVar1 = rowIterator;
+                                columnIteratorOfVar1 = columnAndCriteriaIterator;
+                                var2 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                             }
                             else
                             {
                                 // w kolejnych krokach pierwsza wartość zmienia się dopiero przy pętli columnAndCriteriaIterator
-                                // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tabelaAlternatyw[][]
+                                // a druga wartość właśnie teraz w tej pętli - jest to poruszanie się po tableOfAlternatives[][]
                                 // dla danej tabeli będzie to wartość colPointer wiersza LICZ2 alternativesColumnIterator kolumny LICZ1
-                                var2 = tabelaAlternatyw[licz2, licz1];
+                                var2 = tableOfAlternatives[rowIterator, columnAndCriteriaIterator];
                             }
 
-                            switch (modsList[licz1])
+                            switch (modsList[columnAndCriteriaIterator])
                             {
                                 case -1:
-                                    threshold_Q = listaProguQB[licz1];
-                                    threshold_P = listaProguPB[licz1];
-                                    threshold_V = listaProguVB[licz1];
+                                    threshold_Q = thresholdDataSet_QB[columnAndCriteriaIterator];
+                                    threshold_P = thresholdDataSet_PB[columnAndCriteriaIterator];
+                                    threshold_V = thresholdDataSet_VB[columnAndCriteriaIterator];
                                     break;
                                 case 0:
-                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, licz1, 0); }
-                                    else { CalculateThreshold(listaWartProgKryt, var1, licz1, 0); }
+                                    if (var1 < var2) { CalculateThreshold(criteriaThresholdValueDataSet, var2, columnAndCriteriaIterator, 0); }
+                                    else { CalculateThreshold(criteriaThresholdValueDataSet, var1, columnAndCriteriaIterator, 0); }
                                     break;
                                 case 1:
-                                    if (var1 < var2) { CalculateThreshold(listaWartProgKryt, var2, licz1, 1); }
-                                    else { CalculateThreshold(listaWartProgKryt, var1, licz1, 1); }
+                                    if (var1 < var2) { CalculateThreshold(criteriaThresholdValueDataSet, var2, columnAndCriteriaIterator, 1); }
+                                    else { CalculateThreshold(criteriaThresholdValueDataSet, var1, columnAndCriteriaIterator, 1); }
                                     break;
                             }
 
-                            if (listaWartProgKryt[licz1, 2, 0] == 999999999.9)
+                            if (criteriaThresholdValueDataSet[columnAndCriteriaIterator, 2, 0] == 999999999.9)
                             {
-                                matrixKryterium[i, licz2] = 0;
+                                discordanceSet[i, rowIterator] = 0;
                             }
                             //                  WEDŁUG ROYA
                             else if ((var1 - var2) <= threshold_P)
                             {
-                                // Console.WriteLine(var1 + " - " + var2 + " <= " + threshold_P);
-                                matrixKryterium[i, licz2] = 0;
+                                discordanceSet[i, rowIterator] = 0;
                             }
                             else if (var1 - threshold_V < var2 && var2 < var1 - threshold_P)
                             {
-                                //  Console.WriteLine("threshold_P < var1 - var2 && var1 - var2 < threshold_V");
-                                //  Console.WriteLine(threshold_P + " < " + var1 + " - " + var2 + " && " + var1 + " - " + var2 + " < " + threshold_V);
                                 double suma = ((var1 - var2 - threshold_P) / (threshold_V - threshold_P));
-                                matrixKryterium[i, licz2] = Math.Round(suma, decimalPlacesValue);
+                                discordanceSet[i, rowIterator] = Math.Round(suma, decimalPlacesValue);
                                 suma = 0;
                             }
                             else if ((var1 - var2) >= threshold_V)
                             {
-                                matrixKryterium[i, licz2] = 1;
+                                discordanceSet[i, rowIterator] = 1;
                             }
                         }
 
-                        if (y1 + 1 < numberOfAlternatives)
+                        if (rowIteratorOfVar1 + 1 < numberOfAlternatives)
                         {
-                            y1 = y1 + 1;
-                            var1 = tabelaAlternatyw[y1, z1];
+                            rowIteratorOfVar1 = rowIteratorOfVar1 + 1;
+                            var1 = tableOfAlternatives[rowIteratorOfVar1, columnIteratorOfVar1];
                         }
                     }
                 }
 
-                listaZbiorowNieZgodnosci.Add(matrixKryterium);
+                discordanceDataSets.Add(discordanceSet);
             }
         }
 
@@ -515,16 +509,16 @@ namespace ElectreAp
 
         public void CreateOutrankingSets()
         {
-            //  Console.WriteLine("SPRAWDZAMY listaZbiorowNieZgodnosci.size() =" + listaZbiorowNieZgodnosci.Count);
-            for (int numerZbioru = 0; numerZbioru < listaZbiorowNieZgodnosci.Count; numerZbioru++)
+            //  Console.WriteLine("SPRAWDZAMY discordanceDataSets.size() =" + discordanceDataSets.Count);
+            for (int numerZbioru = 0; numerZbioru < discordanceDataSets.Count; numerZbioru++)
             {
                 /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości */
                 Double[,] matrixKryterium = new double[numberOfAlternatives, numberOfAlternatives];
-                for (int numerWiersza = 0; numerWiersza < listaZbiorowNieZgodnosci[numerZbioru].GetLength(0); numerWiersza++)
+                for (int numerWiersza = 0; numerWiersza < discordanceDataSets[numerZbioru].GetLength(0); numerWiersza++)
                 {
-                    for (int numerKolumny = 0; numerKolumny < listaZbiorowNieZgodnosci[numerZbioru].GetLength(1); numerKolumny++)
+                    for (int numerKolumny = 0; numerKolumny < discordanceDataSets[numerZbioru].GetLength(1); numerKolumny++)
                     {
-                        if (listaZbiorowNieZgodnosci[numerZbioru][numerWiersza, numerKolumny] > concordanceMatrix[numerWiersza, numerKolumny])
+                        if (discordanceDataSets[numerZbioru][numerWiersza, numerKolumny] > concordanceMatrix[numerWiersza, numerKolumny])
                         {
                             matrixKryterium[numerWiersza, numerKolumny] = 1;
                         }
@@ -735,7 +729,7 @@ namespace ElectreAp
 
             if (CboxNonConcordanceSetsChecked)
             {
-                ShowSets(ref listaZbiorowNieZgodnosci, "Niegodności");
+                ShowSets(ref discordanceDataSets, "Niegodności");
                 listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_rosn.PNG");
                 listOfPathsImages.Add(ps + "\\MathImg\\wspolczynnik_niezgodnosci_kryterium_mal.PNG");
             }
@@ -824,11 +818,11 @@ namespace ElectreAp
                 // uzupełnianie listy Progu V -> pobieranie wartości colPointer matrixa tabeli        
                 listaProguVA.Add(tabelaMatrix[5, z]);
                 // uzupełnianie listy Progu Q -> pobieranie wartości colPointer matrixa tabeli        
-                listaProguQB.Add(tabelaMatrix[6, z]);
+                thresholdDataSet_QB.Add(tabelaMatrix[6, z]);
                 // uzupełnianie listy Progu P -> pobieranie wartości colPointer matrixa tabeli        
-                listaProguPB.Add(tabelaMatrix[7, z]);
+                thresholdDataSet_PB.Add(tabelaMatrix[7, z]);
                 // uzupełnianie listy Progu V -> pobieranie wartości colPointer matrixa tabeli        
-                listaProguVB.Add(tabelaMatrix[8, z]);
+                thresholdDataSet_VB.Add(tabelaMatrix[8, z]);
             }
 
             // ShowList(listOfDirections, "K");
@@ -874,26 +868,26 @@ namespace ElectreAp
 
                         // uzupełnianie listy Progu Q -> pobieranie wartości colPointer matrixa tabeli        
                         for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
-                            listaProguQB.Add(tabelaMatrix[6, colPointer]);
+                            thresholdDataSet_QB.Add(tabelaMatrix[6, colPointer]);
                         }
 
-                     //   ShowList(listaProguQB, "QB");
+                     //   ShowList(thresholdDataSet_QB, "QB");
 
 
                         // uzupełnianie listy Progu P -> pobieranie wartości colPointer matrixa tabeli        
                         for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
-                            listaProguPB.Add(tabelaMatrix[7, colPointer]);
+                            thresholdDataSet_PB.Add(tabelaMatrix[7, colPointer]);
                         }
 
-                       // ShowList(listaProguPB, "PB");
+                       // ShowList(thresholdDataSet_PB, "PB");
 
 
                         // uzupełnianie listy Progu V -> pobieranie wartości colPointer matrixa tabeli        
                         for (int colPointer = 0; colPointer < numberOfCriterias; colPointer++) {
-                            listaProguVB.Add(tabelaMatrix[8, colPointer]);
+                            thresholdDataSet_VB.Add(tabelaMatrix[8, colPointer]);
                         }*/
 
-            // ShowList(listaProguVB, "VB");
+            // ShowList(thresholdDataSet_VB, "VB");
 
 
 
@@ -1007,9 +1001,9 @@ namespace ElectreAp
                     }
                     else
                     {
-                        for (int numerZbioru = 0; numerZbioru < listaZbiorowNieZgodnosci.Count; numerZbioru++)
+                        for (int numerZbioru = 0; numerZbioru < discordanceDataSets.Count; numerZbioru++)
                         {
-                            if (listaZbiorowNieZgodnosci[numerZbioru][numerWiersza, numerKolumny] >= concordanceMatrix[numerWiersza, numerKolumny])
+                            if (discordanceDataSets[numerZbioru][numerWiersza, numerKolumny] >= concordanceMatrix[numerWiersza, numerKolumny])
                             {
                                 // zapobiegnięcie dzielenia przez 0
                                 if ((1 - concordanceMatrix[numerWiersza, numerKolumny]) == 0)
@@ -1018,7 +1012,7 @@ namespace ElectreAp
                                 }
                                 else
                                 {
-                                    zmiennaPomocnicza = ((1 - listaZbiorowNieZgodnosci[numerZbioru][numerWiersza, numerKolumny]) / (1 - concordanceMatrix[numerWiersza, numerKolumny]));
+                                    zmiennaPomocnicza = ((1 - discordanceDataSets[numerZbioru][numerWiersza, numerKolumny]) / (1 - concordanceMatrix[numerWiersza, numerKolumny]));
                                 }
                                 iloczyn = iloczyn * zmiennaPomocnicza;
                             }
@@ -1945,21 +1939,21 @@ namespace ElectreAp
         public void CreateOutrankingSets(ref List<double[,]> listOfOutrankingSets)
         {
 
-            Console.WriteLine("SPRAWDZAMY listaZbiorowNieZgodnosci.size() =" + listaZbiorowNieZgodnosci.Count);
+            Console.WriteLine("SPRAWDZAMY listaZbiorowNieZgodnosci.size() =" + discordanceDataSets.Count);
 
-            for (int numerZbioru = 0; numerZbioru < listaZbiorowNieZgodnosci.Count; numerZbioru++)
+            for (int numerZbioru = 0; numerZbioru < discordanceDataSets.Count; numerZbioru++)
             {
 
                 /* tworzymy nowy obiekt matrixa (wymiar zależy od zadeklarowanej liczby alternatyw), do którego będą zapisywane nowe wartości */
                 Double[,] matrixKryterium = new Double[numberOfAlternatives, numberOfAlternatives];
 
-                for (int numerWiersza = 0; numerWiersza < listaZbiorowNieZgodnosci[numerZbioru].GetLength(1); numerWiersza++)
+                for (int numerWiersza = 0; numerWiersza < discordanceDataSets[numerZbioru].GetLength(1); numerWiersza++)
                 {
 
-                    for (int numerKolumny = 0; numerKolumny < listaZbiorowNieZgodnosci[numerZbioru].GetLength(0); numerKolumny++)
+                    for (int numerKolumny = 0; numerKolumny < discordanceDataSets[numerZbioru].GetLength(0); numerKolumny++)
                     {
 
-                        if (listaZbiorowNieZgodnosci[numerZbioru][numerKolumny, numerWiersza] > concordanceMatrix[numerKolumny, numerWiersza])
+                        if (discordanceDataSets[numerZbioru][numerKolumny, numerWiersza] > concordanceMatrix[numerKolumny, numerWiersza])
                         {
                             matrixKryterium[numerKolumny, numerWiersza] = 1;
                         }

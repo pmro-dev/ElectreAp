@@ -17,16 +17,16 @@ namespace ElectreAp
         protected List<Double> listOfDirections = new List<Double>();
         protected List<Int32> modsList = new List<Int32>();
         protected List<Double> listaWagW = new List<Double>();
-        protected List<Double> listaProguQB = new List<Double>();
-        protected List<Double> listaProguPB = new List<Double>();
-        protected List<Double> listaProguVB = new List<Double>();
+        protected List<Double> thresholdDataSet_QB = new List<Double>();
+        protected List<Double> thresholdDataSet_PB = new List<Double>();
+        protected List<Double> thresholdDataSet_VB = new List<Double>();
         protected List<Double> listaProguQA = new List<Double>();
         protected List<Double> listaProguPA = new List<Double>();
         protected List<Double> listaProguVA = new List<Double>();
         protected List<Double[,]> listaZbiorowZgodnosci = new List<Double[,]>();
         public List<Double[,]> ListaZbiorowZgodnosci { get { return listaZbiorowZgodnosci; } }
-        protected List<Double[,]> listaZbiorowNieZgodnosci = new List<Double[,]>();
-        public List<Double[,]> ListaZbiorowNieZgodnosci { get { return listaZbiorowNieZgodnosci; } }
+        protected List<Double[,]> discordanceDataSets = new List<Double[,]>();
+        public List<Double[,]> ListaZbiorowNieZgodnosci { get { return discordanceDataSets; } }
         protected List<Double[,]> listaZbiorowPrzewyzszania = new List<Double[,]>();
         public List<Double[,]> ListaZbiorowPrzewyzszania { get { return listaZbiorowPrzewyzszania; } }
         protected List<Double[,]> listaZstepMacierzyOcen = new List<Double[,]>();
@@ -76,7 +76,7 @@ namespace ElectreAp
         protected Double[,] concordanceMatrix;
         public Double[,] ConcordanceMatrix { get { return concordanceMatrix; } }
         protected Double[,] macierzOcen;
-        protected Double[,] tabelaAlternatyw;
+        protected Double[,] tableOfAlternatives;
         protected Double[,] tabZstep;
         public Double[,] TabZstep { get { return tabZstep; } set { tabZstep = value; } }
         protected Double[,] tabWstep;
@@ -93,8 +93,8 @@ namespace ElectreAp
 
         public Double[,] TabelaMatrix { get { return tabelaMatrix; } set { tabelaMatrix = value; } }
 
-        protected Double[,,] listaWartProgKryt;
-        public Double[,,] ListaWartProgKryt { get { return listaWartProgKryt; } set { listaWartProgKryt = value; } }
+        protected Double[,,] criteriaThresholdValueDataSet;
+        public Double[,,] ListaWartProgKryt { get { return criteriaThresholdValueDataSet; } set { criteriaThresholdValueDataSet = value; } }
 
         protected double threshold_Q = -1;
         protected double threshold_P = -1;
@@ -143,7 +143,7 @@ namespace ElectreAp
 
         public void CreateMatrixForAlternativeData(int numberOfAlternatives, int numberOfCriterias)
         {
-            tabelaAlternatyw = new Double[numberOfAlternatives, numberOfCriterias];
+            tableOfAlternatives = new Double[numberOfAlternatives, numberOfCriterias];
 
             // tworzenie matrixa dla wartości samych alternatyw
             // dane pobierane są z tabeli (wartości podane przez użytkownika do tabeli)
@@ -155,7 +155,7 @@ namespace ElectreAp
 
             for (int y = 9; y < numberOfAlternatives + 9; y++) {
                 for (int z = 0; z < numberOfCriterias; z++) {
-                    tabelaAlternatyw[licznik, z] = tabelaMatrix[y, z];
+                    tableOfAlternatives[licznik, z] = tabelaMatrix[y, z];
                     Console.Write(tabelaMatrix[y, z] + " ");
                 }
                 licznik++;
@@ -166,7 +166,7 @@ namespace ElectreAp
 
             for (int y = 0; y < numberOfAlternatives; y++) {
                 for (int z = 0; z < numberOfCriterias; z++) {
-                    Console.Write(tabelaAlternatyw[y, z] + " ");
+                    Console.Write(tableOfAlternatives[y, z] + " ");
                 }
                 Console.WriteLine("\n");
             }
@@ -206,19 +206,19 @@ namespace ElectreAp
         public async Task<double[,,]> CreateListOfValueThresholdsAsync(int numberOfCriterias, Double[,] matrix)
         {
 
-            listaWartProgKryt = new Double[numberOfCriterias, 3, 2];
+            criteriaThresholdValueDataSet = new Double[numberOfCriterias, 3, 2];
 
             for (int i = 0; i < matrix.GetLength(1); i++)
             {
-                listaWartProgKryt[i, 0, 1] = matrix[6, i];
-                listaWartProgKryt[i, 1, 1] = matrix[7, i];
-                listaWartProgKryt[i, 2, 1] = matrix[8, i];
-                listaWartProgKryt[i, 0, 0] = matrix[3, i];
-                listaWartProgKryt[i, 1, 0] = matrix[4, i];
-                listaWartProgKryt[i, 2, 0] = matrix[5, i];
+                criteriaThresholdValueDataSet[i, 0, 1] = matrix[6, i];
+                criteriaThresholdValueDataSet[i, 1, 1] = matrix[7, i];
+                criteriaThresholdValueDataSet[i, 2, 1] = matrix[8, i];
+                criteriaThresholdValueDataSet[i, 0, 0] = matrix[3, i];
+                criteriaThresholdValueDataSet[i, 1, 0] = matrix[4, i];
+                criteriaThresholdValueDataSet[i, 2, 0] = matrix[5, i];
             }
 
-            return listaWartProgKryt;
+            return criteriaThresholdValueDataSet;
         }
 
 
