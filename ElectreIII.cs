@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ElectreAp;
-/*using static ElectreAp.Tables;*/
 
 namespace ElectreAp
 {
@@ -114,53 +113,6 @@ namespace ElectreAp
                     progV = Math.Round((table[i, 2, 0] * value + table[i, 2, 1]), miejscPoPrzecinku);
                     // Console.WriteLine(table[i,2,0] + " * " + value + " + " + table[i,2,1]);
                     break;
-            }
-        }
-
-
-        public void CheckingIsThereThisSameOptions(int y)
-        {
-            if (y < punktacjaOpcjiZmienna.GetLength(1) - 1)
-            {
-                if (Int32.Parse(punktacjaOpcjiZmienna[1, y]) == Int32.Parse(punktacjaOpcjiZmienna[1, y + 1]))
-                {
-                    if (CboxRankingsChecked)
-                    {
-                        Console.WriteLine(punktacjaOpcjiZmienna[0, y] + " ");
-                    }
-                    y++;
-                    CheckingIsThereThisSameOptions(y);
-                }
-                else
-                {
-                    if (CboxRankingsChecked)
-                    {
-                        Console.WriteLine(punktacjaOpcjiZmienna[0, y] + " ");
-                    }
-                    y++;
-                    CheckingIsThereThisSameOptions(y);
-                }
-            }
-            else if (y == punktacjaOpcjiZmienna.GetLength(1) - 1)
-            {
-                if (Int32.Parse(punktacjaOpcjiZmienna[1, y - 1]) == Int32.Parse(punktacjaOpcjiZmienna[1, y]))
-                {
-                    if (CboxRankingsChecked)
-                    {
-                        Console.WriteLine(punktacjaOpcjiZmienna[0, y] + " ");
-                    }
-                }
-                else
-                {
-                    if (CboxRankingsChecked)
-                    {
-                        Console.WriteLine(punktacjaOpcjiZmienna[0, y] + " ");
-                    }
-                }
-            }
-            if (CboxRankingsChecked)
-            {
-                Console.WriteLine("\n\n");
             }
         }
 
@@ -414,7 +366,7 @@ namespace ElectreAp
                                 //  Console.WriteLine(var2 + " - " + var1 + " - " + progP + " / " + progV + " - " + progP);
                                 double suma = ((var2 - var1 - progP) / (progV - progP));
                                 matrixKryterium[i, licz2] = Math.Round(suma, miejscPoPrzecinku);
-                                suma = 0;
+                                //suma = 0;
                             }
                             else if (var2 >= var1 + progV)
                             {
@@ -524,37 +476,12 @@ namespace ElectreAp
                 listaAlternatyw.Add(listaKtoZKimPrzegral);
             }
 
-            // wypisywanie powyższej listy
-            /*            for (int i = 1; i < listaAlternatyw.Count + 1; i++) {
-                            Console.WriteLine("A" + i + " ");
-                            for (int j = 0; j < listaAlternatyw[i - 1].Count; j++) {
-                                if (!listaAlternatyw[i - 1].Any()) {
-                                    Console.Write(" NULL");
-                                }
-                                else {
-                                    Console.Write("a" + listaAlternatyw[i - 1][j]+ " ");
-                                }
-                            }
-                            Console.WriteLine();
-                        }*/
-
             listaRank = new List<List<Int32>>();
-
             listaAltWRank = new List<Int32>();
             listaAltWRankNieSort = new List<Int32>();
             listaChwilowa = new List<Int32>();
 
             FindMin();
-
-            /*            Console.WriteLine("RANKING FINALNY:");
-                        for (int i = 0; i < listaRank.Count; i++)
-                        {
-                            for (int j = 0; j < listaRank[i].Count; j++)
-                            {
-                                Console.Write("A" + listaRank[i][j] + " ");
-                            }
-                            Console.WriteLine();
-                        }*/
             ChangeRankListToTable(listaRank);
 
             if (CboxRankingsChecked)
@@ -649,19 +576,11 @@ namespace ElectreAp
 
         public void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref Double[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, TestOperationDelegate testOperationDelegate)
         {
-
-            /*            Console.WriteLine("MIEEEEEEEEEEEEEEEEEJSCA");
-                        for (int k = 0; k < topDownRanking.GetLength(1); k++) {
-                            Console.Write(topDownRanking[1, k] + " ");
-                        }
-                        Console.WriteLine();*/
-
             tableOfDistillation = new double[numberOfAlternatives, numberOfAlternatives];
             for (int i = 0; i < tableOfDistillation.GetLength(0); i++)
             {
                 for (int j = 0; j < tableOfDistillation.GetLength(1); j++)
                 {
-                    //if (Int32.Parse(placesOfOptionsAfterDistillation[1, i]) < Int32.Parse(placesOfOptionsAfterDistillation[1, j])) {
                     if (testOperationDelegate(i, j, placesOfOptionsAfterDistillation))
                     {
                         tableOfDistillation[i, j] = valueX;
@@ -715,7 +634,6 @@ namespace ElectreAp
                     // wybór zbioru zgodnosci dla i-tego kryterium
                     for (int i = 0; i < listaZbiorowZgodnosci.Count; i++)
                     {
-                        //sumOfQuotients = sumOfQuotients + (listaWagW[i] * (double)listaZbiorowZgodnosci[i].GetValue(k, j));
                         sumOfQuotients = sumOfQuotients + (listaWagW[i] * (double)listaZbiorowZgodnosci[i][k, j]);
 
                         // dopisane
@@ -748,8 +666,6 @@ namespace ElectreAp
             }
         }
 
-
-        string pathMathImg;
 
         public void DoCalculations()
         {
@@ -787,7 +703,6 @@ namespace ElectreAp
             CreateSumTableOfDistillations(ref finalRankingMatrix);
             //ShowTabOfDistillation(ref finalRankingMatrix);
 
-            // zakomentowalem wyywołanie poniższego bo FindMin wywala błąd
             CreateFinalRanking(ref finalRankingMatrix);
         }
 
@@ -845,12 +760,12 @@ namespace ElectreAp
 
             if (CboxTopDownDistillationChecked)
             {
-                //ShowDistillation("ZSTĘPUJĄCA", topDownRanking);
+                ShowDistillation("ZSTĘPUJĄCA", topDownRanking);
             }
 
             if (CboxUpwardDistillationChecked)
             {
-                //ShowDistillation("WSTĘPUJĄCA", upwardRanking);
+                ShowDistillation("WSTĘPUJĄCA", upwardRanking);
             }
 
             if (CboxUpwardDistillationChecked || CboxTopDownDistillationChecked)
@@ -868,11 +783,11 @@ namespace ElectreAp
                 PreparedDataTable(finalRankingMatrix, "Finalna Macierz Zależności", lul);
             }
 
-            /*            if (CboxRatingMatrixChecked)
-                        { // , workingListOfNumbersOfOptions
-                            foreach (Double[,] macierz in listaZstepMacierzyOcen) { PreparedDataTable(macierz, "Macierz Ocen " + listaZstepMacierzyOcen.Count + " (D.Z.)"); }
-                            foreach (Double[,] macierz in listaWstepMacierzyOcen) { PreparedDataTable(macierz, "Macierz Ocen " + listaWstepMacierzyOcen.Count + " (D.W.)"); }
-                        }*/
+            //if (CboxRatingMatrixChecked)
+            //{ // , workingListOfNumbersOfOptions
+            //    foreach (Double[,] macierz in listaZstepMacierzyOcen) { PreparedDataTable(macierz, "Macierz Ocen " + listaZstepMacierzyOcen.Count + " (D.Z.)"); }
+            //    foreach (Double[,] macierz in listaWstepMacierzyOcen) { PreparedDataTable(macierz, "Macierz Ocen " + listaWstepMacierzyOcen.Count + " (D.W.)"); }
+            //}
         }
 
         public void ShowList<T>(List<T> list, string name)
@@ -1664,7 +1579,6 @@ namespace ElectreAp
 
         public void PreparedDataTable<T>(ref T[,] matrixData, string namePage)
         {
-            Console.WriteLine("LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             TabPage tabPage = new TabPage();
             tabPage.Text = namePage;
             DataGridView dataGridView = new DataGridView();
@@ -1713,8 +1627,6 @@ namespace ElectreAp
                         Console.WriteLine("SPRAWDZAMY matrixDATA = " + matrixData[y, z - 1].ToString());
                         string item = matrixData[y, z - 1].ToString();
                         row.Add(item);
-                        /*                        Console.WriteLine("WARTOSC MATRIXA = " + matrixData[y, z - 1]);
-                                                Console.WriteLine("ROW = " + row[z]);*/
                     }
                 }
                 dataTable.Rows.Add(row.ToArray<string>());
@@ -1734,8 +1646,6 @@ namespace ElectreAp
                         tabControl_LeaderBoards.TabPages.Add(tabPage);*/
         }
 
-
-        Double zmiennaHelp;
 
         public void PreparedDataTable(Double[,] matrixData, string namePage, List<Int32> listaNazwOpcji)
         {
@@ -1799,7 +1709,6 @@ namespace ElectreAp
                     {
                         if (bool2)
                         {
-                            zmiennaHelp = matrixData[y, z - 1];
                             switch (matrixData[y, z - 1])
                             {
                                 case -1.0:
@@ -2018,31 +1927,12 @@ namespace ElectreAp
             {
                 Double[,] cos = listaZbiorow[a];
                 PreparedDataTable(ref cos, "Zbior " + name + (a + 1));
-                /*                Console.WriteLine("Zbiór {0}" + a, name);
-
-                                for (int b = 0; b < numberOfAlternatives; b++) {
-                                    for (int c = 0; c < numberOfAlternatives; c++) {
-                                        Console.WriteLine(listaZbiorow[a][b, c] + " | ");
-                                    }
-                                    Console.WriteLine();
-                                }
-                                Console.WriteLine("\n\n");*/
             }
         }
 
 
         public void ShowMatrix(ref Double[,] matrix, string name)
         {
-
-            /*            Console.WriteLine("{0} Matrix", name);
-
-                        for (int numerWiersza = 0; numerWiersza < matrix.GetLength(0); numerWiersza++) {
-                            for (int numerKolumny = 0; numerKolumny < matrix.GetLength(1); numerKolumny++) {
-                                Console.WriteLine(matrix[numerWiersza, numerKolumny] + " | ");
-                            }
-                            Console.WriteLine();
-                        }
-                        Console.WriteLine("\n\n");*/
             PreparedDataTable(matrix, "Macierz " + name, lul);
         }
 

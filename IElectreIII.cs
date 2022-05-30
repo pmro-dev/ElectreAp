@@ -21,7 +21,6 @@ namespace ElectreAp
         void DoStepSeventh(Double[,] ratingMatrix, double qualificationOfTheBestOption, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
         void FindMin();
         void CreateFinalRanking(ref Double[,] tabSum);
-        void CheckingIsThereThisSameOptions(int y);
         void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref double[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, ElectreIII.TestOperationDelegate testOperation);
         void CreateSumTableOfDistillations(ref Double[,] tabSum);
         void FindMax(double[,] rankingOfOptionsAfterDistillation);
