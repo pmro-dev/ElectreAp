@@ -19,8 +19,8 @@ namespace ElectreAp
         void DoStepFifth(Double lastDelta, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
         void DoStepSixth(Double[,] ratingMatrix, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
         void DoStepSeventh(Double[,] ratingMatrix, double qualificationOfTheBestOption, Double[,] workingMatrix, Boolean typeOfDistillation, List<Int32> workingListOfNumbersOfOptions);
-        void FindMin();
-        void CreateFinalRanking(ref Double[,] tabSum);
+        void FindMin(List<List<Int32>> listaRank);
+        void CreateFinalRanking(ref Double[,] finalRankingMatrix);
         void CreateTabOfDistillation(ref double[,] tableOfDistillation, ref double[,] placesOfOptionsAfterDistillation, int valueX, int valueY, int valueZ, ElectreIII.TestOperationDelegate testOperation);
         void CreateSumTableOfDistillations(ref Double[,] tabSum);
         void FindHighestRankAndSetPointerValueToMiddleRank(double[,] rankingOfOptionsAfterDistillation);

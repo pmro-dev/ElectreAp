@@ -463,29 +463,28 @@ namespace ElectreAp
         }
 
 
-        public void CreateFinalRanking(ref Double[,] tabSum)
+        public void CreateFinalRanking(ref Double[,] finalRankingMatrix)
         {
-            listaAlternatyw = new List<List<Int32>>();
+            alternativesWithResultsOfDuels = new List<List<Int32>>();
             // budowanie listy kto colPointer kim przegrywa
-            for (int i = 0; i < tabSum.GetLength(0); i++)
+            for (int i = 0; i < finalRankingMatrix.GetLength(0); i++)
             {
-                listaKtoZKimPrzegral = new List<Int32>();
-                for (int j = 0; j < tabSum.GetLength(1); j++)
+                resultsOfTheDuelsOfVariants = new List<Int32>();
+                for (int j = 0; j < finalRankingMatrix.GetLength(1); j++)
                 {
-                    if (tabSum[i, j] == -1)
+                    if (finalRankingMatrix[i, j] == -1)
                     {
-                        listaKtoZKimPrzegral.Add((j + 1));
+                        resultsOfTheDuelsOfVariants.Add((j + 1));
                     }
                 }
-                listaAlternatyw.Add(listaKtoZKimPrzegral);
+                alternativesWithResultsOfDuels.Add(resultsOfTheDuelsOfVariants);
             }
 
-            listaRank = new List<List<Int32>>();
-            listaAltWRank = new List<Int32>();
-            listaAltWRankNieSort = new List<Int32>();
-            listaChwilowa = new List<Int32>();
+            List<List<Int32>> listaRank = new List<List<Int32>>();
+            alternativesInRanking = new List<Int32>();
+            alternativesInRankingNotSorted = new List<Int32>();
 
-            FindMin();
+            FindMin(listaRank);
             ChangeRankListToTable(listaRank);
 
             if (CboxRankingsChecked)
@@ -1263,15 +1262,6 @@ namespace ElectreAp
         {
             Console.WriteLine("Krok 7");
 
-            /*            Console.Write("workingListOfNumbersOfOptions = ");
-                        //int iter = 0;
-                        foreach (int item in workingListOfNumbersOfOptions) { 
-                            Console.Write(item);
-            *//*                ratingMatrix[0, iter] = workingListOfNumbersOfOptions[iter];
-                            iter++;*//*
-                        }
-                        Console.WriteLine();*/
-
             int liczbaNajlepszychOpcji = 0;
             listaNumerowZNazwNajlepszychOpcjiWewnatrz = new List<Int32>();
             Console.WriteLine("rozmiar listaNumerowZNazwOpcji PRZED = " + workingListOfNumbersOfOptions.Count);
@@ -1324,12 +1314,6 @@ namespace ElectreAp
             // WYPISYWANIE ZAWARTOSCI listaNumerowZNazwNajlepszychOpcjiWewnatrz
             Console.WriteLine("listaNumerowZNazwNajlepszychOpcjiWewnatrz:");
 
-            /*            for (int p = 0; p < listaNumerowZNazwNajlepszychOpcjiWewnatrz.Count; p++)
-                        {
-                            Console.WriteLine(listaNumerowZNazwNajlepszychOpcjiWewnatrz[p]);
-                        }
-                        Console.WriteLine("\n\n");*/
-
             ////////////// SYTUACJA 1
 
             // sytuacja gdy jest jedna opcja colPointer najlepszym qualification
@@ -1344,19 +1328,8 @@ namespace ElectreAp
 
                     topDownRanking[1, workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]] = (liczbaZajetychMiejscWRankWDestZstep + 1);
 
-                    /*                    Console.WriteLine("PRZED USUWANIEM");
-                                        foreach (int item in listaNumerowZNazwOpcjiOgolZstep) { Console.Write(item + " "); }
-                                        Console.WriteLine();
-                                        Console.WriteLine("numerNajlepszejOpcjiWew = " + numerNajlepszejOpcjiWew);
-
-                                        Console.WriteLine("workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew] = " + workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]);*/
-
                     listaNumerowZNazwOpcjiOgolZstep.Remove(workingListOfNumbersOfOptions[numerNajlepszejOpcjiWew]);
 
-                    /*                    Console.WriteLine("PO USUNIĘCIU");
-                                        foreach (int item in listaNumerowZNazwOpcjiOgolZstep) { Console.Write(item + " "); }
-                                        Console.WriteLine();
-                                        Console.WriteLine("dla TRUE rozmiar listaNumerowZNazwOpcji PO = " + workingListOfNumbersOfOptions.Count);*/
                     listaNumZNazwPomoc = listaNumerowZNazwOpcjiOgolZstep;
                     liczbaZajetychMiejscWRankWDestZstep++;
                 }
@@ -1383,12 +1356,9 @@ namespace ElectreAp
                     Console.WriteLine("numerNajlepszejOpcjiWew = " + numerNajlepszejOpcjiWew);
                     miejsceA = 0;
                     miejsceB = 0;
-                    //   Console.WriteLine("miejsceA: " + miejsceA);
-                    //   Console.WriteLine("miejsceB: " + miejsceB);
 
                     for (int numerWiersza = 0; numerWiersza < roboczyMatrixDOgol.GetLength(0); numerWiersza++)
                     {
-                        //if (!CzyJestWLiscie(numerWiersza, listaNumerowZNazwOpcjiUsytWRank)) {
                         if (!listaNumerowZNazwOpcjiUsytWRank.Contains(numerWiersza))
                         {
                             for (int numerKolumny = 0; numerKolumny < roboczyMatrixDOgol.GetLength(1); numerKolumny++)
@@ -1454,15 +1424,7 @@ namespace ElectreAp
                             if (listaNumerowZNazwOpcjiOgolZstep[j] == listaNumerowZNazwNajlepszychOpcjiWewnatrz[k])
                             {
                                 Console.WriteLine("USUWANIE 3");
-
-                                /*                                Console.WriteLine("PRZED USUNIĘCIEM");
-                                                                foreach (int item in listaNumerowZNazwOpcjiOgolZstep) { Console.Write(item + " "); }
-                                                                Console.WriteLine();*/
                                 listaNumerowZNazwOpcjiOgolZstep.RemoveAt(j);
-
-                                /*                                Console.WriteLine("PO USUNIĘCIU");
-                                                                foreach (int item in listaNumerowZNazwOpcjiOgolZstep) { Console.Write(item + " "); }
-                                                                Console.WriteLine();*/
                                 break;
                             }
                         }
@@ -1517,12 +1479,10 @@ namespace ElectreAp
 
                     for (int numerWiersza = 0; numerWiersza < roboczyMatrixDOgol.GetLength(0); numerWiersza++)
                     {
-                        //if (!CzyJestWLiscie(numerWiersza, listaNumerowZNazwOpcjiUsytWRank)) {
                         if (!listaNumerowZNazwOpcjiUsytWRank.Contains(numerWiersza))
                         {
                             for (int numerKolumny = 0; numerKolumny < roboczyMatrixDOgol.GetLength(1); numerKolumny++)
                             {
-                                //if (!CzyJestWLiscie(numerKolumny, listaNumerowZNazwOpcjiUsytWRank)) {
                                 if (!listaNumerowZNazwOpcjiUsytWRank.Contains(numerKolumny))
                                 {
                                     double wartoscKomorki = roboczyMatrixDOgol[numerWiersza, numerKolumny];
@@ -1568,7 +1528,7 @@ namespace ElectreAp
         }
 
 
-        private List<DataTable> listOfDataTable = new List<DataTable>();
+        private readonly List<DataTable> listOfDataTable = new List<DataTable>();
         public List<DataTable> ListOfDataTable { get { return listOfDataTable; } }
 
 
@@ -1778,36 +1738,36 @@ namespace ElectreAp
         Boolean tescikBol = false;
         int liczenie = 0;
 
-        public void FindMin()
+        public void FindMin(List<List<Int32>> listaRank)
         {
             liczenie++;
             Console.WriteLine($"PPPPPPPPPPPPP = {0}", liczenie);
 
-            if (listaAltWRank.Any())
+            if (alternativesInRanking.Any())
             {
                 Console.WriteLine("PPPPPPP   A1");
-                listaAltWRank.Sort();
+                alternativesInRanking.Sort();
             }
-            listaDlaRank = new List<int>();
-            listaChwilowa = new List<int>();
+            List<int> listaDlaRank = new List<int>();
+            List<Int32> temporaryList = new List<int>();
             wiersz = -1;
 
-            for (int i = 0; i < listaAlternatyw.Count; i++)
+            for (int alternativesIterator = 0; alternativesIterator < alternativesWithResultsOfDuels.Count; alternativesIterator++)
             {
-                if (!listaAltWRank.Any() && !listaAlternatyw[i].Any())
+                if (!alternativesInRanking.Any() && !alternativesWithResultsOfDuels[alternativesIterator].Any())
                 {
                     Console.WriteLine("PPPPPPP   1");
-                    listaDlaRank.Add((i + 1));
-                    wiersz = i;
-                    listaChwilowa.Add((i + 1));
+                    listaDlaRank.Add((alternativesIterator + 1));
+                    wiersz = alternativesIterator;
+                    temporaryList.Add((alternativesIterator + 1));
                 }
-                else if (listaAlternatyw[i].Count == listaAltWRank.Count)
+                else if (alternativesWithResultsOfDuels[alternativesIterator].Count == alternativesInRanking.Count)
                 {
                     Console.WriteLine("PPPPPPP   2");
-                    listaAltWRank.Sort();
-                    for (int k = 0; k < listaAlternatyw[i].Count; k++)
+                    alternativesInRanking.Sort();
+                    for (int k = 0; k < alternativesWithResultsOfDuels[alternativesIterator].Count; k++)
                     {
-                        if (listaAlternatyw[i][k] == listaAltWRank[k]) 
+                        if (alternativesWithResultsOfDuels[alternativesIterator][k] == alternativesInRanking[k]) 
                         { 
                             isTheSameValue = true;
                             Console.WriteLine("PPPPPPP   3"); 
@@ -1822,18 +1782,18 @@ namespace ElectreAp
                     if (isTheSameValue)
                     {
                         Console.WriteLine("PPPPPPP   5");
-                        listaDlaRank.Add((i + 1));
-                        listaChwilowa.Add((i + 1));
-                        wiersz = i;
+                        listaDlaRank.Add((alternativesIterator + 1));
+                        temporaryList.Add((alternativesIterator + 1));
+                        wiersz = alternativesIterator;
                     }
                 }
-                else if (listaAlternatyw[i].Count < listaAltWRankNieSort.Count && !listaAltWRankNieSort.Contains(i + 1))
+                else if (alternativesWithResultsOfDuels[alternativesIterator].Count < alternativesInRankingNotSorted.Count && !alternativesInRankingNotSorted.Contains(alternativesIterator + 1))
                 {
                     Console.WriteLine("PPPPPPP   6");
-                    for (int f = 0; f < listaChwilowa.Count; f++)
+                    for (int f = 0; f < temporaryList.Count; f++)
                     {
-                        double pomoc1 = FinalRankingMatrix[i, listaChwilowa[f] - 1];
-                        double pomoc2 = FinalRankingMatrix[listaChwilowa[f] - 1, i];
+                        double pomoc1 = FinalRankingMatrix[alternativesIterator, temporaryList[f] - 1];
+                        double pomoc2 = FinalRankingMatrix[temporaryList[f] - 1, alternativesIterator];
 
                         if ((pomoc1 == 2.0 || pomoc1 == 0.0) && (pomoc2 == 2.0 || pomoc2 == 0.0))
                         {
@@ -1850,28 +1810,28 @@ namespace ElectreAp
                     if (tescikBol)
                     {
                         Console.WriteLine("PPPPPPP   9");
-                        listaDlaRank.Add((i + 1));
-                        listaChwilowa.Add((i + 1));
-                        wiersz = i;
+                        listaDlaRank.Add((alternativesIterator + 1));
+                        temporaryList.Add((alternativesIterator + 1));
+                        wiersz = alternativesIterator;
                     }
                 }
             }
 
-            if (listaChwilowa.Any())
+            if (temporaryList.Any())
             {
                 Console.WriteLine("PPPPPPP   10");
-                for (int w = 0; w < listaChwilowa.Count; w++)
+                for (int w = 0; w < temporaryList.Count; w++)
                 {
-                    listaAltWRank.Add(listaChwilowa[w]);
-                    listaAltWRankNieSort.Add(listaChwilowa[w]);
+                    alternativesInRanking.Add(temporaryList[w]);
+                    alternativesInRankingNotSorted.Add(temporaryList[w]);
                 }
             }
 
-            if (listaAltWRank.Count < listaAlternatyw.Count)
+            if (alternativesInRanking.Count < alternativesWithResultsOfDuels.Count)
             {
                 Console.WriteLine("PPPPPPP   11");
                 listaRank.Add(listaDlaRank);
-                FindMin();
+                FindMin(listaRank);
             }
             else
             {

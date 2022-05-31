@@ -42,16 +42,15 @@ namespace ElectreAp
         protected List<Int32> listaNumerowZNazwOpcjiOgolWstep = new List<Int32>();
         public List<Int32> ListaNumerowZNazwOpcjiOgolWstep { get { return listaNumerowZNazwOpcjiOgolWstep; } }
         protected List<Int32> listaNumZNazwPomoc = new List<Int32>();
-        protected List<Int32> listaKtoZKimPrzegral = new List<Int32>();
-        protected List<Int32> listaAltWRank = new List<Int32>();
-        protected List<Int32> listaAltWRankNieSort = new List<Int32>();
-        protected List<Int32> listaChwilowa = new List<Int32>();
+        protected List<Int32> resultsOfTheDuelsOfVariants = new List<Int32>();
+        protected List<Int32> alternativesInRanking = new List<Int32>();
+        protected List<Int32> alternativesInRankingNotSorted = new List<Int32>();
+        //protected List<Int32> listaChwilowa = new List<Int32>();
         protected List<Int32> lul = new List<Int32>();
-        protected List<Int32> listaDlaRank = new List<Int32>();
         protected List<Int32> workingListOfNumbersOfOptions = new List<Int32>();
         protected List<String> rankingOpcjiFinalny = new List<String>();
-        protected List<List<Int32>> listaRank = new List<List<Int32>>();
-        protected List<List<Int32>> listaAlternatyw = new List<List<Int32>>();
+       // protected List<List<Int32>> listaRank = new List<List<Int32>>();
+        protected List<List<Int32>> alternativesWithResultsOfDuels = new List<List<Int32>>();
         protected List<List<Int32>> listaNumerowOpcjiMacierzyOcen = new List<List<Int32>>();
         public List<List<Int32>> ListaNumerowOpcjiMacierzyOcen { get { return listaNumerowOpcjiMacierzyOcen; } }
 
