@@ -1,0 +1,15 @@
+ElectreAp is a code implementation of Electre III Algorithm that is uses to solve multicriterial problems. 
+
+Implementation was created as My Bachelor Science Degree project (diploma thesis) at University Of Rzeszow (Poland).
+
+Genesis and the main goal of thesis
+The main goal of that project was to develop a Windows Application for ordering alternatives 
+and thus supporting decisions based on implementation of ELECTRE III Algorithm in multicriterial decision problems.
+
+Application allows to preview results obtained at each execution steps (algorithm steps) 
+with mathematical theory corresponding to each steps. This simplify analizing, learning and understanding how algorithm works. 
+By this project has a didactic properties, which is an additional goal of the work.
+
+The "ELECTRE" term is an acronym for "ELiminiation Et Choix Traduisant 
+la REalite". This name is used to qualify a sort of decision support algorithms, that have come from France. 
+The Major creator of ELECTRE family is Bernard Roy, who introduced them in the 60's of XX century.
