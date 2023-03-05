@@ -1,8 +1,8 @@
-ElectreAp is a code implementation of Electre III Algorithm that is uses to solve multicriterial problems. 
+ElectreAp is a code implementation of Electre III Algorithm that is used to solve multicriterial problems. 
 
-Implementation was created as My Bachelor Science Degree project (diploma thesis) at University Of Rzeszow (Poland).
+Implementation was created as My Bachelor Engineering Degree project at University Of Rzeszów (Poland).
 
-Genesis and the main goal of thesis
+Genesis of thesis:
 The main goal of that project was to develop a Windows Application for ordering alternatives 
 and thus supporting decisions based on implementation of ELECTRE III Algorithm in multicriterial decision problems.
 
